@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "invoice-ai"
+version = "0.1.0"
+package-mode = true
+description = "Invoice generator powered with the use of AI Agent made by TaKo AI."
+authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "src", from = "." },
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "1.36.0"
+sqlalchemy = "2.0.31"
+pydantic = "2.7.4"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"
+factory-boy = "3.3.0"
+ruff = "^0.0.278"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = [
+    "E",
+    "F",
+    "I",
+    "W",
+]
+line-length = 120
+
+[tool.mypy]
+ignore_missing_imports = "True"
+disallow_untyped_defs = "True"

@@ -1,0 +1,119 @@
+\documentclass[a4paper]{article}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\geometry{a4paper, margin=0.3in, bottom=0.3in, includefoot}
+\setmainfont{JetBrainsMono}[
+    Path=./FontFiles/,
+    Extension = .ttf,
+    UprightFont=*-Thin,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    BoldItalicFont=*-BoldItalic
+]
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\renewcommand{\footrulewidth}{0pt} % remove the footer rule
+\cfoot{\fontsize{7pt}{8pt}\selectfont
+\thepage/\pageref{LastPage}}
+\fancyfoot[C]{\tiny{FOOTERTEXT}\\ \vspace{3pt}\fontsize{5pt}{5pt}\selectfont \thepage/\pageref{LastPage}}
+\newcommand{\lline}[2]{{\color{#1}\noindent\makebox[\linewidth][c]{\rule{1.02\textwidth}{#2}}}}
+\definecolor{blue}{rgb}{0.2156,0.3019,0.4941}
+\definecolor{grey}{rgb}{0.5,0.5,0.5}
+\begin{document}
+    \noindent
+    \begin{minipage}[t]{0.35\textwidth}
+        \IfFileExists{logo.png}
+        {\includegraphics[width=\linewidth]{logo.png}}
+        {}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.6\textwidth}
+        \begin{flushright}
+            \huge{INVOICE INVOICENO} \\[10pt]
+            \normalsize{ISSUEDATTEXT: ISSUEDDATE} \\
+            \normalsize{DUETOTEXT: DUETODATE}
+        \end{flushright}
+    \end{minipage}
+
+    \vspace*{50pt} % Add vertical space here
+    \noindent
+    \begin{minipage}[t]{0.3\textwidth}
+        \vspace{0pt} % Add this line
+        \begin{flushleft}
+            \normalsize{\textbf{CLIENTLINE1}} \\
+            \normalsize{CLIENTLINE2} \\
+            \normalsize{CLIENTLINE3} \\
+            \normalsize{CLIENTLINE4} \\
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.5\textwidth}
+        \vspace{0pt} % Add this line
+        \begin{flushright}
+            \normalsize{\textbf{LINE1}} \\
+            \normalsize{LINE2} \\
+            \normalsize{LINE3} \\
+            \normalsize{LINE4} \\
+            \normalsize{LINE5}
+        \end{flushright}
+    \end{minipage}
+
+    \vspace*{10pt} % Add vertical space here
+    \noindent
+    \begin{minipage}[b]{0.3\textwidth}
+        \vspace{0pt} % Add this line
+        \begin{flushleft}
+            \normalsize{\textbf{CLIENTLINE5}} \\
+            \normalsize{CLIENTLINE6}
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.5\textwidth}
+        \vspace{0pt} % Add this line
+        \begin{flushright}
+            \normalsize{\textbf{LINE6}} \\
+            \normalsize{LINE7} \\
+            \normalsize{\textbf{LINE8}} \\
+            \normalsize{LINE9} \\
+            \normalsize{\textbf{LINE10}} \\
+            \normalsize{LINE11} \\
+        \end{flushright}
+    \end{minipage}
+    \vspace*{20pt} % Add vertical space here
+    \noindent
+
+    \begin{tabularx}{\linewidth}{
+            >{\hsize=2\hsize}X
+            >{\hsize=1\hsize}X
+            >{\hsize=0.5\hsize}X
+            >{\hsize=0.5\hsize}X
+            >{\hsize=1\hsize}X
+            >{\raggedleft\arraybackslash\hsize=1\hsize}X}
+        \textbf{TABLE1} & \textbf{TABLE2} & \textbf{TABLE3} & \textbf{TABLE4} & \textbf{TABLE5} & \textbf{TABLE6}
+    \end{tabularx}
+    \definecolor{blue}{rgb}{0.2156,0.3019,0.4941}
+    \vspace*{-10pt}
+    \lline{blue}{0.8pt}
+
+    \vspace*{10pt}
+    % PRODUCTS %
+
+    \begin{tabularx}{\linewidth}{
+            >{\hsize=2\hsize}X
+            >{\hsize=1\hsize}X
+            >{\hsize=0.5\hsize}X
+            >{\hsize=0.5\hsize}X
+            >{\raggedleft\arraybackslash\hsize=1\hsize}X
+            >{\raggedleft\arraybackslash\hsize=1\hsize}X}
+        &&&& TOTAL1 & TOTAL2 \\ \\
+        &&&& TABLE5 & TOTAL3 \\ \\
+        &&&& \textbf{TOTAL4} & \textbf{TOTAL5} \\ \\
+    \end{tabularx}
+\end{document}
