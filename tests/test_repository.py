@@ -1,6 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from src.data.providers.database_provider import DatabaseProvider
+from src.data.providers.database_schema import BusinessTable
 from src.data.repository import Repository
 from src.domain.models import Business, Client
 
@@ -23,7 +24,7 @@ class TestRepository(object):
         self.repository = Repository(self.dataProvider)
 
     @staticmethod
-    def check_business(business: Business, mock: Business) -> None:
+    def check_business(business: Business, mock: Business | BusinessTable) -> None:
         assert isinstance(business, Business)
         assert business.name == mock.name
         assert business.street == mock.street
@@ -36,7 +37,7 @@ class TestRepository(object):
         assert business.email == mock.email
 
     def test_get_client(self) -> None:
-        client = self.repository.get_client(client_table_mock.name)
+        client = self.repository.get_client(str(client_table_mock.name))
 
         assert isinstance(client, Client)
         assert client.name == client_table_mock.name
@@ -47,12 +48,12 @@ class TestRepository(object):
         assert client.vatNo == client_table_mock.vatNo
 
     def test_get_business(self) -> None:
-        business = self.repository.get_business(business_table_mock.name)
+        business = self.repository.get_business(str(business_table_mock.name))
         self.check_business(business, business_table_mock)
 
     def test_add_business(self) -> None:
         self.repository.add_business(business_model_mock)
         if business_model_mock.name is None:
             raise ValueError("business_model_mock.name cannot be None")
-        business = self.repository.get_business(business_model_mock.name)
+        business = self.repository.get_business(str(business_model_mock.name))
         self.check_business(business, business_model_mock)

@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, ValidationError, field_validator
+from pydantic import BaseModel, ValidationError
 
 
 class Product(BaseModel):
@@ -13,7 +13,6 @@ class Product(BaseModel):
     vat: Optional[float] = 0.0
 
     @classmethod
-    @field_validator("description", "quantity", "unit", "price", "vat")
     def validate_fields(cls, v: str, values: dict, field: str) -> None:
         if v is not None and any(value is None for value in values.values()):
             raise ValidationError(
@@ -21,7 +20,6 @@ class Product(BaseModel):
             )
 
     @classmethod
-    @field_validator("vat", "price", "quantity", "unit")
     def validate_positive(cls, v: float, field: str) -> None:
         if v is not None and v < 0:
             raise ValueError(f"{field} must be positive")
