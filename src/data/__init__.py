@@ -1,3 +1,5 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 from .providers import database_schema
 from .providers import database_provider
 

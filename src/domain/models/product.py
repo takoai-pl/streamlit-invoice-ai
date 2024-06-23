@@ -13,22 +13,26 @@ class Product(BaseModel):
 
     @classmethod
     @field_validator('description', 'quantity', 'unit', 'price', 'vat')
-    def validate_fields(cls, v, values, field):
+    def validate_fields(cls, v: str, values: dict, field: str) -> None:
         if v is not None and any(value is None for value in values.values()):
             raise ValidationError(f"If '{field}' is set, all other fields must also be set")
-        return v
 
     @classmethod
     @field_validator('vat', 'price', 'quantity', 'unit')
-    def validate_positive(cls, v, values, field):
+    def validate_positive(cls, v: float, field: str) -> None:
         if v is not None and v < 0:
             raise ValueError(f"{field} must be positive")
-        return v
 
     @property
-    def vat_amount(self):
-        return self.price * self.vat / 100
+    def vat_amount(self) -> float:
+        if self.price is not None and self.vat is not None:
+            return self.price * self.vat / 100
+        else:
+            return 0.0
 
     @property
-    def sum(self):
-        return self.price + self.vat_amount
+    def sum(self) -> float:
+        if self.price is not None and self.vat_amount is not None:
+            return self.price + self.vat_amount
+        else:
+            return 0.0

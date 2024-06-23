@@ -1,0 +1,27 @@
+name: locales
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+env:
+  POETRY_VERSION: "1.4.2"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+    name: Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run locales check
+        run: |
+          make locales
+        shell: bash

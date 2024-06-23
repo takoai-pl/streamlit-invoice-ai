@@ -1,16 +1,20 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import streamlit as st
-from src.utils.language import Language
+
+from src.utils.language import (
+    Language,
+    i18n as _,
+)
 
 
-def _on_change_language(key, language: Language):
+def _on_change_language(key: str, language: Language) -> None:
     selected_language = st.session_state[key]
     selected_language_value = Language.language_dict[selected_language]
     language.change_language(selected_language_value)
 
 
-def build_language_selector(language: Language):
+def build_language_selector(language: Language) -> None:
     st.subheader(_("language"))
 
     language_options = list(Language.language_dict.keys())

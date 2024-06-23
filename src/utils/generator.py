@@ -1,8 +1,9 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import os
-from src.models.invoice import Invoice
-from src.models.product import Product
+
+from src.domain.models.invoice import Invoice
+from src.domain.models.product import Product
 from src.utils.const import product_latex_template, assets_path
 
 
@@ -14,10 +15,10 @@ class Generator:
         with open(layout_path, 'r') as f:
             self.layout = f.read()
 
-    def substitute(self, key: str, value: str):
+    def substitute(self, key: str, value: str) -> None:
         self.layout = self.layout.replace(key, str(value))
 
-    def append_products(self, products: list[Product]):
+    def append_products(self, products: list[Product]) -> None:
         product_latex = ''
         for product in products:
             product_latex += product_latex_template.format(
@@ -30,7 +31,7 @@ class Generator:
             )
         self.substitute('% PRODUCTS %', product_latex)
 
-    def substitute_invoice_details(self):
+    def substitute_invoice_details(self) -> None:
         details = {
             'INVOICE': 'Invoice',
             'INVOICENO': self.invoice.invoiceNo,
@@ -58,12 +59,12 @@ class Generator:
         for key, value in details.items():
             self.substitute(key, value)
 
-    def generate(self):
+    def generate(self) -> str:
         self.substitute_invoice_details()
         self.append_products(self.invoice.products)
         self.substitute('TOTAL1', 'Subtotal')
-        self.substitute('TOTAL2', self.invoice.subtotal)
-        self.substitute('TOTAL3', self.invoice.vat_value)
+        self.substitute('TOTAL2', str(self.invoice.subtotal))
+        self.substitute('TOTAL3', str(self.invoice.vat_value))
         self.substitute('TOTAL4', 'Total')
-        self.substitute('TOTAL5', self.invoice.total)
+        self.substitute('TOTAL5', str(self.invoice.total))
         return self.layout

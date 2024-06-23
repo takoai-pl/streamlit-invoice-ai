@@ -1,16 +1,18 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import streamlit as st
-from utils.language import Language
-from models import Invoice
+from src.utils.language import (
+    Language,
+    i18n as _,
+)
 
 
-def _on_change_business(key, attribute):
+def _on_change_business(key: str, attribute: str) -> None:
     current_value = st.session_state[key]
     st.session_state.invoice.edit_business(**{attribute: current_value})
 
 
-def build_business_fields():
+def build_business_fields() -> None:
     st.subheader(_("business_details"))
     business_fields = [_('name'), _('street'), _('city'), _('country'), 'kvk', 'vatNo', 'iban', 'phone', 'email']
 

@@ -2,19 +2,20 @@
 
 import streamlit as st
 
-from models import Invoice
-
-from src.components.language_selector import build_language_selector
-from src.utils.language import Language
+from src.domain.models import Invoice
+from src.presentation.components.language_selector import build_language_selector
+from src.presentation.pages.business_details import build_business_fields
+from src.presentation.pages.client_details import build_client_fields
+from src.presentation.pages.invoice_details import build_invoice_fields
+from src.utils.language import (
+    Language,
+    i18n as _,
+)
 from src.utils.generator import Generator
-
-from src.pages.business_details import build_business_fields
-from src.pages.client_details import build_client_fields
-from src.pages.invoice_details import build_invoice_fields
 
 
 class App:
-    def __init__(self):
+    def __init__(self) -> None:
         if 'invoice' not in st.session_state:
             st.session_state.invoice = Invoice()
 
@@ -29,7 +30,7 @@ class App:
 
         self.InvoiceDetails, self.ClientDetails, self.AgentAI = st.tabs(tab_names)
 
-    def run(self):
+    def run(self) -> None:
         with st.sidebar:
             st.header(_("invoice"))
 

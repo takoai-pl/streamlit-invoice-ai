@@ -1,15 +1,16 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import streamlit as st
-from models import Invoice
+
+from src.utils.language import i18n as _
 
 
-def _on_change_client(key: str, attribute: str):
+def _on_change_client(key: str, attribute: str) -> None:
     current_value = st.session_state[key]
     st.session_state.invoice.edit_client(**{attribute: current_value})
 
 
-def build_client_fields():
+def build_client_fields() -> None:
     st.subheader(_("client_details"))
 
     client_fields = ['name', 'street', 'postCode', 'town', 'country', 'vatNo']

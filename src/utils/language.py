@@ -3,11 +3,10 @@
 import gettext
 import streamlit as st
 
-
 class Language:
     language_dict = {'English': 'en', 'Polish': 'pl', 'Dutch': 'nl'}
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.translations = {
             'en': gettext.translation('base', 'locales', languages=['en']),
             'pl': gettext.translation('base', 'locales', languages=['pl']),
@@ -19,6 +18,10 @@ class Language:
 
         self.change_language(st.session_state.language)
 
-    def change_language(self, language):
+    def change_language(self, language: str) -> None:
         st.session_state.language = language
         self.translations[st.session_state.language].install(names=["_"])
+
+
+def i18n(message: str) -> str:
+    return _(message) # type: ignore

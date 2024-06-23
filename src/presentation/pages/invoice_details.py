@@ -2,11 +2,12 @@
 
 import streamlit as st
 
-from utils.const import currencies
-from models import Invoice
+from src.domain.models import Invoice
+from src.utils.const import currencies
+from src.utils.language import i18n as _
 
 
-def _on_change_product(key, attribute, product_index):
+def _on_change_product(key: str, attribute: str, product_index: int) -> None:
     current_value = st.session_state[key]
     try:
         st.session_state.invoice.edit_product(product_index, **{attribute: current_value})
@@ -14,7 +15,7 @@ def _on_change_product(key, attribute, product_index):
         st.warning(str(e))
 
 
-def _on_change_details(key):
+def _on_change_details(key: str) -> None:
     current_value = st.session_state[key]
     try:
         if key == 'invoiceNo':
@@ -27,7 +28,7 @@ def _on_change_details(key):
         st.warning(str(e))
 
 
-def build_invoice_fields():
+def build_invoice_fields() -> None:
     client, business = st.columns(2)
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
