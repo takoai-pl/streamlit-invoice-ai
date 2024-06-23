@@ -34,7 +34,7 @@ class Generator:
     def substitute_invoice_details(self) -> None:
         details = {
             "INVOICE": "Invoice",
-            "INVOICENO": self.invoice.invoiceNo,
+            "INVOICENO": self.invoice.invoiceNo or "",
             "ISSUEDATTEXT": "Issued at",
             "ISSUEDDATE": (
                 self.invoice.issuedAt.strftime("%Y-%m-%d")
@@ -45,21 +45,21 @@ class Generator:
             "DUETODATE": (
                 self.invoice.dueTo.strftime("%Y-%m-%d") if self.invoice.dueTo else ""
             ),
-            "CLIENTLINE1": self.invoice.client.name,
-            "CLIENTLINE2": self.invoice.client.street,
-            "CLIENTLINE3": self.invoice.client.town,
-            "CLIENTLINE4": self.invoice.client.vatNo,
-            "LINE1": self.invoice.business.name,
-            "LINE2": self.invoice.business.street,
-            "LINE3": self.invoice.business.town,
-            "LINE4": self.invoice.business.phone,
-            "LINE5": self.invoice.business.email,
+            "CLIENTLINE1": self.invoice.client.name or "",
+            "CLIENTLINE2": self.invoice.client.street or "",
+            "CLIENTLINE3": self.invoice.client.town or "",
+            "CLIENTLINE4": self.invoice.client.vatNo or "",
+            "LINE1": self.invoice.business.name or "",
+            "LINE2": self.invoice.business.street or "",
+            "LINE3": self.invoice.business.town or "",
+            "LINE4": self.invoice.business.phone or "",
+            "LINE5": self.invoice.business.email or "",
             "LINE6": "VAT",
-            "LINE7": self.invoice.business.vatNo,
+            "LINE7": self.invoice.business.vatNo or "",
             "LINE8": "KVK",
-            "LINE9": self.invoice.business.kvk,
+            "LINE9": self.invoice.business.bic or "",
             "LINE10": "IBAN",
-            "LINE11": self.invoice.business.iban,
+            "LINE11": self.invoice.business.iban or "",
             "FOOTERTEXT": "Thank you for your business!",
         }
         for key, value in details.items():

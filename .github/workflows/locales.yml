@@ -1,12 +1,8 @@
 name: locales
 
 on:
-  push:
   pull_request:
     branches: [main]
-
-env:
-  POETRY_VERSION: "1.4.2"
 
 jobs:
   build:
@@ -14,13 +10,16 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.8"
-          - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
     name: Python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v3
+      - name: Install gettext
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
       - name: Run locales check
         run: |
           make locales

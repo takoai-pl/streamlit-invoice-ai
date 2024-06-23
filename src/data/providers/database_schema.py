@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from typing import Any, Type
+from typing import Any
 
 from sqlalchemy import (
     Column,
@@ -12,8 +12,7 @@ from sqlalchemy import (
     String,
 )
 from sqlalchemy.orm import (
-    DeclarativeMeta,
-    declarative_base,
+    DeclarativeBase,
     relationship,
 )
 
@@ -22,15 +21,12 @@ from src.domain.models import (
 )
 
 
-def get_base() -> Type[DeclarativeMeta]:
-    return declarative_base()
-
-
-Base: Type[DeclarativeMeta] = get_base()
-
-
 def generate_uuid() -> str:
     return str(uuid.uuid4())
+
+
+class Base(DeclarativeBase):
+    pass
 
 
 class BusinessTable(Base):
@@ -53,16 +49,16 @@ class BusinessTable(Base):
         return cls(**vars(business))
 
     def __init__(cls, **kwargs: Any) -> None:
-        cls.name = kwargs.get("name")
-        cls.street = kwargs.get("street")
-        cls.postCode = kwargs.get("postCode")
-        cls.town = kwargs.get("town")
-        cls.country = kwargs.get("country")
-        cls.vatNo = kwargs.get("vatNo")
-        cls.bic = kwargs.get("bic")
-        cls.iban = kwargs.get("iban")
-        cls.phone = kwargs.get("phone")
-        cls.email = kwargs.get("email")
+        cls.name = kwargs["name"]
+        cls.street = kwargs["street"]
+        cls.postCode = kwargs["postCode"]
+        cls.town = kwargs["town"]
+        cls.country = kwargs["country"]
+        cls.vatNo = kwargs["vatNo"]
+        cls.bic = kwargs["bic"]
+        cls.iban = kwargs["iban"]
+        cls.phone = kwargs["phone"]
+        cls.email = kwargs["email"]
 
     def __repr__(self) -> str:
         return json.dumps(
@@ -93,12 +89,12 @@ class ClientTable(Base):
     vatNo = Column("vatNo", String, unique=True)
 
     def __init__(cls, **kwargs: Any) -> None:
-        cls.name = kwargs.get("name")
-        cls.street = kwargs.get("street")
-        cls.postCode = kwargs.get("postCode")
-        cls.town = kwargs.get("town")
-        cls.country = kwargs.get("country")
-        cls.vatNo = kwargs.get("vatNo")
+        cls.name = kwargs["name"]
+        cls.street = kwargs["street"]
+        cls.postCode = kwargs["postCode"]
+        cls.town = kwargs["town"]
+        cls.country = kwargs["country"]
+        cls.vatNo = kwargs["vatNo"]
 
     def __repr__(self) -> str:
         return json.dumps(
@@ -131,14 +127,14 @@ class InvoiceTable(Base):
 
     def __init__(cls, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        cls.invoiceNo = kwargs.get("invoiceNo")
-        cls.currency = kwargs.get("currency")
-        cls.vatPercent = kwargs.get("vatPercent")
-        cls.issuedAt = kwargs.get("issuedAt")
-        cls.dueTo = kwargs.get("dueTo")
-        cls.note = kwargs.get("note")
-        cls.business_id = kwargs.get("business_id")
-        cls.client_id = kwargs.get("client_id")
+        cls.invoiceNo = kwargs["invoiceNo"]
+        cls.currency = kwargs["currency"]
+        cls.vatPercent = kwargs["vatPercent"]
+        cls.issuedAt = kwargs["issuedAt"]
+        cls.dueTo = kwargs["dueTo"]
+        cls.note = kwargs["note"]
+        cls.business_id = kwargs["business_id"]
+        cls.client_id = kwargs["client_id"]
 
     def __repr__(self) -> str:
         return json.dumps(
@@ -170,12 +166,12 @@ class ProductTable(Base):
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self.description = kwargs.get("description")
-        self.quantity = kwargs.get("quantity")
-        self.unit = kwargs.get("unit")
-        self.price = kwargs.get("price")
-        self.vatPercent = kwargs.get("vatPercent")
-        self.invoice_id = kwargs.get("invoice_id")
+        self.description = kwargs["description"]
+        self.quantity = kwargs["quantity"]
+        self.unit = kwargs["unit"]
+        self.price = kwargs["price"]
+        self.vatPercent = kwargs["vatPercent"]
+        self.invoice_id = kwargs["invoice_id"]
 
     def __repr__(self) -> str:
         return json.dumps(

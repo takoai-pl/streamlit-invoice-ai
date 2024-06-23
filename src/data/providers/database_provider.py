@@ -1,7 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from functools import wraps
-from typing import Any, Callable, Type
+from typing import Any, Callable, List
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -40,7 +40,7 @@ class DatabaseProvider:
     @session_scope
     def get_business(
         self, session: Session, business_name: str
-    ) -> Type[BusinessTable] | None:
+    ) -> BusinessTable | None:
         return session.query(BusinessTable).filter_by(name=business_name).first()
 
     @session_scope
@@ -54,6 +54,8 @@ class DatabaseProvider:
         business_table = (
             session.query(BusinessTable).filter_by(name=business_name).first()
         )
+        if business_table is None:
+            raise ValueError(f"No business found with name {business_name}")
         business_table.name = business.name
         business_table.street = business.street
         business_table.postCode = business.postCode
@@ -66,9 +68,7 @@ class DatabaseProvider:
         business_table.email = business.email
 
     @session_scope
-    def get_client(
-        self, session: Session, client_name: str
-    ) -> Type[ClientTable] | None:
+    def get_client(self, session: Session, client_name: str) -> ClientTable | None:
         return session.query(ClientTable).filter_by(name=client_name).first()
 
     @session_scope
@@ -80,6 +80,8 @@ class DatabaseProvider:
         self, session: Session, client_name: str, client: ClientTable
     ) -> None:
         client_table = session.query(ClientTable).filter_by(name=client_name).first()
+        if client_table is None:
+            raise ValueError(f"No client found with name {client_name}")
         client_table.name = client.name
         client_table.street = client.street
         client_table.postCode = client.postCode
@@ -88,5 +90,5 @@ class DatabaseProvider:
         client_table.vatNo = client.vatNo
 
     @session_scope
-    def get_all_invoices(self, session: Session) -> list[Type[InvoiceTable]]:
+    def get_all_invoices(self, session: Session) -> List[InvoiceTable]:
         return session.query(InvoiceTable).all()

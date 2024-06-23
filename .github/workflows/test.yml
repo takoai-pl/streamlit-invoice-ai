@@ -1,12 +1,11 @@
 name: test
 
 on:
-  push:
   pull_request:
     branches: [main]
 
 env:
-  POETRY_VERSION: "1.4.2"
+  POETRY_VERSION: "1.8.3"
 
 jobs:
   build:
@@ -14,10 +13,9 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.8"
-          - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
     name: Python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v3
@@ -25,7 +23,7 @@ jobs:
         uses: "./.github/actions/poetry_setup"
         with:
           python-version: ${{ matrix.python-version }}
-          poetry-version: "1.4.2"
+          poetry-version: ${{ env.POETRY_VERSION }}
           install-command: |
             echo "Running tests, installing dependencies with poetry..."
             poetry install

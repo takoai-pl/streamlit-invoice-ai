@@ -4,7 +4,7 @@ import re
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel
 
 from src.domain.models.business import Business
 from src.domain.models.client import Client
@@ -23,7 +23,6 @@ class Invoice(BaseModel):
     products: List[Product] = []
 
     @classmethod
-    @field_validator("invoiceNo")
     def validate_invoice_no(cls, v: str) -> str:
         pattern = re.compile(r"\d{4}/\d{4}")
         if not pattern.fullmatch(v):
@@ -33,7 +32,6 @@ class Invoice(BaseModel):
         return v
 
     @classmethod
-    @field_validator("currency")
     def validate_currency(cls, v: str) -> str:
         if len(v) != 3 or not v.isupper():
             raise ValueError(
@@ -42,14 +40,12 @@ class Invoice(BaseModel):
         return v
 
     @classmethod
-    @field_validator("issuedAt", "dueTo")
     def validate_dates(cls, v: date) -> date:
         if not isinstance(v, (datetime, date)):
             raise ValueError("Invalid date. It should be a datetime or date object")
         return v
 
     @classmethod
-    @field_validator("dueTo")
     def validate_due_date(cls, v: date, values: Dict[str, Any]) -> date:
         if "issuedAt" in values and v is not None:
             if v < values["issuedAt"]:
