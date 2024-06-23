@@ -14,7 +14,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 streamlit = "^1.36.0"
-sqlalchemy = "^2.0.25"
+sqlalchemy = "2.0.25"
 pydantic = "2.7.4"
 
 
