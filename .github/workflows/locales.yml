@@ -1,7 +1,6 @@
 name: locales
 
 on:
-  push:
   pull_request:
     branches: [main]
 
