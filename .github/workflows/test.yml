@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 env:
-  POETRY_VERSION: "1.4.2"
+  POETRY_VERSION: "1.8.3"
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         uses: "./.github/actions/poetry_setup"
         with:
           python-version: ${{ matrix.python-version }}
-          poetry-version: "1.4.2"
+          poetry-version: ${{ env.POETRY_VERSION }}
           install-command: |
             echo "Running tests, installing dependencies with poetry..."
             poetry install
