@@ -4,7 +4,7 @@ import os
 
 from src.domain.models.invoice import Invoice
 from src.domain.models.product import Product
-from src.utils.const import product_latex_template, assets_path
+from src.utils.const import assets_path, product_latex_template
 
 
 class Generator:

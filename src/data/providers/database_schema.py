@@ -2,17 +2,23 @@
 
 import json
 import uuid
+from typing import Any, Type
 
-from sqlalchemy import Column, Float, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, DeclarativeMeta
-from sqlalchemy.ext.declarative import declarative_base
-from typing import TYPE_CHECKING, Any, Type
+from sqlalchemy import (
+    Column,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+)
+from sqlalchemy.orm import (
+    DeclarativeMeta,
+    declarative_base,
+    relationship,
+)
 
 from src.domain.models import (
     Business,
-    Client,
-    Invoice,
-    Product,
 )
 
 
@@ -87,7 +93,6 @@ class ClientTable(Base):
     vatNo = Column("vatNo", String, unique=True)
 
     def __init__(cls, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
         cls.name = kwargs.get("name")
         cls.street = kwargs.get("street")
         cls.postCode = kwargs.get("postCode")

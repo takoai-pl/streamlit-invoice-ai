@@ -1,8 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import streamlit as st
+
 from src.utils.language import (
-    Language,
     i18n as _,
 )
 

@@ -1,10 +1,10 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from functools import wraps
-from typing import Type, Callable, Any
+from typing import Any, Callable, Type
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from .database_schema import (
     BusinessTable,

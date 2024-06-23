@@ -1,6 +1,6 @@
 .PHONY: all locales licences lint test start
 
-all: locales licences lint test start
+all: locales format_diff licences lint test
 
 locales:
 	@echo "Building locales..."
@@ -36,7 +36,8 @@ lint lint_diff:
 format format_diff:
 	@echo "Running formatters..."
 	poetry run black $(PYTHON_FILES)
-	#poetry run ruff --select I --fix $(PYTHON_FILES)
+	poetry run ruff --select I --fix $(PYTHON_FILES)
+	poetry run ruff --select F --fix $(PYTHON_FILES) --ignore F821
 
 
 ######################

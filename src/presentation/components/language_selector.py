@@ -4,6 +4,8 @@ import streamlit as st
 
 from src.utils.language import (
     Language,
+)
+from src.utils.language import (
     i18n as _,
 )
 

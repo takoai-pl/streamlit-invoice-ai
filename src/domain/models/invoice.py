@@ -1,13 +1,13 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import re
-from datetime import datetime, date
+from datetime import date, datetime
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, field_validator
-from typing import List, Optional, Dict, Any
 
-from src.domain.models.client import Client
 from src.domain.models.business import Business
+from src.domain.models.client import Client
 from src.domain.models.product import Product
 
 

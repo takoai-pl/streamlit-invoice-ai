@@ -1,6 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import gettext
+
 import streamlit as st
 
 

@@ -1,7 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from pydantic import BaseModel
 from typing import Optional
+
+from pydantic import BaseModel
 
 
 class Business(BaseModel):

@@ -16,7 +16,6 @@ from .mocks.schema_mocks import (
 def populate_database() -> str:
     db_path = "sqlite:///tests/mocks/mock.db"
     engine = create_engine(db_path)
-    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     Session = sessionmaker(bind=engine, expire_on_commit=False)
@@ -33,3 +32,9 @@ def populate_database() -> str:
     session.close()
 
     return db_path
+
+
+def erase_database() -> None:
+    db_path = "sqlite:///tests/mocks/mock.db"
+    engine = create_engine(db_path)
+    Base.metadata.drop_all(engine)

@@ -7,8 +7,6 @@ from src.data.providers.database_schema import (
     BusinessTable,
 )
 from src.domain.models import (
-    Invoice,
-    Product,
     Business,
     Client,
 )

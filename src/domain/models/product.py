@@ -1,7 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from typing import Optional
-from pydantic import BaseModel, field_validator, ValidationError
+
+from pydantic import BaseModel, ValidationError, field_validator
 
 
 class Product(BaseModel):

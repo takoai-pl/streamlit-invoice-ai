@@ -1,6 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from typing import Optional
+
 from pydantic import BaseModel
 
 

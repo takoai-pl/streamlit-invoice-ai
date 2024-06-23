@@ -7,11 +7,13 @@ from src.presentation.components.language_selector import build_language_selecto
 from src.presentation.pages.business_details import build_business_fields
 from src.presentation.pages.client_details import build_client_fields
 from src.presentation.pages.invoice_details import build_invoice_fields
+from src.utils.generator import Generator
 from src.utils.language import (
     Language,
+)
+from src.utils.language import (
     i18n as _,
 )
-from src.utils.generator import Generator
 
 
 class App:
