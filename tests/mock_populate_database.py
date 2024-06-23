@@ -9,7 +9,7 @@ from .mocks.schema_mocks import (
     business_table_mock,
     client_table_mock,
     invoice_table_mock,
-    product_table_mock
+    product_table_mock,
 )
 
 

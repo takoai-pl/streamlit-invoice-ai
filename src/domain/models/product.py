@@ -12,13 +12,15 @@ class Product(BaseModel):
     vat: Optional[float] = 0.0
 
     @classmethod
-    @field_validator('description', 'quantity', 'unit', 'price', 'vat')
+    @field_validator("description", "quantity", "unit", "price", "vat")
     def validate_fields(cls, v: str, values: dict, field: str) -> None:
         if v is not None and any(value is None for value in values.values()):
-            raise ValidationError(f"If '{field}' is set, all other fields must also be set")
+            raise ValidationError(
+                f"If '{field}' is set, all other fields must also be set"
+            )
 
     @classmethod
-    @field_validator('vat', 'price', 'quantity', 'unit')
+    @field_validator("vat", "price", "quantity", "unit")
     def validate_positive(cls, v: float, field: str) -> None:
         if v is not None and v < 0:
             raise ValueError(f"{field} must be positive")

@@ -20,15 +20,25 @@ def build_language_selector(language: Language) -> None:
     language_options = list(Language.language_dict.keys())
 
     current_language_value = st.session_state.language
-    current_language_name = next((name for name, value in Language.language_dict.items()
-                                  if value == current_language_value), None)
+    current_language_name = next(
+        (
+            name
+            for name, value in Language.language_dict.items()
+            if value == current_language_value
+        ),
+        None,
+    )
 
-    key = 'language_selector'
+    key = "language_selector"
     st.selectbox(
-        label=_('select_language'),
+        label=_("select_language"),
         options=language_options,
-        index=language_options.index(current_language_name) if current_language_name else None,
+        index=(
+            language_options.index(current_language_name)
+            if current_language_name
+            else None
+        ),
         on_change=_on_change_language,
         key=key,
-        args=(key, language)
+        args=(key, language),
     )

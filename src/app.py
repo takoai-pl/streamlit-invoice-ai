@@ -16,17 +16,25 @@ from src.utils.generator import Generator
 
 class App:
     def __init__(self) -> None:
-        if 'invoice' not in st.session_state:
+        if "invoice" not in st.session_state:
             st.session_state.invoice = Invoice()
 
         self.invoice = st.session_state.invoice
         self.language = Language()
         self.generate = Generator(self.invoice)
 
-        tab_names = [str(_("invoice_details") + " :page_facing_up:"),
-                     str(_("shared_details") + " " + _("client_details") + " & "
-                         + _("business_details") + " :bust_in_silhouette:"),
-                     str(_("agent_ai") + " :brain:")]
+        tab_names = [
+            str(_("invoice_details") + " :page_facing_up:"),
+            str(
+                _("shared_details")
+                + " "
+                + _("client_details")
+                + " & "
+                + _("business_details")
+                + " :bust_in_silhouette:"
+            ),
+            str(_("agent_ai") + " :brain:"),
+        ]
 
         self.InvoiceDetails, self.ClientDetails, self.AgentAI = st.tabs(tab_names)
 

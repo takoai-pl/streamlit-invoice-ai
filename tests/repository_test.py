@@ -1,26 +1,14 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 from typing import Any
 
-import pytest
-
 from src.data.providers.database_provider import DatabaseProvider
 from src.data.repository import Repository
-from src.domain.models import (
-    Business,
-    Client
-)
+from src.domain.models import Business, Client
 
 from .mock_populate_database import populate_database
-from .mocks.models_mocks import (
-    business_model_mock
-)
+from .mocks.models_mocks import business_model_mock
 
-from .mocks.schema_mocks import (
-    business_table_mock,
-    client_table_mock,
-    invoice_table_mock,
-    product_table_mock
-)
+from .mocks.schema_mocks import business_table_mock, client_table_mock
 
 
 def check_business(business: Any, mock: Any) -> None:
@@ -71,4 +59,3 @@ def test_get_client() -> None:
     assert client.town == client_table_mock.town
     assert client.country == client_table_mock.country
     assert client.vatNo == client_table_mock.vatNo
-

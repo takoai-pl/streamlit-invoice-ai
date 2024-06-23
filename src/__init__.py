@@ -16,14 +16,14 @@ from src.presentation.components.file_uploader import build_file_uploader
 from src.presentation.components.address_fields import build_address_fields
 
 __all__ = [
-    'build_language_selector',
-    'build_file_uploader',
-    'build_address_fields',
-    'DatabaseProvider',
-    'BusinessTable',
-    'ClientTable',
-    'InvoiceTable',
-    'ProductTable',
+    "build_language_selector",
+    "build_file_uploader",
+    "build_address_fields",
+    "DatabaseProvider",
+    "BusinessTable",
+    "ClientTable",
+    "InvoiceTable",
+    "ProductTable",
 ]
 
 try:

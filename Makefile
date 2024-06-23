@@ -36,7 +36,7 @@ lint lint_diff:
 format format_diff:
 	@echo "Running formatters..."
 	poetry run black $(PYTHON_FILES)
-	poetry run ruff --select I --fix $(PYTHON_FILES)
+	#poetry run ruff --select I --fix $(PYTHON_FILES)
 
 
 ######################

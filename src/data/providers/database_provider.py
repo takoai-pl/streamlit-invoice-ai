@@ -15,7 +15,7 @@ from .database_schema import (
 
 def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
-    def wrapper(self: 'DatabaseProvider', *args: Any, **kwargs: Any) -> Any:
+    def wrapper(self: "DatabaseProvider", *args: Any, **kwargs: Any) -> Any:
         session = self.Session()
         try:
             result = func(self, session, *args, **kwargs)
@@ -27,6 +27,7 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
         finally:
             session.expunge_all()
             session.close()
+
     return wrapper
 
 
@@ -37,7 +38,9 @@ class DatabaseProvider:
         self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
 
     @session_scope
-    def get_business(self, session: Session, business_name: str) -> Type[BusinessTable] | None:
+    def get_business(
+        self, session: Session, business_name: str
+    ) -> Type[BusinessTable] | None:
         return session.query(BusinessTable).filter_by(name=business_name).first()
 
     @session_scope
@@ -45,8 +48,12 @@ class DatabaseProvider:
         session.add(business)
 
     @session_scope
-    def change_business_details(self, session: Session, business_name: str, business: BusinessTable) -> None:
-        business_table = session.query(BusinessTable).filter_by(name=business_name).first()
+    def change_business_details(
+        self, session: Session, business_name: str, business: BusinessTable
+    ) -> None:
+        business_table = (
+            session.query(BusinessTable).filter_by(name=business_name).first()
+        )
         business_table.name = business.name
         business_table.street = business.street
         business_table.postCode = business.postCode
@@ -59,7 +66,9 @@ class DatabaseProvider:
         business_table.email = business.email
 
     @session_scope
-    def get_client(self, session: Session, client_name: str) -> Type[ClientTable] | None:
+    def get_client(
+        self, session: Session, client_name: str
+    ) -> Type[ClientTable] | None:
         return session.query(ClientTable).filter_by(name=client_name).first()
 
     @session_scope
@@ -67,7 +76,9 @@ class DatabaseProvider:
         session.add(client)
 
     @session_scope
-    def change_client_details(self, session: Session, client_name: str, client: ClientTable) -> None:
+    def change_client_details(
+        self, session: Session, client_name: str, client: ClientTable
+    ) -> None:
         client_table = session.query(ClientTable).filter_by(name=client_name).first()
         client_table.name = client.name
         client_table.street = client.street

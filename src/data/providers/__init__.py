@@ -11,9 +11,9 @@ from .database_schema import (
 )
 
 __all__ = [
-    'DatabaseProvider',
-    'BusinessTable',
-    'ClientTable',
-    'InvoiceTable',
-    'ProductTable',
+    "DatabaseProvider",
+    "BusinessTable",
+    "ClientTable",
+    "InvoiceTable",
+    "ProductTable",
 ]

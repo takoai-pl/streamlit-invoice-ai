@@ -3,18 +3,19 @@
 import gettext
 import streamlit as st
 
+
 class Language:
-    language_dict = {'English': 'en', 'Polish': 'pl', 'Dutch': 'nl'}
+    language_dict = {"English": "en", "Polish": "pl", "Dutch": "nl"}
 
     def __init__(self) -> None:
         self.translations = {
-            'en': gettext.translation('base', 'locales', languages=['en']),
-            'pl': gettext.translation('base', 'locales', languages=['pl']),
-            'nl': gettext.translation('base', 'locales', languages=['nl']),
+            "en": gettext.translation("base", "locales", languages=["en"]),
+            "pl": gettext.translation("base", "locales", languages=["pl"]),
+            "nl": gettext.translation("base", "locales", languages=["nl"]),
         }
 
-        if 'language' not in st.session_state:
-            st.session_state.language = 'pl'
+        if "language" not in st.session_state:
+            st.session_state.language = "pl"
 
         self.change_language(st.session_state.language)
 
@@ -24,4 +25,4 @@ class Language:
 
 
 def i18n(message: str) -> str:
-    return _(message) # type: ignore
+    return _(message)  # type: ignore

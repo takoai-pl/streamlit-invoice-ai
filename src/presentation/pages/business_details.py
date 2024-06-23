@@ -14,14 +14,25 @@ def _on_change_business(key: str, attribute: str) -> None:
 
 def build_business_fields() -> None:
     st.subheader(_("business_details"))
-    business_fields = [_('name'), _('street'), _('city'), _('country'), 'kvk', 'vatNo', 'iban', 'phone', 'email']
+    business_fields = [
+        _("name"),
+        _("street"),
+        _("city"),
+        _("country"),
+        "kvk",
+        "vatNo",
+        "iban",
+        "phone",
+        "email",
+    ]
 
     for field in business_fields:
         class_name = st.session_state.invoice.business.__class__.__name__.lower()
         key = f"{class_name}_{field}"
-        st.text_input(_(field),
-                      value=getattr(st.session_state.invoice.business, field, ""),
-                      key=key,
-                      on_change=_on_change_business,
-                      args=(key, field, st.session_state.invoice)
-                      )
+        st.text_input(
+            _(field),
+            value=getattr(st.session_state.invoice.business, field, ""),
+            key=key,
+            on_change=_on_change_business,
+            args=(key, field, st.session_state.invoice),
+        )

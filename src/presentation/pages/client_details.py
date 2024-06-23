@@ -13,14 +13,15 @@ def _on_change_client(key: str, attribute: str) -> None:
 def build_client_fields() -> None:
     st.subheader(_("client_details"))
 
-    client_fields = ['name', 'street', 'postCode', 'town', 'country', 'vatNo']
+    client_fields = ["name", "street", "postCode", "town", "country", "vatNo"]
 
     for field in client_fields:
         class_name = st.session_state.invoice.client.__class__.__name__.lower()
         key = f"{class_name}_{field}"
-        st.text_input(_(field),
-                      value=getattr(st.session_state.invoice.client, field, ""),
-                      key=key,
-                      on_change=_on_change_client,
-                      args=(key, field, st.session_state.invoice)
-                      )
+        st.text_input(
+            _(field),
+            value=getattr(st.session_state.invoice.client, field, ""),
+            key=key,
+            on_change=_on_change_client,
+            args=(key, field, st.session_state.invoice),
+        )

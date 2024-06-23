@@ -5,9 +5,4 @@ from .business import Business
 from .client import Client
 from .product import Product
 
-__all__ = [
-    'Invoice',
-    'Business',
-    'Client',
-    'Product'
-]
+__all__ = ["Invoice", "Business", "Client", "Product"]
