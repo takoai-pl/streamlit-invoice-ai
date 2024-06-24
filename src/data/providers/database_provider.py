@@ -6,7 +6,7 @@ from typing import Any, Callable, List
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from .database_schema import (
+from src.data.models import (
     BusinessTable,
     ClientTable,
     InvoiceTable,

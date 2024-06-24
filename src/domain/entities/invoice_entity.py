@@ -6,12 +6,12 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
-from src.domain.models.business import Business
-from src.domain.models.client import Client
-from src.domain.models.product import Product
+from src.domain.entities.business import Business
+from src.domain.entities.client import Client
+from src.domain.entities.product import ProductEntity
 
 
-class Invoice(BaseModel):
+class InvoiceEntity(BaseModel):
     invoiceNo: Optional[str] = ""
     currency: Optional[str] = ""
     vatPercent: Optional[int] = 0
@@ -20,7 +20,7 @@ class Invoice(BaseModel):
     client: Client = Client()
     business: Business = Business()
     note: Optional[str] = ""
-    products: List[Product] = []
+    products: List[ProductEntity] = []
 
     @classmethod
     def validate_invoice_no(cls, v: str) -> str:
@@ -112,7 +112,7 @@ class Invoice(BaseModel):
         self, description: str, quantity: int, unit: str, price: float
     ) -> None:
         self.products.append(
-            Product(description=description, quantity=quantity, unit=unit, price=price)
+            ProductEntity(description=description, quantity=quantity, unit=unit, price=price)
         )
 
     def delete_product(self, product_index: int) -> None:
