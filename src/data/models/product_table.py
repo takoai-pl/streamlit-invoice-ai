@@ -1,35 +1,20 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 import json
-import uuid
+from typing import Any
 
-from typing import (
-    Any
-)
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
-from sqlalchemy import (
-    Column,
-    String,
-    Float,
-    Integer,
-    ForeignKey
-)
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    relationship
-)
-
-
-def generate_uuid() -> str:
-    return str(uuid.uuid4())
-
-
-class Base(DeclarativeBase):
-    pass
+from src.data.models.base import Base
 
 
 class ProductTable(Base):
     __tablename__ = "product"
 
-    productID = Column("productID", String, primary_key=True, default=generate_uuid)
+    productID = Column(
+        "productID", String, primary_key=True, default=Base.generate_uuid
+    )
     description = Column("description", String)
     quantity = Column("quantity", Float)
     unit = Column("unit", String)

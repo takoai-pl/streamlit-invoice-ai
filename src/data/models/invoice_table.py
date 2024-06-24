@@ -1,31 +1,25 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 import json
-import uuid
 from typing import Any
 
 from sqlalchemy import (
     Column,
-    String,
-    Integer,
     ForeignKey,
+    Integer,
+    String,
 )
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    relationship
-)
+from sqlalchemy.orm import relationship
 
-
-def generate_uuid() -> str:
-    return str(uuid.uuid4())
-
-
-class Base(DeclarativeBase):
-    pass
+from src.data.models.base import Base
 
 
 class InvoiceTable(Base):
     __tablename__ = "invoice"
 
-    invoiceId = Column("invoiceId", String, primary_key=True, default=generate_uuid)
+    invoiceId = Column(
+        "invoiceId", String, primary_key=True, default=Base.generate_uuid
+    )
     invoiceNo = Column("invoiceNo", String)
     currency = Column("currency", String)
     vatPercent = Column("vatPercent", Integer)

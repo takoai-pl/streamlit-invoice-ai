@@ -3,7 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.data.providers.database_schema import Base
+from src.data.models.base import Base
 
 from .mocks.schema_mocks import (
     business_table_mock,

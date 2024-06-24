@@ -2,14 +2,10 @@
 
 from typing import Any
 
+from src.data.models.business_table import BusinessTable
 from src.data.providers.database_provider import DatabaseProvider
-from src.data.providers.database_schema import (
-    BusinessTable,
-)
-from src.domain.models import (
-    Business,
-    Client,
-)
+from src.domain.entities.business_entity import BusinessEntity
+from src.domain.entities.client_entity import ClientEntity
 
 
 class Repository:
@@ -23,15 +19,17 @@ class Repository:
     def __init__(self, database_provider: DatabaseProvider) -> None:
         self.database_provider = database_provider
 
-    def get_business(self, business_name: str) -> Business:
-        return Business(**self.database_provider.get_business(business_name).__dict__)
+    def get_business(self, business_name: str) -> BusinessEntity:
+        return BusinessEntity(
+            **self.database_provider.get_business(business_name).__dict__
+        )
 
-    def change_business_details(self, business: Business) -> None:
+    def change_business_details(self, business: BusinessEntity) -> None:
         self.database_provider.change_business_details(business)
 
-    def add_business(self, business: Business) -> None:
+    def add_business(self, business: BusinessEntity) -> None:
         business_table = BusinessTable.from_model(business)
         self.database_provider.add_business(business_table)
 
-    def get_client(self, client_name: str) -> Client:
-        return Client(**self.database_provider.get_client(client_name).__dict__)
+    def get_client(self, client_name: str) -> ClientEntity:
+        return ClientEntity(**self.database_provider.get_client(client_name).__dict__)

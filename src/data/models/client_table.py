@@ -1,24 +1,17 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 import json
-import uuid
 from typing import Any
 
 from sqlalchemy import Column, String
-from sqlalchemy.orm import DeclarativeBase
 
-from src.domain.entities.business_entity import BusinessEntity
+from src.data.models.base import Base
 
-
-def generate_uuid() -> str:
-    return str(uuid.uuid4())
-
-
-class Base(DeclarativeBase):
-    pass
 
 class ClientTable(Base):
     __tablename__ = "client"
 
-    clientID = Column("clientID", String, primary_key=True, default=generate_uuid)
+    clientID = Column("clientID", String, primary_key=True, default=Base.generate_uuid)
     name = Column("name", String, unique=True)
     street = Column("street", String)
     postCode = Column("postCode", String)

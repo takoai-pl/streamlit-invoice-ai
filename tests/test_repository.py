@@ -1,9 +1,10 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
+from src.data.models.business_table import BusinessTable
 from src.data.providers.database_provider import DatabaseProvider
-from src.data.providers.database_schema import BusinessTable
-from src.data.repository import Repository
-from src.domain.models import Business, Client
+from src.data.repositories.repository import Repository
+from src.domain.entities.business_entity import BusinessEntity
+from src.domain.entities.client_entity import ClientEntity
 
 from .mock_populate_database import (
     erase_database,
@@ -24,8 +25,10 @@ class TestRepository(object):
         self.repository = Repository(self.dataProvider)
 
     @staticmethod
-    def check_business(business: Business, mock: Business | BusinessTable) -> None:
-        assert isinstance(business, Business)
+    def check_business(
+        business: BusinessEntity, mock: BusinessEntity | BusinessTable
+    ) -> None:
+        assert isinstance(business, BusinessEntity)
         assert business.name == mock.name
         assert business.street == mock.street
         assert business.postCode == mock.postCode
@@ -39,7 +42,7 @@ class TestRepository(object):
     def test_get_client(self) -> None:
         client = self.repository.get_client(str(client_table_mock.name))
 
-        assert isinstance(client, Client)
+        assert isinstance(client, ClientEntity)
         assert client.name == client_table_mock.name
         assert client.street == client_table_mock.street
         assert client.postCode == client_table_mock.postCode

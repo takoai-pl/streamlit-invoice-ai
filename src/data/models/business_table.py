@@ -1,24 +1,19 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 import json
-import uuid
 from typing import Any
 
 from sqlalchemy import Column, String
-from sqlalchemy.orm import DeclarativeBase
 
+from src.data.models.base import Base
 from src.domain.entities.business_entity import BusinessEntity
-
-
-def generate_uuid() -> str:
-    return str(uuid.uuid4())
-
-
-class Base(DeclarativeBase):
-    pass
 
 
 class BusinessTable(Base):
     __tablename__ = "business"
-    businessID = Column("businessID", String, primary_key=True, default=generate_uuid)
+    businessID = Column(
+        "businessID", String, primary_key=True, default=Base.generate_uuid
+    )
     name = Column("name", String, unique=True)
     street = Column("street", String)
     postCode = Column("postCode", String)
@@ -31,7 +26,7 @@ class BusinessTable(Base):
     email = Column("email", String)
 
     @classmethod
-    def from_model(cls, business: Business) -> "BusinessTable":
+    def from_model(cls, business: BusinessEntity) -> "BusinessTable":
         return cls(**vars(business))
 
     def __init__(cls, **kwargs: Any) -> None:

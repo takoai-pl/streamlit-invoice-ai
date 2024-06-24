@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
-from src.domain.entities.business import Business
-from src.domain.entities.client import Client
-from src.domain.entities.product import ProductEntity
+from src.domain.entities.business_entity import BusinessEntity
+from src.domain.entities.client_entity import ClientEntity
+from src.domain.entities.product_entity import ProductEntity
 
 
 class InvoiceEntity(BaseModel):
@@ -17,8 +17,8 @@ class InvoiceEntity(BaseModel):
     vatPercent: Optional[int] = 0
     issuedAt: Optional[date] = None
     dueTo: Optional[date] = None
-    client: Client = Client()
-    business: Business = Business()
+    client: ClientEntity = ClientEntity()
+    business: BusinessEntity = BusinessEntity()
     note: Optional[str] = ""
     products: List[ProductEntity] = []
 
@@ -71,7 +71,7 @@ class InvoiceEntity(BaseModel):
         )
 
     @classmethod
-    def from_json(cls, file_path: str) -> "Invoice":
+    def from_json(cls, file_path: str) -> "InvoiceEntity":
         return cls.parse_file(file_path)
 
     def to_json(self, file_path: str) -> None:
@@ -112,7 +112,9 @@ class InvoiceEntity(BaseModel):
         self, description: str, quantity: int, unit: str, price: float
     ) -> None:
         self.products.append(
-            ProductEntity(description=description, quantity=quantity, unit=unit, price=price)
+            ProductEntity(
+                description=description, quantity=quantity, unit=unit, price=price
+            )
         )
 
     def delete_product(self, product_index: int) -> None:

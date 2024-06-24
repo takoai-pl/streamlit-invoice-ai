@@ -1,8 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from src.domain.models import Business
+from src.domain.entities.business_entity import BusinessEntity
 
-business_model_mock = Business(
+business_model_mock = BusinessEntity(
     name="Test Business",
     street="Test Street",
     postCode="Test Post Code",

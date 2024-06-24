@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from src.domain.models import Invoice
+from src.domain.entities.invoice_entity import InvoiceEntity
 from src.utils.const import currencies
 from src.utils.language import i18n as _
 
@@ -21,9 +21,9 @@ def _on_change_details(key: str) -> None:
     current_value = st.session_state[key]
     try:
         if key == "invoiceNo":
-            Invoice.validate_invoice_no(current_value)
+            InvoiceEntity.validate_invoice_no(current_value)
         elif key == "issuedAt" or key == "dueTo":
-            Invoice.validate_dates(current_value)
+            InvoiceEntity.validate_dates(current_value)
 
         st.session_state.invoice.edit_field(key, current_value)
     except Exception as e:

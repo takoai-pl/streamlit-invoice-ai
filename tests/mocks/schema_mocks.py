@@ -1,11 +1,9 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from src.data.providers.database_schema import (
-    BusinessTable,
-    ClientTable,
-    InvoiceTable,
-    ProductTable,
-)
+from src.data.models.business_table import BusinessTable
+from src.data.models.client_table import ClientTable
+from src.data.models.invoice_table import InvoiceTable
+from src.data.models.product_table import ProductTable
 
 business_table_mock = BusinessTable(
     name="Business",
