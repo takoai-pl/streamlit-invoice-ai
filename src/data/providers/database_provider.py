@@ -1,15 +1,14 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from functools import wraps
-from typing import Any, Callable, List
+from typing import Any, Callable, List, Type
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.exc import OperationalError, ArgumentError
 
 from src.data.models import (
     BusinessTable,
-    ClientTable,
-    InvoiceTable,
 )
 
 
@@ -23,7 +22,15 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
             return result
         except Exception as e:
             session.rollback()
-            raise e
+            if isinstance(e, BusinessAlreadyExistsException):
+                raise e
+            if isinstance(e, BusinessNameCannotBeChangedException):
+                raise e
+            if isinstance(e, BusinessNotFoundException):
+                raise e
+            if isinstance(e, BusinessRetrievalException):
+                raise e
+            raise BusinessRetrievalException(f"Could not retrieve businesses: {str(e)}")
         finally:
             session.expunge_all()
             session.close()
@@ -34,61 +41,94 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
 class DatabaseProvider:
     def __init__(self, db_path: str) -> None:
         self.db_path = db_path
-        self.engine = create_engine(db_path)
-        self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
+        try:
+            self.engine = create_engine(db_path)
+            self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
+        except OperationalError as e:
+            raise DatabaseConnectionException(f"Could not connect to the database: {str(e)}")
+        except ArgumentError as e:
+            raise DatabaseConnectionException(f"Could not connect to the database: {str(e)}")
 
     @session_scope
-    def get_business(
-        self, session: Session, business_name: str
-    ) -> BusinessTable | None:
+    def business_list(
+        self, session: Session
+    ) -> list[Type[BusinessTable]]:
+        return session.query(BusinessTable).all()
+
+    @session_scope
+    def business_get(self, session: Session, business_name: str) -> BusinessTable | None:
         return session.query(BusinessTable).filter_by(name=business_name).first()
 
     @session_scope
-    def add_business(self, session: Session, business: BusinessTable) -> None:
+    def business_add(self, session: Session, business: BusinessTable) -> None:
+        existing_business = session.query(BusinessTable).filter_by(name=business.name).first()
+        if existing_business:
+            raise BusinessAlreadyExistsException(business.name)
         session.add(business)
 
     @session_scope
-    def change_business_details(
-        self, session: Session, business_name: str, business: BusinessTable
+    def business_put(
+        self, session: Session, business: BusinessTable
     ) -> None:
+        result = session.query(BusinessTable).filter_by(name=business.name).first()
+
+        if result is None:
+            raise BusinessNotFoundException(f"No business found with name {business.name}")
+
+        if result.name != business.name:
+            raise BusinessNameCannotBeChangedException()
+
+        for key, value in business.__dict__.items():
+            if key != "_sa_instance_state":
+                setattr(result, key, value)
+
+    @session_scope
+    def business_del(self, session: Session, business_name: str) -> None:
         business_table = (
             session.query(BusinessTable).filter_by(name=business_name).first()
         )
         if business_table is None:
-            raise ValueError(f"No business found with name {business_name}")
-        business_table.name = business.name
-        business_table.street = business.street
-        business_table.postCode = business.postCode
-        business_table.town = business.town
-        business_table.country = business.country
-        business_table.vatNo = business.vatNo
-        business_table.bic = business.bic
-        business_table.iban = business.iban
-        business_table.phone = business.phone
-        business_table.email = business.email
+            raise BusinessNotFoundException(f"No business found with name {business_name}")
+        session.delete(business_table)
 
-    @session_scope
-    def get_client(self, session: Session, client_name: str) -> ClientTable | None:
-        return session.query(ClientTable).filter_by(name=client_name).first()
 
-    @session_scope
-    def add_client(self, session: Session, client: ClientTable) -> None:
-        session.add(client)
+class DatabaseConnectionException(Exception):
+    """Exception raised when there is an error connecting to the database."""
 
-    @session_scope
-    def change_client_details(
-        self, session: Session, client_name: str, client: ClientTable
-    ) -> None:
-        client_table = session.query(ClientTable).filter_by(name=client_name).first()
-        if client_table is None:
-            raise ValueError(f"No client found with name {client_name}")
-        client_table.name = client.name
-        client_table.street = client.street
-        client_table.postCode = client.postCode
-        client_table.town = client.town
-        client_table.country = client.country
-        client_table.vatNo = client.vatNo
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
 
-    @session_scope
-    def get_all_invoices(self, session: Session) -> List[InvoiceTable]:
-        return session.query(InvoiceTable).all()
+
+class BusinessAlreadyExistsException(Exception):
+    """Exception raised when a business with the given name already exists."""
+
+    def __init__(self, business_name: str):
+        self.business_name = business_name
+        self.message = f"Business with name '{business_name}' already exists."
+        super().__init__(self.message)
+
+
+class BusinessNameCannotBeChangedException(Exception):
+    """Exception raised when attempting to change the name of a business."""
+
+    def __init__(self):
+        self.message = "Business name cannot be changed."
+        super().__init__(self.message)
+
+
+class BusinessNotFoundException(Exception):
+    """Exception raised when a business with the given name does not exist."""
+
+    def __init__(self, business_name: str):
+        self.business_name = business_name
+        self.message = f"No business found with name {business_name}"
+        super().__init__(self.message)
+
+
+class BusinessRetrievalException(Exception):
+    """Exception raised when there is an error retrieving businesses from the database."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)

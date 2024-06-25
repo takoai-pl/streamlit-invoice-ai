@@ -29,17 +29,22 @@ class BusinessTable(Base):
     def from_model(cls, business: BusinessEntity) -> "BusinessTable":
         return cls(**vars(business))
 
-    def __init__(cls, **kwargs: Any) -> None:
-        cls.name = kwargs["name"]
-        cls.street = kwargs["street"]
-        cls.postCode = kwargs["postCode"]
-        cls.town = kwargs["town"]
-        cls.country = kwargs["country"]
-        cls.vatNo = kwargs["vatNo"]
-        cls.bic = kwargs["bic"]
-        cls.iban = kwargs["iban"]
-        cls.phone = kwargs["phone"]
-        cls.email = kwargs["email"]
+    @classmethod
+    def to_model(cls, business: "BusinessTable") -> BusinessEntity:
+        return BusinessEntity(**vars(business))
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.name = kwargs["name"]
+        self.street = kwargs["street"]
+        self.postCode = kwargs["postCode"]
+        self.town = kwargs["town"]
+        self.country = kwargs["country"]
+        self.vatNo = kwargs["vatNo"]
+        self.bic = kwargs["bic"]
+        self.iban = kwargs["iban"]
+        self.phone = kwargs["phone"]
+        self.email = kwargs["email"]
 
     def __repr__(self) -> str:
         return json.dumps(
