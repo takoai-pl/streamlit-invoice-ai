@@ -2,13 +2,13 @@
 
 import os
 
-from src.domain.models.invoice import Invoice
-from src.domain.models.product import Product
+from src.domain.entities.invoice_entity import InvoiceEntity
+from src.domain.entities.product_entity import ProductEntity
 from src.utils.const import assets_path, product_latex_template
 
 
 class Generator:
-    def __init__(self, invoice: Invoice):
+    def __init__(self, invoice: InvoiceEntity):
         self.invoice = invoice
 
         layout_path = os.path.join(assets_path, "layout.tex")
@@ -18,7 +18,7 @@ class Generator:
     def substitute(self, key: str, value: str) -> None:
         self.layout = self.layout.replace(key, str(value))
 
-    def append_products(self, products: list[Product]) -> None:
+    def append_products(self, products: list[ProductEntity]) -> None:
         product_latex = ""
         for product in products:
             product_latex += product_latex_template.format(
