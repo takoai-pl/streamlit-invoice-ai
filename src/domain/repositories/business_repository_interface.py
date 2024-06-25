@@ -11,7 +11,7 @@ class BusinessRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_business_by_name(self, business_name: str) -> BusinessEntity:
+    def get_business_by_name(self, business_name: str) -> BusinessEntity | None:
         pass
 
     @abstractmethod
@@ -19,7 +19,7 @@ class BusinessRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def update_business(self, business: BusinessEntity) -> BusinessEntity:
+    def update_business(self, business: BusinessEntity) -> None:
         pass
 
     @abstractmethod

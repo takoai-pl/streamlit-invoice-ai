@@ -18,6 +18,19 @@ business_table_mock = BusinessTable(
     email="123",
 )
 
+business_table_mock_new = BusinessTable(
+    name="Business New",
+    street="Street New",
+    postCode="54321",
+    town="Town New",
+    country="Country New",
+    vatNo="321",
+    bic="321",
+    iban="321",
+    phone="+654321",
+    email="321",
+)
+
 business_table_mock_json = {
     "name": "Business",
     "street": "Street",

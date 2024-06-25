@@ -1,13 +1,16 @@
-import pytest
+# Copyright (c) TaKo AI Sp. z o.o.
 
-from sqlalchemy.exc import OperationalError, SQLAlchemyError
+import pytest
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from src.data.providers.database_provider import (
+    BusinessAlreadyExistsException,
+    BusinessNotFoundException,
+    BusinessRetrievalException,
+    DatabaseConnectionException,
     DatabaseProvider,
-    DatabaseConnectionException, BusinessRetrievalException, BusinessAlreadyExistsException, BusinessNotFoundException,
 )
-
 from tests.mocks.populate_database_mock import (
     erase_database,
     populate_database,
@@ -33,8 +36,8 @@ class TestDatabaseProviderBusiness(object):
         assert len(businesses) == 1
         assert isinstance(businesses, list)
 
-    def test_business_list_exception(self, monkeypatch) -> None:
-        def mock_query(*args, **kwargs):
+    def test_business_list_exception(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        def mock_query() -> None:
             raise SQLAlchemyError("Mocked SQLAlchemy error")
 
         monkeypatch.setattr(Session, "query", mock_query)
@@ -47,12 +50,12 @@ class TestDatabaseProviderBusiness(object):
         business = self.dataProvider.business_get("Business")
         assert business is not None
 
-    def test_business_get_none(self, monkeypatch) -> None:
+    def test_business_get_none(self, monkeypatch: pytest.MonkeyPatch) -> None:
         business = self.dataProvider.business_get("Not a business")
         assert business is None
 
-    def test_business_get_exception(self, monkeypatch) -> None:
-        def mock_query(*args, **kwargs):
+    def test_business_get_exception(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        def mock_query() -> None:
             raise SQLAlchemyError("Mocked SQLAlchemy error")
 
         monkeypatch.setattr(Session, "query", mock_query)
@@ -65,33 +68,39 @@ class TestDatabaseProviderBusiness(object):
         with pytest.raises(BusinessAlreadyExistsException) as excinfo:
             self.dataProvider.business_add(business_table_mock)
 
-        assert f"Business with name '{business_table_mock.name}' already exists." in str(excinfo.value)
+        assert (
+            f"Business with name '{business_table_mock.name}' already exists."
+            in str(excinfo.value)
+        )
 
     def test_business_add(self) -> None:
-        business_table_mock.name = "New Business"
-        self.dataProvider.business_add(business_table_mock)
+        business_table_mock.name = "New Business"  # type: ignore[assignment]
+
+        self.dataProvider.business_add(business_table_mock)  # type: ignore[arg-type]
         business = self.dataProvider.business_get(business_table_mock.name)
         assert business is not None
         assert business.name == business_table_mock.name
 
     def test_business_put(self) -> None:
-        business_table_mock.iban = "New IBAN"
-        business_table_mock.email = "New EMAIL"
+        business_table_mock.iban = "New IBAN"  # type: ignore[assignment]
+        business_table_mock.email = "New EMAIL"  # type: ignore[assignment]
         self.dataProvider.business_put(business_table_mock)
         business = self.dataProvider.business_get(business_table_mock.name)
         assert business is not None
-        assert business.iban == "New IBAN"
-        assert business.email == "New EMAIL"
+        assert business.iban == "New IBAN"  # type: ignore[assignment]
+        assert business.email == "New EMAIL"  # type: ignore[assignment]
 
     def test_business_put_no_business(self) -> None:
-        business_table_mock.name = "Not a business"
+        business_table_mock.name = "Not a business"  # type: ignore[assignment]
         with pytest.raises(BusinessNotFoundException) as excinfo:
             self.dataProvider.business_put(business_table_mock)
 
-        assert f"No business found with name {business_table_mock.name}" in str(excinfo.value)
+        assert f"No business found with name {business_table_mock.name}" in str(
+            excinfo.value
+        )
 
     def test_business_put_name_change(self) -> None:
-        business_table_mock.name = "New Business Name"
+        business_table_mock.name = "New Business Name"  # type: ignore[assignment]
         with pytest.raises(BusinessNotFoundException) as excinfo:
             self.dataProvider.business_put(business_table_mock)
 
@@ -101,6 +110,8 @@ class TestDatabaseProviderBusiness(object):
         self.dataProvider.business_del(business_table_mock.name)
         business = self.dataProvider.business_get(business_table_mock.name)
         assert business is None
+
+        self.dataProvider.business_add(business_table_mock)
 
     def test_business_del_no_business(self) -> None:
         with pytest.raises(BusinessNotFoundException) as excinfo:

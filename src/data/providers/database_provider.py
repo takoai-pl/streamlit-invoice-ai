@@ -1,11 +1,11 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from functools import wraps
-from typing import Any, Callable, List, Type
+from typing import Any, Callable, Type
 
-from sqlalchemy import create_engine, update
+from sqlalchemy import create_engine
+from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.exc import OperationalError, ArgumentError
 
 from src.data.models import (
     BusinessTable,
@@ -45,35 +45,43 @@ class DatabaseProvider:
             self.engine = create_engine(db_path)
             self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
         except OperationalError as e:
-            raise DatabaseConnectionException(f"Could not connect to the database: {str(e)}")
+            raise DatabaseConnectionException(
+                f"Could not connect to the database: {str(e)}"
+            )
         except ArgumentError as e:
-            raise DatabaseConnectionException(f"Could not connect to the database: {str(e)}")
+            raise DatabaseConnectionException(
+                f"Could not connect to the database: {str(e)}"
+            )
 
     @session_scope
     def business_list(
         self, session: Session
-    ) -> list[Type[BusinessTable]]:
+    ) -> list[Type[BusinessTable]] | list[BusinessTable]:
         return session.query(BusinessTable).all()
 
     @session_scope
-    def business_get(self, session: Session, business_name: str) -> BusinessTable | None:
+    def business_get(
+        self, session: Session, business_name: str
+    ) -> BusinessTable | None:
         return session.query(BusinessTable).filter_by(name=business_name).first()
 
     @session_scope
     def business_add(self, session: Session, business: BusinessTable) -> None:
-        existing_business = session.query(BusinessTable).filter_by(name=business.name).first()
+        existing_business = (
+            session.query(BusinessTable).filter_by(name=business.name).first()
+        )
         if existing_business:
-            raise BusinessAlreadyExistsException(business.name)
+            raise BusinessAlreadyExistsException(str(business.name))
         session.add(business)
 
     @session_scope
-    def business_put(
-        self, session: Session, business: BusinessTable
-    ) -> None:
+    def business_put(self, session: Session, business: BusinessTable) -> None:
         result = session.query(BusinessTable).filter_by(name=business.name).first()
 
         if result is None:
-            raise BusinessNotFoundException(f"No business found with name {business.name}")
+            raise BusinessNotFoundException(
+                f"No business found with name {business.name}"
+            )
 
         if result.name != business.name:
             raise BusinessNameCannotBeChangedException()
@@ -88,7 +96,9 @@ class DatabaseProvider:
             session.query(BusinessTable).filter_by(name=business_name).first()
         )
         if business_table is None:
-            raise BusinessNotFoundException(f"No business found with name {business_name}")
+            raise BusinessNotFoundException(
+                f"No business found with name {business_name}"
+            )
         session.delete(business_table)
 
 
@@ -112,7 +122,7 @@ class BusinessAlreadyExistsException(Exception):
 class BusinessNameCannotBeChangedException(Exception):
     """Exception raised when attempting to change the name of a business."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.message = "Business name cannot be changed."
         super().__init__(self.message)
 

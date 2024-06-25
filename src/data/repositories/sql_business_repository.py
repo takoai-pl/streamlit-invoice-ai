@@ -1,9 +1,13 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 from typing import Any
 
-from src.data.providers.database_provider import DatabaseProvider
-from src.domain.repositories.business_repository_interface import BusinessRepositoryInterface
 from src.data.models.business_table import BusinessTable
+from src.data.providers.database_provider import DatabaseProvider
 from src.domain.entities.business_entity import BusinessEntity
+from src.domain.repositories.business_repository_interface import (
+    BusinessRepositoryInterface,
+)
 
 
 class SQLBusinessRepository(BusinessRepositoryInterface):
@@ -30,9 +34,9 @@ class SQLBusinessRepository(BusinessRepositoryInterface):
         :return: List of BusinessEntity objects
         """
         return [
-                BusinessEntity(**business.__dict__)
-                for business in self.database_provider.business_list()
-            ]
+            BusinessEntity(**business.__dict__)
+            for business in self.database_provider.business_list()
+        ]
 
     def get_business_by_name(self, business_name: str) -> BusinessEntity | None:
         """
