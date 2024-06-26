@@ -3,17 +3,15 @@
 import streamlit as st
 
 from src.domain.entities.invoice_entity import InvoiceEntity
-from src.presentation.widgets.language_selector import build_language_selector
 from src.presentation.pages.business_details import build_business_fields
 from src.presentation.pages.client_details import build_client_fields
 from src.presentation.pages.invoice_details import build_invoice_fields
+from src.presentation.widgets.language_selector import build_language_selector
 from src.utils.generator import Generator
 from src.utils.language import (
     Language,
 )
-from src.utils.language import (
-    i18n as _,
-)
+from src.utils.language import i18n as _
 
 
 class App:

@@ -68,12 +68,16 @@ msgid "vatNo"
 msgstr "NIP"
 
 # Client Details
+msgid "select_client"
+msgstr "Wybierz klienta"
 msgid "client_details"
 msgstr "Klienta"
 msgid "client"
 msgstr "Klient"
 
 # Business Details
+msgid "select_business"
+msgstr "Wybierz firmę"
 msgid "business_details"
 msgstr "Biznesu"
 msgid "business"

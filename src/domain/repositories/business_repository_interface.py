@@ -1,4 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+
 from abc import ABC, abstractmethod
 from typing import List
 

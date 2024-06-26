@@ -6,6 +6,7 @@ from typing import Any
 from sqlalchemy import Column, String
 
 from src.data.models.base import Base
+from src.domain import ClientEntity
 
 
 class ClientTable(Base):
@@ -19,13 +20,22 @@ class ClientTable(Base):
     country = Column("country", String)
     vatNo = Column("vatNo", String, unique=True)
 
-    def __init__(cls, **kwargs: Any) -> None:
-        cls.name = kwargs["name"]
-        cls.street = kwargs["street"]
-        cls.postCode = kwargs["postCode"]
-        cls.town = kwargs["town"]
-        cls.country = kwargs["country"]
-        cls.vatNo = kwargs["vatNo"]
+    @classmethod
+    def from_model(cls, client: "ClientEntity") -> "ClientTable":
+        return cls(**vars(client))
+
+    @classmethod
+    def to_model(cls, client: "ClientTable") -> "ClientEntity":
+        return ClientEntity(**vars(client))
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.name = kwargs["name"]
+        self.street = kwargs["street"]
+        self.postCode = kwargs["postCode"]
+        self.town = kwargs["town"]
+        self.country = kwargs["country"]
+        self.vatNo = kwargs["vatNo"]
 
     def __repr__(self) -> str:
         return json.dumps(

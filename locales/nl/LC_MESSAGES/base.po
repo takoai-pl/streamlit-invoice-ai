@@ -68,12 +68,16 @@ msgid "vatNo"
 msgstr "BTW"
 
 # Client Details
+msgid "select_client"
+msgstr "Selecteer klant"
 msgid "client_details"
 msgstr "Klantdetails"
 msgid "client"
 msgstr "Klant"
 
 # Business Details
+msgid "select_business"
+msgstr "Selecteer bedrijf"
 msgid "business_details"
 msgstr "Bedrijfsdetails"
 msgid "business"

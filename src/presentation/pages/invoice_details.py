@@ -3,6 +3,7 @@
 import streamlit as st
 
 from src.domain.entities.invoice_entity import InvoiceEntity
+from src.presentation.handler import handler
 from src.utils.const import currencies
 from src.utils.language import i18n as _
 
@@ -34,11 +35,21 @@ def build_invoice_fields() -> None:
     client, business = st.columns(2)
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
-        st.selectbox(_("client"), ["", "client1", "client2"])
+        st.selectbox(
+            _("client"),
+            handler.get_all_clients_names(),
+            index=None,
+            placeholder=_("select_client"),
+        )
 
     with business:
         st.subheader(_("shared_details") + " " + _("business_details"))
-        st.selectbox(_("business"), ["", "business1", "business2"])
+        st.selectbox(
+            _("business"),
+            handler.get_all_businesses_names(),
+            index=None,
+            placeholder=_("select_business"),
+        )
 
     st.subheader(_("invoice_details"))
 
