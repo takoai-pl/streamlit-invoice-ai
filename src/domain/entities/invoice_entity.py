@@ -21,6 +21,7 @@ class InvoiceEntity(BaseModel):
     business: BusinessEntity = BusinessEntity()
     note: Optional[str] = ""
     products: List[ProductEntity] = []
+    language: Optional[str] = ""
 
     @classmethod
     def validate_invoice_no(cls, v: str) -> str:
@@ -78,6 +79,9 @@ class InvoiceEntity(BaseModel):
         with open(file_path, "w") as f:
             f.write(self.json())
 
+    def set_language(self, language: str) -> None:
+        self.language = language
+
     def edit_field(self, field: str, value: Any) -> None:
         valid_fields = {
             "invoiceNo",
@@ -121,3 +125,25 @@ class InvoiceEntity(BaseModel):
         if product_index < 0 or product_index >= len(self.products):
             raise ValueError(f"Invalid product index: {product_index}")
         del self.products[product_index]
+
+    def are_all_fields_filled(self) -> bool:
+        empty_fields = []
+
+        def is_field_filled(value: Any, prefix: str = "") -> bool:
+            if isinstance(value, BaseModel):
+                return all(is_field_filled(getattr(value, field), f"{prefix}.{field}") for field in value.__fields__)
+            if isinstance(value, list):
+                return all(is_field_filled(item, prefix) for item in value)
+            if value in (None, "", []):
+                empty_fields.append(prefix)
+                return False
+            return True
+
+        invoice_fields_filled = all(
+            is_field_filled(getattr(self, field), field) for field in self.__fields__
+        )
+
+        if not invoice_fields_filled:
+            raise ValueError(f"The following fields cannot be empty: {', '.join(empty_fields)}")
+
+        return invoice_fields_filled

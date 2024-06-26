@@ -9,7 +9,13 @@ from .business_use_cases import (
 )
 
 from .client_use_cases import (
-    GetAllClientsNamesUseCase
+    GetAllClientsNamesUseCase,
+    GetClientDetailsUseCase,
+)
+
+from .invoice_use_cases import (
+    GetAllInvoicesUseCase,
+    AddInvoiceUseCase,
 )
 
 __all__ = [
@@ -19,4 +25,7 @@ __all__ = [
     "GetAllBusinessesNamesUseCase",
     "GetBusinessDetailsUseCase",
     "GetAllClientsNamesUseCase",
+    "GetClientDetailsUseCase",
+    "GetAllInvoicesUseCase",
+    "AddInvoiceUseCase",
 ]

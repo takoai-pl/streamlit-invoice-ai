@@ -3,10 +3,11 @@
 from functools import wraps
 from typing import Any, Callable, Type
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import Session, sessionmaker
 
+from src.data.models.invoice_table import InvoiceTable
 from src.data.models.client_table import ClientTable
 from src.data.models import (
     BusinessTable,
@@ -54,7 +55,7 @@ class DatabaseProvider:
                 f"Could not connect to the database: {str(e)}"
             )
 
-    """Business Methods"""
+    """ Business Section """
 
     @session_scope
     def business_list(
@@ -104,7 +105,7 @@ class DatabaseProvider:
             )
         session.delete(business_table)
 
-    """Client Methods"""
+    """ Client Section """
 
     @session_scope
     def client_list(
@@ -153,6 +154,52 @@ class DatabaseProvider:
                 f"No client found with name {client_name}"
             )
         session.delete(client_table)
+
+    """ Invoice Methods """
+    @session_scope
+    def invoice_list(
+        self, session: Session
+    ) -> list[Type[InvoiceTable]] | list[InvoiceTable]:
+        return session.query(InvoiceTable).all()
+
+    @session_scope
+    def invoice_get(
+        self, session: Session, invoice_id: int
+    ) -> InvoiceTable | None:
+        return session.query(InvoiceTable).filter_by(id=invoice_id).first()
+
+    @session_scope
+    def invoice_add(self, session: Session, invoice: InvoiceTable) -> None:
+        session.add(invoice)
+
+    @session_scope
+    def invoice_put(self, session: Session, invoice: InvoiceTable, language: str) -> None:
+        result = session.query(InvoiceTable).filter(
+            and_(
+                InvoiceTable.invoiceId == invoice.invoiceNo,
+                InvoiceTable.language == language
+            )
+        ).first()
+
+        if result is None:
+            raise InvoiceNotFoundException(
+                f"No invoice found with id {invoice.invoiceNo}"
+            )
+
+        for key, value in invoice.__dict__.items():
+            if key != "_sa_instance_state":
+                setattr(result, key, value)
+
+    @session_scope
+    def invoice_del(self, session: Session, invoice_no: str) -> None:
+        invoice_table = (
+            session.query(InvoiceTable).filter_by(id=invoice_no).first()
+        )
+        if invoice_table is None:
+            raise InvoiceNotFoundException(
+                f"No invoice found with id {invoice_no}"
+            )
+        session.delete(invoice_table)
 
 
 class DatabaseConnectionException(Exception):
@@ -225,6 +272,23 @@ class ClientNotFoundException(Exception):
 
 class ClientRetrievalException(Exception):
     """Exception raised when there is an error retrieving clients from the database."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvoiceNotFoundException(Exception):
+    """Exception raised when an invoice with the given id does not exist."""
+
+    def __init__(self, invoice_id: str):
+        self.invoice_id = invoice_id
+        self.message = f"No invoice found with id {invoice_id}"
+        super().__init__(self.message)
+
+
+class InvoiceRetrievalException(Exception):
+    """Exception raised when there is an error retrieving invoices from the database."""
 
     def __init__(self, message: str):
         self.message = message

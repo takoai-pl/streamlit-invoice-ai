@@ -32,16 +32,19 @@ class InvoiceTable(Base):
     business = relationship("BusinessTable")
     client = relationship("ClientTable")
 
-    def __init__(cls, **kwargs: Any) -> None:
+    language = Column("language", String)
+
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        cls.invoiceNo = kwargs["invoiceNo"]
-        cls.currency = kwargs["currency"]
-        cls.vatPercent = kwargs["vatPercent"]
-        cls.issuedAt = kwargs["issuedAt"]
-        cls.dueTo = kwargs["dueTo"]
-        cls.note = kwargs["note"]
-        cls.business_id = kwargs["business_id"]
-        cls.client_id = kwargs["client_id"]
+        self.invoiceNo = kwargs["invoiceNo"]
+        self.currency = kwargs["currency"]
+        self.vatPercent = kwargs["vatPercent"]
+        self.issuedAt = kwargs["issuedAt"]
+        self.dueTo = kwargs["dueTo"]
+        self.note = kwargs["note"]
+        self.business_id = kwargs["business_id"]
+        self.client_id = kwargs["client_id"]
+        self.language = kwargs["language"]
 
     def __repr__(self) -> str:
         return json.dumps(
@@ -54,5 +57,6 @@ class InvoiceTable(Base):
                 "note": self.note,
                 "business_id": self.business_id,
                 "client_id": self.client_id,
+                "language": self.language,
             }
         )

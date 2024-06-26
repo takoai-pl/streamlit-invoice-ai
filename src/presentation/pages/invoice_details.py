@@ -31,8 +31,33 @@ def _on_change_details(key: str) -> None:
         st.warning(str(e))
 
 
+def _on_change_business(key: str) -> None:
+    current_value = st.session_state[key]
+    if current_value == "" or current_value is None:
+        return
+    try:
+        business_entity = handler.get_business_details(current_value)
+        st.session_state.invoice.edit_business(**business_entity.__dict__)
+    except Exception as e:
+        st.warning(str(e))
+
+
+def _on_change_client(key: str) -> None:
+    current_value = st.session_state[key]
+    if current_value == "" or current_value is None:
+        return
+    try:
+        client_entity = handler.get_client_details(current_value)
+        st.session_state.invoice.edit_client(**client_entity.__dict__)
+    except Exception as e:
+        st.warning(str(e))
+
+
 def build_invoice_fields() -> None:
     client, business = st.columns(2)
+
+    key_client = "client"
+
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
         st.selectbox(
@@ -40,7 +65,12 @@ def build_invoice_fields() -> None:
             handler.get_all_clients_names(),
             index=None,
             placeholder=_("select_client"),
+            on_change=_on_change_client,
+            key=key_client,
+            args=(key_client,),
         )
+
+    key_business = "business"
 
     with business:
         st.subheader(_("shared_details") + " " + _("business_details"))
@@ -49,6 +79,9 @@ def build_invoice_fields() -> None:
             handler.get_all_businesses_names(),
             index=None,
             placeholder=_("select_business"),
+            on_change=_on_change_business,
+            key=key_business,
+            args=(key_business,),
         )
 
     st.subheader(_("invoice_details"))

@@ -8,6 +8,9 @@ from src.domain import (
     GetAllBusinessesNamesUseCase,
     GetBusinessDetailsUseCase,
     GetAllClientsNamesUseCase,
+    GetClientDetailsUseCase,
+    GetAllInvoicesUseCase,
+    AddInvoiceUseCase, InvoiceEntity,
 )
 
 
@@ -21,7 +24,12 @@ class Handler:
         get_business_details_use_case: GetBusinessDetailsUseCase,
         create_business_use_case: CreateBusinessUseCase,
         delete_business_use_case: DeleteBusinessUseCase,
+
         get_all_clients_names_use_case: GetAllClientsNamesUseCase,
+        get_client_details_use_case: GetClientDetailsUseCase,
+
+        get_all_invoices_use_case: GetAllInvoicesUseCase,
+        add_invoice_use_case: AddInvoiceUseCase,
     ):
         self.edit_business_use_case = edit_business_use_case
         self.get_all_businesses_names_use_case = get_all_businesses_names_use_case
@@ -29,6 +37,9 @@ class Handler:
         self.create_business_use_case = create_business_use_case
         self.delete_business_use_case = delete_business_use_case
         self.get_all_clients_names_use_case = get_all_clients_names_use_case
+        self.get_client_details_use_case = get_client_details_use_case
+        self.get_all_invoices_use_case = get_all_invoices_use_case
+        self.add_invoice_use_case = add_invoice_use_case
 
     def edit_business(self, business: BusinessEntity) -> None:
         self.edit_business_use_case.execute(business)
@@ -47,3 +58,12 @@ class Handler:
 
     def get_all_clients_names(self) -> list[str | None]:
         return self.get_all_clients_names_use_case.execute()
+
+    def get_client_details(self, client_name: str) -> BusinessEntity | None:
+        return self.get_client_details_use_case.execute(client_name)
+
+    def get_all_invoices(self) -> list[InvoiceEntity]:
+        return self.get_all_invoices_use_case.execute()
+
+    def add_invoice(self, invoice: InvoiceEntity) -> None:
+        self.add_invoice_use_case.execute(invoice)
