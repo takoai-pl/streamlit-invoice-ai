@@ -1,16 +1,18 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 from src.domain import (
+    AddInvoiceUseCase,
     BusinessEntity,
+    ClientEntity,
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
-    GetBusinessDetailsUseCase,
     GetAllClientsNamesUseCase,
-    GetClientDetailsUseCase,
     GetAllInvoicesUseCase,
-    AddInvoiceUseCase, InvoiceEntity,
+    GetBusinessDetailsUseCase,
+    GetClientDetailsUseCase,
+    InvoiceEntity,
 )
 
 
@@ -24,10 +26,8 @@ class Handler:
         get_business_details_use_case: GetBusinessDetailsUseCase,
         create_business_use_case: CreateBusinessUseCase,
         delete_business_use_case: DeleteBusinessUseCase,
-
         get_all_clients_names_use_case: GetAllClientsNamesUseCase,
         get_client_details_use_case: GetClientDetailsUseCase,
-
         get_all_invoices_use_case: GetAllInvoicesUseCase,
         add_invoice_use_case: AddInvoiceUseCase,
     ):
@@ -59,7 +59,7 @@ class Handler:
     def get_all_clients_names(self) -> list[str | None]:
         return self.get_all_clients_names_use_case.execute()
 
-    def get_client_details(self, client_name: str) -> BusinessEntity | None:
+    def get_client_details(self, client_name: str) -> ClientEntity | None:
         return self.get_client_details_use_case.execute(client_name)
 
     def get_all_invoices(self) -> list[InvoiceEntity]:

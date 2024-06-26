@@ -131,7 +131,10 @@ class InvoiceEntity(BaseModel):
 
         def is_field_filled(value: Any, prefix: str = "") -> bool:
             if isinstance(value, BaseModel):
-                return all(is_field_filled(getattr(value, field), f"{prefix}.{field}") for field in value.__fields__)
+                return all(
+                    is_field_filled(getattr(value, field), f"{prefix}.{field}")
+                    for field in value.__fields__
+                )
             if isinstance(value, list):
                 return all(is_field_filled(item, prefix) for item in value)
             if value in (None, "", []):
@@ -144,6 +147,8 @@ class InvoiceEntity(BaseModel):
         )
 
         if not invoice_fields_filled:
-            raise ValueError(f"The following fields cannot be empty: {', '.join(empty_fields)}")
+            raise ValueError(
+                f"The following fields cannot be empty: {', '.join(empty_fields)}"
+            )
 
         return invoice_fields_filled

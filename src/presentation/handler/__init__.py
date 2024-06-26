@@ -6,15 +6,14 @@ from src.data.providers.database_provider import DatabaseProvider
 from src.data.repositories.sql_business_repository import SQLBusinessRepository
 from src.data.repositories.sql_clinet_repository import SQLClientRepository
 from src.data.repositories.sql_invoice_repository import SQLInvoiceRepository
-from src.domain import GetAllInvoicesUseCase, AddInvoiceUseCase
-
+from src.domain import AddInvoiceUseCase, GetAllInvoicesUseCase
 from src.domain.use_cases import (
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
-    GetBusinessDetailsUseCase,
     GetAllClientsNamesUseCase,
+    GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
 )
 from src.presentation.handler.handler import Handler

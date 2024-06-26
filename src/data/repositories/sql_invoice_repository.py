@@ -1,8 +1,12 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
 from typing import List
 
 from src import DatabaseProvider
 from src.domain import InvoiceEntity
-from src.domain.repositories.invoice_repository_interface import InvoiceRepositoryInterface
+from src.domain.repositories.invoice_repository_interface import (
+    InvoiceRepositoryInterface,
+)
 
 
 class SQLInvoiceRepository(InvoiceRepositoryInterface):
@@ -15,7 +19,9 @@ class SQLInvoiceRepository(InvoiceRepositoryInterface):
             for invoice in self.database_provider.invoice_list()
         ]
 
-    def get_invoice_by_number(self, invoice_number: str, language: str) -> InvoiceEntity | None:
+    def get_invoice_by_number(
+        self, invoice_number: str, language: str
+    ) -> InvoiceEntity | None:
         invoice = self.database_provider.invoice_get(invoice_number)
         if not invoice:
             return None

@@ -71,6 +71,7 @@ invoice_table_mock = InvoiceTable(
     note="Note",
     business_id=business_table_mock.businessID,
     client_id=client_table_mock.clientID,
+    language="en",
 )
 
 product_table_mock = ProductTable(

@@ -5,7 +5,6 @@ import os
 from src.domain.entities.invoice_entity import InvoiceEntity
 from src.domain.entities.product_entity import ProductEntity
 from src.utils.const import assets_path, product_latex_template
-
 from src.utils.language import i18n as _
 
 
@@ -17,7 +16,7 @@ class Generator:
         with open(layout_path, "r") as f:
             self.layout = f.read()
 
-    def substitute(self, key: str, value: str) -> None:
+    def substitute(self, key: str, value: str | None) -> None:
         self.layout = self.layout.replace(key, str(value))
 
     def append_products(self, products: list[ProductEntity]) -> None:
@@ -71,10 +70,12 @@ class Generator:
             "ISSUEDATTEXT": issued_at,
             "ISSUEDDATE": (
                 self.invoice.issuedAt.strftime("%Y-%m-%d")
+                if self.invoice.issuedAt
+                else ""
             ),
             "DUETOTEXT": due_to,
             "DUETODATE": (
-                self.invoice.dueTo.strftime("%Y-%m-%d")
+                self.invoice.dueTo.strftime("%Y-%m-%d") if self.invoice.dueTo else ""
             ),
             "CLIENTLINE1": self.invoice.client.name,
             "CLIENTLINE2": self.invoice.client.street,
@@ -92,7 +93,7 @@ class Generator:
             "LINE7": self.invoice.business.vatNo,
             "LINE8": vat_no,
             "LINE9": self.invoice.business.bic,
-            "FOOTERTEXT": footer_first + self.invoice.business.iban + footer_second + self.invoice.invoiceNo,
+            "FOOTERTEXT": f"{footer_first}{self.invoice.business.name}{footer_second}{self.invoice.invoiceNo}",
         }
         for key, value in details.items():
             self.substitute(key, value)
@@ -106,5 +107,5 @@ class Generator:
         self.substitute("TOTAL3", str(self.invoice.vat_value))
         self.substitute("TOTAL4", "Total")
         self.substitute("TOTAL5", str(self.invoice.total))
-        
+
         return self.layout

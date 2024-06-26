@@ -3,15 +3,15 @@
 from functools import wraps
 from typing import Any, Callable, Type
 
-from sqlalchemy import create_engine, and_
+from sqlalchemy import and_, create_engine
 from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.data.models.invoice_table import InvoiceTable
-from src.data.models.client_table import ClientTable
 from src.data.models import (
     BusinessTable,
 )
+from src.data.models.client_table import ClientTable
+from src.data.models.invoice_table import InvoiceTable
 
 
 def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -114,16 +114,12 @@ class DatabaseProvider:
         return session.query(ClientTable).all()
 
     @session_scope
-    def client_get(
-        self, session: Session, client_name: str
-    ) -> ClientTable | None:
+    def client_get(self, session: Session, client_name: str) -> ClientTable | None:
         return session.query(ClientTable).filter_by(name=client_name).first()
 
     @session_scope
     def client_add(self, session: Session, client: ClientTable) -> None:
-        existing_client = (
-            session.query(ClientTable).filter_by(name=client.name).first()
-        )
+        existing_client = session.query(ClientTable).filter_by(name=client.name).first()
         if existing_client:
             raise ClientAlreadyExistsException(str(client.name))
         session.add(client)
@@ -133,9 +129,7 @@ class DatabaseProvider:
         result = session.query(ClientTable).filter_by(name=client.name).first()
 
         if result is None:
-            raise ClientNotFoundException(
-                f"No client found with name {client.name}"
-            )
+            raise ClientNotFoundException(f"No client found with name {client.name}")
 
         if result.name != client.name:
             raise ClientNameCannotBeChangedException()
@@ -146,16 +140,13 @@ class DatabaseProvider:
 
     @session_scope
     def client_del(self, session: Session, client_name: str) -> None:
-        client_table = (
-            session.query(ClientTable).filter_by(name=client_name).first()
-        )
+        client_table = session.query(ClientTable).filter_by(name=client_name).first()
         if client_table is None:
-            raise ClientNotFoundException(
-                f"No client found with name {client_name}"
-            )
+            raise ClientNotFoundException(f"No client found with name {client_name}")
         session.delete(client_table)
 
     """ Invoice Methods """
+
     @session_scope
     def invoice_list(
         self, session: Session
@@ -163,9 +154,7 @@ class DatabaseProvider:
         return session.query(InvoiceTable).all()
 
     @session_scope
-    def invoice_get(
-        self, session: Session, invoice_id: int
-    ) -> InvoiceTable | None:
+    def invoice_get(self, session: Session, invoice_id: int) -> InvoiceTable | None:
         return session.query(InvoiceTable).filter_by(id=invoice_id).first()
 
     @session_scope
@@ -173,13 +162,19 @@ class DatabaseProvider:
         session.add(invoice)
 
     @session_scope
-    def invoice_put(self, session: Session, invoice: InvoiceTable, language: str) -> None:
-        result = session.query(InvoiceTable).filter(
-            and_(
-                InvoiceTable.invoiceId == invoice.invoiceNo,
-                InvoiceTable.language == language
+    def invoice_put(
+        self, session: Session, invoice: InvoiceTable, language: str
+    ) -> None:
+        result = (
+            session.query(InvoiceTable)
+            .filter(
+                and_(
+                    InvoiceTable.invoiceId == invoice.invoiceNo,
+                    InvoiceTable.language == language,
+                )
             )
-        ).first()
+            .first()
+        )
 
         if result is None:
             raise InvoiceNotFoundException(
@@ -192,13 +187,9 @@ class DatabaseProvider:
 
     @session_scope
     def invoice_del(self, session: Session, invoice_no: str) -> None:
-        invoice_table = (
-            session.query(InvoiceTable).filter_by(id=invoice_no).first()
-        )
+        invoice_table = session.query(InvoiceTable).filter_by(id=invoice_no).first()
         if invoice_table is None:
-            raise InvoiceNotFoundException(
-                f"No invoice found with id {invoice_no}"
-            )
+            raise InvoiceNotFoundException(f"No invoice found with id {invoice_no}")
         session.delete(invoice_table)
 
 

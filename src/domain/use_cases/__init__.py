@@ -7,15 +7,13 @@ from .business_use_cases import (
     GetAllBusinessesNamesUseCase,
     GetBusinessDetailsUseCase,
 )
-
 from .client_use_cases import (
     GetAllClientsNamesUseCase,
     GetClientDetailsUseCase,
 )
-
 from .invoice_use_cases import (
-    GetAllInvoicesUseCase,
     AddInvoiceUseCase,
+    GetAllInvoicesUseCase,
 )
 
 __all__ = [

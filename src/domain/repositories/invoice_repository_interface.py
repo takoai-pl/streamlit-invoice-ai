@@ -12,7 +12,9 @@ class InvoiceRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_invoice_by_number(self, invoice_number: str, language: str) -> InvoiceEntity | None:
+    def get_invoice_by_number(
+        self, invoice_number: str, language: str
+    ) -> InvoiceEntity | None:
         pass
 
     @abstractmethod

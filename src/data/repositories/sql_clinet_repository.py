@@ -1,8 +1,12 @@
-from typing import List, Any
+# Copyright (c) TaKo AI Sp. z o.o.
 
-from src import DatabaseProvider, ClientTable
+from typing import Any, List
+
+from src import ClientTable, DatabaseProvider
 from src.domain import ClientEntity
-from src.domain.repositories.client_repository_interface import ClientRepositoryInterface
+from src.domain.repositories.client_repository_interface import (
+    ClientRepositoryInterface,
+)
 
 
 class SQLClientRepository(ClientRepositoryInterface):
@@ -15,7 +19,7 @@ class SQLClientRepository(ClientRepositoryInterface):
 
     def __init__(self, database_provider: DatabaseProvider):
         self.database_provider = database_provider
-        
+
     def get_all_clients(self) -> List[ClientEntity]:
         return [
             ClientEntity(**client.__dict__)
