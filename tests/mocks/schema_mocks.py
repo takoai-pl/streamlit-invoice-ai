@@ -1,11 +1,9 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from src.data.providers.database_schema import (
-    BusinessTable,
-    ClientTable,
-    InvoiceTable,
-    ProductTable,
-)
+from src.data.models.business_table import BusinessTable
+from src.data.models.client_table import ClientTable
+from src.data.models.invoice_table import InvoiceTable
+from src.data.models.product_table import ProductTable
 
 business_table_mock = BusinessTable(
     name="Business",
@@ -18,6 +16,19 @@ business_table_mock = BusinessTable(
     iban="123",
     phone="+123456",
     email="123",
+)
+
+business_table_mock_new = BusinessTable(
+    name="Business New",
+    street="Street New",
+    postCode="54321",
+    town="Town New",
+    country="Country New",
+    vatNo="321",
+    bic="321",
+    iban="321",
+    phone="+654321",
+    email="321",
 )
 
 business_table_mock_json = {
@@ -60,6 +71,7 @@ invoice_table_mock = InvoiceTable(
     note="Note",
     business_id=business_table_mock.businessID,
     client_id=client_table_mock.clientID,
+    language="en",
 )
 
 product_table_mock = ProductTable(

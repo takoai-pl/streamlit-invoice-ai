@@ -6,21 +6,22 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
-from src.domain.models.business import Business
-from src.domain.models.client import Client
-from src.domain.models.product import Product
+from src.domain.entities.business_entity import BusinessEntity
+from src.domain.entities.client_entity import ClientEntity
+from src.domain.entities.product_entity import ProductEntity
 
 
-class Invoice(BaseModel):
+class InvoiceEntity(BaseModel):
     invoiceNo: Optional[str] = ""
     currency: Optional[str] = ""
     vatPercent: Optional[int] = 0
     issuedAt: Optional[date] = None
     dueTo: Optional[date] = None
-    client: Client = Client()
-    business: Business = Business()
+    client: ClientEntity = ClientEntity()
+    business: BusinessEntity = BusinessEntity()
     note: Optional[str] = ""
-    products: List[Product] = []
+    products: List[ProductEntity] = []
+    language: Optional[str] = ""
 
     @classmethod
     def validate_invoice_no(cls, v: str) -> str:
@@ -71,12 +72,15 @@ class Invoice(BaseModel):
         )
 
     @classmethod
-    def from_json(cls, file_path: str) -> "Invoice":
+    def from_json(cls, file_path: str) -> "InvoiceEntity":
         return cls.parse_file(file_path)
 
     def to_json(self, file_path: str) -> None:
         with open(file_path, "w") as f:
             f.write(self.json())
+
+    def set_language(self, language: str) -> None:
+        self.language = language
 
     def edit_field(self, field: str, value: Any) -> None:
         valid_fields = {
@@ -112,10 +116,39 @@ class Invoice(BaseModel):
         self, description: str, quantity: int, unit: str, price: float
     ) -> None:
         self.products.append(
-            Product(description=description, quantity=quantity, unit=unit, price=price)
+            ProductEntity(
+                description=description, quantity=quantity, unit=unit, price=price
+            )
         )
 
     def delete_product(self, product_index: int) -> None:
         if product_index < 0 or product_index >= len(self.products):
             raise ValueError(f"Invalid product index: {product_index}")
         del self.products[product_index]
+
+    def are_all_fields_filled(self) -> bool:
+        empty_fields = []
+
+        def is_field_filled(value: Any, prefix: str = "") -> bool:
+            if isinstance(value, BaseModel):
+                return all(
+                    is_field_filled(getattr(value, field), f"{prefix}.{field}")
+                    for field in value.__fields__
+                )
+            if isinstance(value, list):
+                return all(is_field_filled(item, prefix) for item in value)
+            if value in (None, "", []):
+                empty_fields.append(prefix)
+                return False
+            return True
+
+        invoice_fields_filled = all(
+            is_field_filled(getattr(self, field), field) for field in self.__fields__
+        )
+
+        if not invoice_fields_filled:
+            raise ValueError(
+                f"The following fields cannot be empty: {', '.join(empty_fields)}"
+            )
+
+        return invoice_fields_filled

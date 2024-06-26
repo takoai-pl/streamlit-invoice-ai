@@ -5,7 +5,7 @@ from typing import Optional
 from pydantic import BaseModel, ValidationError
 
 
-class Product(BaseModel):
+class ProductEntity(BaseModel):
     description: Optional[str] = ""
     quantity: Optional[int] = 0
     unit: Optional[str] = ""

@@ -290,14 +290,14 @@ currencies = [
 ]
 
 product_latex_template = r"""
-\begin{tabularx}{\linewidth}{
->{\hsize=2\hsize}X
->{\hsize=1\hsize}X
->{\hsize=0.5\hsize}X
->{\hsize=0.5\hsize}X
->{\hsize=1\hsize}X
->{\raggedleft\arraybackslash\hsize=1\hsize}X}
+\begin{{tabularx}}{{\linewidth}}{{
+>{{\hsize=2.25\hsize}}X
+>{{\hsize=0.75\hsize}}X
+>{{\hsize=0.75\hsize}}X
+>{{\hsize=0.75\hsize}}X
+>{{\hsize=0.75\hsize}}X
+>{{\raggedleft\arraybackslash\hsize=0.75\hsize}}X}}
 {description} & {quantity} & {unit} & {price} & {vat} & {sum} \\
-\end{tabularx}
-\lline{grey}{0.25pt}
+\end{{tabularx}}
+\lline{{grey}}{{0.25pt}}
 """

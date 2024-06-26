@@ -3,7 +3,7 @@ name = "invoice-ai"
 version = "0.1.0"
 package-mode = true
 description = "Invoice generator powered with the use of AI Agent made by TaKo AI."
-authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>"]
+authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>", "Piotr Kazimierczak <piotr.kazimierczak@takoai.pl>"]
 license = "MIT"
 readme = "README.md"
 packages = [
@@ -13,13 +13,13 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-streamlit = "1.36.0"
-sqlalchemy = "2.0.31"
+streamlit = "^1.36.0"
+sqlalchemy = "2.0.25"
 pydantic = "2.7.4"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
+pytest = "^8.2.0"
 pytest-asyncio = "^0.21.1"
 mypy = "^1.4.1"
 ruff = "^0.0.278"
