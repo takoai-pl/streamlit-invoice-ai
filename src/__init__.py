@@ -13,6 +13,8 @@ from src.presentation.widgets.address_fields import build_address_fields
 from src.presentation.widgets.file_uploader import build_file_uploader
 from src.presentation.widgets.language_selector import build_language_selector
 
+from src.presentation.handler import handler
+
 __all__ = [
     "build_language_selector",
     "build_file_uploader",
@@ -22,6 +24,7 @@ __all__ = [
     "ClientTable",
     "InvoiceTable",
     "ProductTable",
+    "handler",
 ]
 
 try:
