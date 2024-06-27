@@ -6,6 +6,7 @@ description = "Invoice generator powered with the use of AI Agent made by TaKo A
 authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>", "Piotr Kazimierczak <piotr.kazimierczak@takoai.pl>"]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/takoai-pl/streamlit-invoice-ai.git"
 packages = [
     { include = "src", from = "." },
 ]
