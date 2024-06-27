@@ -5,6 +5,7 @@ import streamlit as st
 from src.domain.entities.invoice_entity import InvoiceEntity
 from src.presentation.pages.business_details import build_business_fields
 from src.presentation.pages.client_details import build_client_fields
+from src.presentation.pages.history import build_history
 from src.presentation.pages.invoice_details import build_invoice_fields
 from src.presentation.widgets.language_selector import build_language_selector
 from src.utils.generator import Generator
@@ -21,7 +22,6 @@ class App:
 
         self.invoice = st.session_state.invoice
         self.language = Language()
-        self.generate = Generator(self.invoice)
 
         tab_names = [
             str(_("invoice_details") + " :page_facing_up:"),
@@ -34,9 +34,10 @@ class App:
                 + " :bust_in_silhouette:"
             ),
             str(_("agent_ai") + " :brain:"),
+            str(_("history") + " :scroll:"),
         ]
 
-        self.InvoiceDetails, self.ClientDetails, self.AgentAI = st.tabs(tab_names)
+        self.InvoiceDetails, self.ClientDetails, self.AgentAI, self.History = st.tabs(tab_names)
 
     def run(self) -> None:
         with st.sidebar:
@@ -44,9 +45,6 @@ class App:
 
             st.header(_("settings"))
             build_language_selector(self.language)
-
-            if st.button(_("generate_invoice")):
-                self.generate.generate()
 
             if st.button("debug"):
                 print(self.invoice)
@@ -62,6 +60,9 @@ class App:
 
             with business_column:
                 build_business_fields()
+
+        with self.History:
+            build_history()
 
 
 if __name__ == "__main__":

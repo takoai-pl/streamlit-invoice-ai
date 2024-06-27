@@ -12,6 +12,7 @@ from src.data.models import (
 )
 from src.data.models.client_table import ClientTable
 from src.data.models.invoice_table import InvoiceTable
+from src.data.models.product_table import ProductTable
 
 
 def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -150,16 +151,47 @@ class DatabaseProvider:
     @session_scope
     def invoice_list(
         self, session: Session
-    ) -> list[Type[InvoiceTable]] | list[InvoiceTable]:
-        return session.query(InvoiceTable).all()
+    ) -> (list[InvoiceTable], list[BusinessTable], list[ClientTable], list[list[ProductTable]]):
+        all_invoices = session.query(InvoiceTable).all()
+
+        invoices = []
+        businesses = []
+        clients = []
+        products = []
+
+        for invoice in all_invoices:
+            invoice, business, client, product = self.invoice_get(invoice.invoiceNo, invoice.language)
+
+            invoices.append(invoice)
+            businesses.append(business)
+            clients.append(client)
+            products.append(product)
+
+        return invoices, businesses, clients, products
 
     @session_scope
-    def invoice_get(self, session: Session, invoice_id: int) -> InvoiceTable | None:
-        return session.query(InvoiceTable).filter_by(id=invoice_id).first()
+    def invoice_get(self, session: Session, invoice_no: str, language: str) -> (InvoiceTable, BusinessTable, ClientTable, list[ProductTable]):
+        invoice = session.query(InvoiceTable).filter(
+            and_(
+                InvoiceTable.invoiceNo == invoice_no,
+                InvoiceTable.language == language
+            )
+        ).first()
+
+        if invoice is None:
+            raise InvoiceNotFoundException(f"No invoice found with invoice number {invoice_no} and language {language}")
+
+        business = session.query(BusinessTable).filter_by(businessID=invoice.business_id).first()
+        client = session.query(ClientTable).filter_by(clientID=invoice.client_id).first()
+        products = session.query(ProductTable).filter_by(invoice_id=invoice.invoiceId).all()
+
+        return invoice, business, client, products
 
     @session_scope
-    def invoice_add(self, session: Session, invoice: InvoiceTable) -> None:
+    def invoice_add(self, session: Session, invoice: InvoiceTable, products: list[ProductTable]) -> None:
         session.add(invoice)
+        for product in products:
+            session.add(product)
 
     @session_scope
     def invoice_put(

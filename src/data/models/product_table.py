@@ -7,6 +7,7 @@ from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from src.data.models.base import Base
+from src.domain import ProductEntity
 
 
 class ProductTable(Base):
@@ -23,6 +24,14 @@ class ProductTable(Base):
     invoice_id = Column(Integer, ForeignKey("invoice.invoiceId"))
 
     invoice = relationship("InvoiceTable")
+
+    @classmethod
+    def from_entity(cls, product: ProductEntity) -> "ProductTable":
+        return cls(**vars(product))
+
+    @classmethod
+    def to_entity(cls, product: "ProductTable") -> ProductEntity:
+        return ProductEntity(**vars(product))
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

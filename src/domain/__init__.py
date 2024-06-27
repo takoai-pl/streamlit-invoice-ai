@@ -16,6 +16,7 @@ from .use_cases import (
     GetAllInvoicesUseCase,
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
+    DownloadInvoiceUseCase,
 )
 
 __all__ = [
@@ -32,4 +33,5 @@ __all__ = [
     "GetClientDetailsUseCase",
     "GetAllInvoicesUseCase",
     "AddInvoiceUseCase",
+    "DownloadInvoiceUseCase",
 ]

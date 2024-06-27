@@ -14,8 +14,9 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 streamlit = "^1.36.0"
-sqlalchemy = "2.0.25"
-pydantic = "2.7.4"
+sqlalchemy = "^2.0.31"
+pydantic = "1.10.13"
+flask = "^3.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

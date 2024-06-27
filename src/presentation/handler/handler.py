@@ -13,6 +13,7 @@ from src.domain import (
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
     InvoiceEntity,
+    DownloadInvoiceUseCase,
 )
 
 
@@ -30,6 +31,7 @@ class Handler:
         get_client_details_use_case: GetClientDetailsUseCase,
         get_all_invoices_use_case: GetAllInvoicesUseCase,
         add_invoice_use_case: AddInvoiceUseCase,
+        download_invoice_use_case: DownloadInvoiceUseCase,
     ):
         self.edit_business_use_case = edit_business_use_case
         self.get_all_businesses_names_use_case = get_all_businesses_names_use_case
@@ -40,6 +42,7 @@ class Handler:
         self.get_client_details_use_case = get_client_details_use_case
         self.get_all_invoices_use_case = get_all_invoices_use_case
         self.add_invoice_use_case = add_invoice_use_case
+        self.download_invoice_use_case = download_invoice_use_case
 
     def edit_business(self, business: BusinessEntity) -> None:
         self.edit_business_use_case.execute(business)
@@ -67,3 +70,6 @@ class Handler:
 
     def add_invoice(self, invoice: InvoiceEntity) -> None:
         self.add_invoice_use_case.execute(invoice)
+
+    def download_invoice(self, invoice: InvoiceEntity) -> bytes | None:
+        return self.download_invoice_use_case.execute(invoice)

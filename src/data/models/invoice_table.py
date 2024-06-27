@@ -11,7 +11,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
+from src.data.models.product_table import ProductTable
 from src.data.models.base import Base
+from src.domain.entities.invoice_entity import InvoiceEntity
 
 
 class InvoiceTable(Base):
@@ -33,6 +35,14 @@ class InvoiceTable(Base):
     client = relationship("ClientTable")
 
     language = Column("language", String)
+
+    @classmethod
+    def from_model(cls, invoice: InvoiceEntity) -> ("InvoiceTable", list[ProductTable]):
+        return cls(**vars(invoice)), [ProductTable.from_entity(product) for product in invoice.products]
+
+    @classmethod
+    def to_model(cls, invoice: "InvoiceTable", products: list[ProductTable]) -> InvoiceEntity:
+        return InvoiceEntity(**vars(invoice), products=[ProductTable.to_entity(product) for product in products])
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

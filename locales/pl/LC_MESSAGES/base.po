@@ -43,6 +43,16 @@ msgstr "VAT %"
 msgid "note"
 msgstr "Uwagi"
 
+# History
+msgid "history"
+msgstr "Historia"
+msgid "edit"
+msgstr "Edytuj"
+msgid "download"
+msgstr "Pobierz"
+msgid "delete"
+msgstr "Usuń"
+
 # Units
 msgid "piece"
 msgstr "Sztuka"

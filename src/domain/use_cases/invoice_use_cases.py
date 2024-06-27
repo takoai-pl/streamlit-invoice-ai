@@ -4,6 +4,7 @@ from src.domain import InvoiceEntity
 from src.domain.repositories.invoice_repository_interface import (
     InvoiceRepositoryInterface,
 )
+from src.utils.generator import Generator
 
 
 class GetAllInvoicesUseCase:
@@ -20,3 +21,11 @@ class AddInvoiceUseCase:
 
     def execute(self, invoice: InvoiceEntity) -> None:
         self.invoice_repo.create_invoice(invoice)
+
+
+class DownloadInvoiceUseCase:
+    def __init__(self, generator: Generator) -> None:
+        self.generator = generator
+
+    def execute(self, invoice: InvoiceEntity) -> bytes | None:
+        return self.generator.download(invoice)

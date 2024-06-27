@@ -15,13 +15,17 @@ from src.domain.use_cases import (
     GetAllClientsNamesUseCase,
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
+    DownloadInvoiceUseCase,
 )
 from src.presentation.handler.handler import Handler
 from src.utils import assets_path
+from src.utils.generator import Generator
 
 database_provider = DatabaseProvider(
     "sqlite:///" + os.path.join(assets_path, "demo_data")
 )
+
+generator = Generator()
 
 business_repository = SQLBusinessRepository(database_provider)
 client_repository = SQLClientRepository(database_provider)
@@ -38,6 +42,7 @@ get_client_details_use_case = GetClientDetailsUseCase(client_repository)
 
 get_all_invoices_use_case = GetAllInvoicesUseCase(invoice_repository)
 add_invoice_use_case = AddInvoiceUseCase(invoice_repository)
+download_invoice_use_case = DownloadInvoiceUseCase(generator)
 
 handler = Handler(
     edit_business_use_case=edit_business_use_case,
@@ -49,4 +54,5 @@ handler = Handler(
     get_client_details_use_case=get_client_details_use_case,
     get_all_invoices_use_case=get_all_invoices_use_case,
     add_invoice_use_case=add_invoice_use_case,
+    download_invoice_use_case=download_invoice_use_case
 )
