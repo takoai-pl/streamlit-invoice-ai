@@ -10,6 +10,8 @@ packages = [
     { include = "src", from = "." },
 ]
 
+[tool.poetry.include]
+"assets/*" = "assets"
 
 [tool.poetry.dependencies]
 python = "^3.10"
