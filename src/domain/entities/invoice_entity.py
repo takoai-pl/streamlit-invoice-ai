@@ -65,11 +65,7 @@ class InvoiceEntity(BaseModel):
 
     @property
     def vat_value(self) -> float:
-        return sum(
-            product.vat_amount
-            for product in self.products
-            if product.vat_amount is not None
-        )
+        return self.subtotal * self.vatPercent / 100
 
     @classmethod
     def from_json(cls, file_path: str) -> "InvoiceEntity":

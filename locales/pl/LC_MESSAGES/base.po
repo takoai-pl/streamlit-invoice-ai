@@ -42,6 +42,12 @@ msgid "vat_percent"
 msgstr "VAT %"
 msgid "note"
 msgstr "Uwagi"
+msgid "subtotal"
+msgstr "Suma częściowa"
+msgid "vat_value"
+msgstr "Wartość VAT"
+msgid "total"
+msgstr "Suma"
 
 # Units
 msgid "piece"

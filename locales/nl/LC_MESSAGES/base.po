@@ -42,6 +42,12 @@ msgid "vat_percent"
 msgstr "BTW %"
 msgid "note"
 msgstr "Notitie"
+msgid "subtotal"
+msgstr "Subtotaal"
+msgid "vat_value"
+msgstr "Btw-waarde"
+msgid "total"
+msgstr "Totaal"
 
 # Units
 msgid "piece"
