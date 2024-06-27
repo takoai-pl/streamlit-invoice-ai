@@ -3,6 +3,7 @@
 import streamlit as st
 
 from src.domain.entities.invoice_entity import InvoiceEntity
+from src.presentation.pages.ai_agent import build_agent
 from src.presentation.pages.business_details import build_business_fields
 from src.presentation.pages.client_details import build_client_fields
 from src.presentation.pages.invoice_details import build_invoice_fields
@@ -62,6 +63,9 @@ class App:
 
             with business_column:
                 build_business_fields()
+
+        with self.AgentAI:
+            build_agent()
 
 
 if __name__ == "__main__":
