@@ -13,17 +13,15 @@ licences:
 start: locales
 	@echo "Starting the app..."
 	poetry run uvicorn backend.server:app --host 0.0.0.0 --port 8000 &
-	poetry run streamlit run frontend/app.py --server.port 8501 &
+	poetry run streamlit run frontend/app.py --server.port 8501
 
 
-# Define a variable for the test file path.
 TEST_FILE ?= tests/
 
 test:
 	@echo "Running tests..."
 	poetry run pytest $(TEST_FILE)
 
-# Define a variable for Python and notebook files.
 PYTHON_FILES=.
 lint format: PYTHON_FILES=.
 lint_diff format_diff: PYTHON_FILES=$(shell git diff --name-only --diff-filter=d main | grep -E '\.py$$|\.ipynb$$')
@@ -42,7 +40,7 @@ format format_diff:
 
 docker_dev:
 	@echo "Building the development Docker image..."
-	docker-compose --env-file .env.dev -f docker-compose.yml -f docker-compose.dev.yml up --build
+	docker-compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 docker_prod:
 	@echo "Building the production Docker image..."

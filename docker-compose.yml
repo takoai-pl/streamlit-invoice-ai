@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   api:
-    build: .
+    build: ./backend
     image: api
     environment:
       - DATABASE_URL=${DATABASE_URL}
@@ -10,6 +10,14 @@ services:
       - "8000:8000"
     depends_on:
       - db
+
+  streamlit:
+    build: .
+    image: streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
 
   db:
     image: postgres

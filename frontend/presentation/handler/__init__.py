@@ -21,15 +21,19 @@ from frontend.presentation.handler.handler import Handler
 from frontend.utils import assets_path
 from frontend.utils.generator import Generator
 
-database_provider = DatabaseProvider(
-    "sqlite:///" + os.path.join(assets_path, "demo_data")
+from dotenv import load_dotenv
+
+load_dotenv(".env")
+
+database_provider = APIProvider(
+    os.getenv("BASE_URL"),
 )
 
 generator = Generator()
 
-business_repository = SQLBusinessRepository(database_provider)
-client_repository = SQLClientRepository(database_provider)
-invoice_repository = SQLInvoiceRepository(database_provider)
+business_repository = APIBusinessRepository(database_provider)
+client_repository = APIClientRepository(database_provider)
+invoice_repository = APIInvoiceRepository(database_provider)
 
 edit_business_use_case = EditBusinessUseCase(business_repository)
 get_all_businesses_names_use_case = GetAllBusinessesNamesUseCase(business_repository)
