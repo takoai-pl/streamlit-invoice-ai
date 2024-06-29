@@ -35,7 +35,7 @@ async def get_list_of_invoices() -> list:
     return response
 
 
-@invoice_router.get("/{invoice_no}/{language}", response_model=InvoiceEntity)
+@invoice_router.get("/{invoice_no}/{language}/", response_model=InvoiceEntity)
 async def get_invoice(invoice_no: str, language: str) -> dict:
     decoded_invoice_no = unquote(invoice_no)
     invoice, business, client, products = invoice_controller.get(
@@ -62,7 +62,7 @@ async def put_invoice(data: dict) -> JSONResponse:
     return JSONResponse(status_code=204, content="Invoice updated")
 
 
-@invoice_router.delete("/{invoice_no}/{language}")
+@invoice_router.delete("/{invoice_no}/{language}/")
 async def delete_invoice(invoice_no: str, language: str) -> JSONResponse:
     decoded_invoice_no = unquote(invoice_no)
     invoice_controller.delete(decoded_invoice_no, language)

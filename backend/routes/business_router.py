@@ -30,7 +30,7 @@ async def get_list_of_businesses() -> JSONResponse:
     return JSONResponse(status_code=200, content=response)
 
 
-@business_router.get("/{business_name}", response_model=BusinessEntity)
+@business_router.get("/{business_name}/", response_model=BusinessEntity)
 async def get_business(business_name: str) -> JSONResponse:
     business = business_controller.get(business_name)
 
@@ -53,7 +53,7 @@ async def put_business(data: dict) -> JSONResponse:
     return JSONResponse(status_code=204, content="Business updated")
 
 
-@business_router.delete("/{business_name}")
+@business_router.delete("/{business_name}/")
 async def delete_business(business_name: str) -> JSONResponse:
     business_controller.delete(business_name)
 

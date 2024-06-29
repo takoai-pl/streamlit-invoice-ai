@@ -30,7 +30,7 @@ async def get_list_of_clients() -> JSONResponse:
     return JSONResponse(status_code=200, content=response)
 
 
-@client_router.get("/{client_name}", response_model=ClientEntity)
+@client_router.get("/{client_name}/", response_model=ClientEntity)
 async def get_client(client_name: str) -> JSONResponse:
     client = client_controller.get(client_name)
 
@@ -53,7 +53,7 @@ async def put_client(data: dict) -> JSONResponse:
     return JSONResponse(status_code=204, content="Client updated")
 
 
-@client_router.delete("/{client_name}")
+@client_router.delete("/{client_name}/")
 async def delete_client(client_name: str) -> JSONResponse:
     client_controller.delete(client_name)
 
