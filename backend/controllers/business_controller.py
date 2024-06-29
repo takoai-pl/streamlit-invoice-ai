@@ -2,25 +2,28 @@ from typing import Type
 
 from sqlalchemy.orm import Session
 
-from backend.controllers.base_controller import BaseController, session_scope, BusinessNameCannotBeChangedException, \
-    BusinessNotFoundException, BusinessAlreadyExistsException
+from backend.controllers.base_controller import (
+    BaseController,
+    BusinessAlreadyExistsException,
+    BusinessNameCannotBeChangedException,
+    BusinessNotFoundException,
+    session_scope,
+)
 from backend.models import BusinessTable
 
 
 class BusinessController(BaseController):
-    def __init__(self, db_path: str) -> None:
+    def __init__(self, db_path: str | None) -> None:
+        if db_path is None:
+            raise Exception("db_path cannot be None")
         super().__init__(db_path)
 
     @session_scope
-    def list(
-            self, session: Session
-    ) -> list[Type[BusinessTable]] | list[BusinessTable]:
+    def list(self, session: Session) -> list[Type[BusinessTable]] | list[BusinessTable]:
         return session.query(BusinessTable).all()
 
     @session_scope
-    def get(
-            self, session: Session, business_name: str
-    ) -> BusinessTable | None:
+    def get(self, session: Session, business_name: str) -> BusinessTable | None:
         return session.query(BusinessTable).filter_by(name=business_name).first()
 
     @session_scope
@@ -58,5 +61,3 @@ class BusinessController(BaseController):
                 f"No business found with name {business_name}"
             )
         session.delete(business_table)
-
-

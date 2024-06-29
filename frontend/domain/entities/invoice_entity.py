@@ -65,6 +65,8 @@ class InvoiceEntity(BaseModel):
 
     @property
     def vat_value(self) -> float:
+        if self.vatPercent is None:
+            return 0.0
         return self.subtotal * self.vatPercent / 100
 
     def set_language(self, language: str) -> None:

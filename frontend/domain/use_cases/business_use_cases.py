@@ -1,5 +1,4 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-
 from frontend.domain import BusinessEntity
 from frontend.domain.repositories.business_repository_interface import (
     BusinessRepositoryInterface,

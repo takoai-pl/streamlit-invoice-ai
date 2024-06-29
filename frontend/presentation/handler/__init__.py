@@ -10,23 +10,20 @@ from frontend.domain import AddInvoiceUseCase, GetAllInvoicesUseCase
 from frontend.domain.use_cases import (
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
+    DownloadInvoiceUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
     GetAllClientsNamesUseCase,
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
-    DownloadInvoiceUseCase,
 )
 from frontend.presentation.handler.handler import Handler
 from frontend.utils.generator import Generator
 
-from dotenv import load_dotenv
-
-load_dotenv(".env")
-
-api_provider = APIProvider(
-    os.getenv("BASE_URL"),
-)
+try:
+    api_provider = APIProvider(os.getenv("BASE_URL"))
+except KeyError:
+    raise Exception("BASE_URL environment variable not set")
 
 generator = Generator()
 
@@ -57,5 +54,5 @@ handler = Handler(
     get_client_details_use_case=get_client_details_use_case,
     get_all_invoices_use_case=get_all_invoices_use_case,
     add_invoice_use_case=add_invoice_use_case,
-    download_invoice_use_case=download_invoice_use_case
+    download_invoice_use_case=download_invoice_use_case,
 )

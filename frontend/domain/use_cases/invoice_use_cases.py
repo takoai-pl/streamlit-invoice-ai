@@ -27,5 +27,5 @@ class DownloadInvoiceUseCase:
     def __init__(self, generator: Generator) -> None:
         self.generator = generator
 
-    def execute(self, invoice: InvoiceEntity) -> bytes | None:
-        return self.generator.download(invoice)
+    def execute(self, invoice: InvoiceEntity) -> str | None:
+        return self.generator.generate(invoice)

@@ -37,7 +37,9 @@ class App:
             str(_("history") + " :scroll:"),
         ]
 
-        self.InvoiceDetails, self.ClientDetails, self.AgentAI, self.History = st.tabs(tab_names)
+        self.InvoiceDetails, self.ClientDetails, self.AgentAI, self.History = st.tabs(
+            tab_names
+        )
 
     def run(self) -> None:
         with st.sidebar:

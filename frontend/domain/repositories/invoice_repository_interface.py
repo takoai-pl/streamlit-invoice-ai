@@ -26,5 +26,5 @@ class InvoiceRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def delete_invoice(self, invoice_number: str) -> None:
+    def delete_invoice(self, invoice_number: str, language: str) -> None:
         pass

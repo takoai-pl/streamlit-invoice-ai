@@ -9,7 +9,7 @@ from frontend.utils.language import i18n as _
 
 
 class Generator:
-    def __init__(self):
+    def __init__(self) -> None:
         layout_path = os.path.join(assets_path, "layout.tex")
         with open(layout_path, "r") as f:
             self.layout = f.read()
@@ -53,7 +53,7 @@ class Generator:
 
         footer_first = _("generated_footer_first_part")
         footer_second = _("generated_footer_second_part")
-        invoice_str = _("generated_invoice")
+        str_invoice = _("generated_invoice")
         issued_at = _("generated_issued_at")
         due_to = _("generated_due_to")
         vat = _("vat")
@@ -63,18 +63,14 @@ class Generator:
         details = {
             "LINE10": "IBAN",
             "LINE11": invoice.business.iban,
-            "INVOICE": invoice,
+            "INVOICE": str_invoice,
             "INVOICENO": invoice.invoiceNo,
             "ISSUEDATTEXT": issued_at,
             "ISSUEDDATE": (
-                invoice.issuedAt.strftime("%Y-%m-%d")
-                if invoice.issuedAt
-                else ""
+                invoice.issuedAt.strftime("%Y-%m-%d") if invoice.issuedAt else ""
             ),
             "DUETOTEXT": due_to,
-            "DUETODATE": (
-                invoice.dueTo.strftime("%Y-%m-%d") if invoice.dueTo else ""
-            ),
+            "DUETODATE": (invoice.dueTo.strftime("%Y-%m-%d") if invoice.dueTo else ""),
             "CLIENTLINE1": invoice.client.name,
             "CLIENTLINE2": invoice.client.street,
             "CLIENTLINE3": f"{invoice.client.postCode} {invoice.client.town}",
@@ -107,4 +103,3 @@ class Generator:
         self.substitute("TOTAL5", str(invoice.total))
 
         return self.layout
-

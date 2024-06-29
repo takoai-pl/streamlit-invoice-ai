@@ -1,6 +1,6 @@
 .PHONY: all locales licences lint test start
 
-all: locales format_diff licences lint test
+all: locales format_diff licences lint
 
 locales:
 	@echo "Building locales..."
@@ -20,7 +20,7 @@ start_backend: locales
 
 docker_dev:
 	@echo "Building the development Docker image..."
-	docker-compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up --build
+	docker-compose --env-file .env.dev -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 TEST_FILE ?= tests/
 

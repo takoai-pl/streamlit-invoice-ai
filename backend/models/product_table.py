@@ -1,9 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-import json
 from typing import Any
 
-from sqlalchemy import Column, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, Float, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from backend.models.base import Base

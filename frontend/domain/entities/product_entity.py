@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 
 class ProductEntity(BaseModel):
@@ -15,9 +15,7 @@ class ProductEntity(BaseModel):
     @classmethod
     def validate_fields(cls, v: str, values: dict, field: str) -> None:
         if v is not None and any(value is None for value in values.values()):
-            raise ValidationError(
-                f"If '{field}' is set, all other fields must also be set"
-            )
+            raise ValueError(f"If '{field}' is set, all other fields must also be set")
 
     @classmethod
     def validate_positive(cls, v: float, field: str) -> None:

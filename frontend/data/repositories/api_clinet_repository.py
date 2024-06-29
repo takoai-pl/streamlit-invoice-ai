@@ -2,6 +2,7 @@
 from abc import ABC
 from typing import Any, List
 
+from frontend.data.models import ClientModel
 from frontend.data.providers import APIProvider
 from frontend.domain import ClientEntity
 from frontend.domain.repositories.client_repository_interface import (
@@ -34,9 +35,11 @@ class APIClientRepository(ClientRepositoryInterface, ABC):
         return ClientEntity(**client.__dict__)
 
     def create_client(self, client: ClientEntity) -> None:
+        client = ClientModel(**client.__dict__)
         self.database_provider.client_add(client)
 
     def update_client(self, client: ClientEntity) -> None:
+        client = ClientModel(**client.__dict__)
         self.database_provider.client_put(client)
 
     def delete_client(self, client_name: str) -> None:

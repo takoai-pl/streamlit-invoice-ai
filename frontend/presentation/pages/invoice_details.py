@@ -240,8 +240,10 @@ def build_invoice_fields() -> None:
             st.text(f'{_("subtotal")}:')
             st.text(f'{_("vat_value")}:')
             st.text(f'{_("total")}:')
-        
+
         with c3:
-            st.text(f'{st.session_state.invoice.subtotal}')
-            st.text(f'{st.session_state.invoice.vat_value}')
-            st.text(f'{st.session_state.invoice.subtotal + st.session_state.invoice.vat_value}')
+            st.text(f"{st.session_state.invoice.subtotal}")
+            st.text(f"{st.session_state.invoice.vat_value}")
+            st.text(
+                f"{st.session_state.invoice.subtotal + st.session_state.invoice.vat_value}"
+            )

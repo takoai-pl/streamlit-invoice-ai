@@ -1,8 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-import json
 from datetime import datetime
-from typing import Any, List
+from typing import Any, List, Tuple
 
 from sqlalchemy import (
     Column,
@@ -12,9 +11,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from backend.models.client_table import ClientTable
 from backend.models.base import Base
 from backend.models.business_table import BusinessTable
+from backend.models.client_table import ClientTable
 from backend.models.product_table import ProductTable
 
 
@@ -50,13 +49,19 @@ class InvoiceTable(Base):
         self.client_id = kwargs["client_id"]
         self.language = kwargs["language"]
 
-    def to_json(self, business: BusinessTable, client: ClientTable, products: List[ProductTable]) -> dict:
+    def to_json(
+        self, business: BusinessTable, client: ClientTable, products: List[ProductTable]
+    ) -> dict:
         return {
             "invoiceNo": self.invoiceNo,
             "currency": self.currency,
             "vatPercent": self.vatPercent,
-            "issuedAt": datetime.strptime(self.issuedAt, "%d/%m/%Y").date() if self.issuedAt else None,
-            "dueTo": datetime.strptime(self.dueTo, "%d/%m/%Y").date() if self.dueTo else None,
+            "issuedAt": datetime.strptime(str(self.issuedAt), "%d/%m/%Y").date()
+            if self.issuedAt
+            else None,
+            "dueTo": datetime.strptime(str(self.dueTo), "%d/%m/%Y").date()
+            if self.dueTo
+            else None,
             "note": self.note,
             "business": business.to_json(),
             "client": client.to_json(),
@@ -65,7 +70,9 @@ class InvoiceTable(Base):
         }
 
     @staticmethod
-    def from_json(data: dict, business_id: str, client_id: str) -> ("InvoiceTable", List[ProductTable]):
+    def from_json(
+        data: dict, business_id: str, client_id: str
+    ) -> Tuple["InvoiceTable", List[ProductTable]]:
         invoice_id = Base.generate_uuid()
         invoice = InvoiceTable(
             invoiceID=invoice_id,
@@ -80,9 +87,11 @@ class InvoiceTable(Base):
             client_id=client_id,
         )
 
-        products_data = data.get("products")
+        products_data = data["products"]
         products = []
         for product_data in products_data:
-            products.append(ProductTable.from_json(product_data, invoice.invoiceID))
+            products.append(
+                ProductTable.from_json(product_data, str(invoice.invoiceID))
+            )
 
         return invoice, products

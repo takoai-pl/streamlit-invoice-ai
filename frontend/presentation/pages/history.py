@@ -11,7 +11,16 @@ def build_history() -> None:
 
     invoices = handler.get_all_invoices()
 
-    issueddate, invoiceno, client, business, language, edit, download, delete = st.columns([0.75, 1, 1, 1, 0.25, 0.33, 0.33, 0.33])
+    (
+        issueddate,
+        invoiceno,
+        client,
+        business,
+        language,
+        edit,
+        download,
+        delete,
+    ) = st.columns([0.75, 1, 1, 1, 0.25, 0.33, 0.33, 0.33])
 
     for invoice in invoices:
         issueddate.text(invoice.issuedAt)

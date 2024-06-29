@@ -2,17 +2,19 @@ from typing import Type
 
 from sqlalchemy.orm import Session
 
-
-from backend.controllers.base_controller import BaseController, session_scope, ClientNotFoundException, \
-    ClientNameCannotBeChangedException, ClientAlreadyExistsException
+from backend.controllers.base_controller import (
+    BaseController,
+    ClientAlreadyExistsException,
+    ClientNameCannotBeChangedException,
+    ClientNotFoundException,
+    session_scope,
+)
 from backend.models import ClientTable
 
 
 class ClientController(BaseController):
     @session_scope
-    def list(
-            self, session: Session
-    ) -> list[Type[ClientTable]] | list[ClientTable]:
+    def list(self, session: Session) -> list[Type[ClientTable]] | list[ClientTable]:
         return session.query(ClientTable).all()
 
     @session_scope
@@ -46,4 +48,3 @@ class ClientController(BaseController):
         if client_table is None:
             raise ClientNotFoundException(f"No client found with name {client_name}")
         session.delete(client_table)
-

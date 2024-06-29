@@ -2,6 +2,4 @@
 
 from .providers import api_provider
 
-__all__ = [
-    "api_provider"
-]
+__all__ = ["api_provider"]

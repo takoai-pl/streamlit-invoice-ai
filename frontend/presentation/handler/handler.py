@@ -6,6 +6,7 @@ from frontend.domain import (
     ClientEntity,
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
+    DownloadInvoiceUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
     GetAllClientsNamesUseCase,
@@ -13,7 +14,6 @@ from frontend.domain import (
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
     InvoiceEntity,
-    DownloadInvoiceUseCase,
 )
 
 
@@ -71,5 +71,5 @@ class Handler:
     def add_invoice(self, invoice: InvoiceEntity) -> None:
         self.add_invoice_use_case.execute(invoice)
 
-    def download_invoice(self, invoice: InvoiceEntity) -> bytes | None:
-        return self.download_invoice_use_case.execute(invoice)
+    def download_invoice(self, invoice: InvoiceEntity) -> None:
+        self.download_invoice_use_case.execute(invoice)

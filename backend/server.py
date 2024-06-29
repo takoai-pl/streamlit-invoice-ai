@@ -12,12 +12,12 @@ app = FastAPI(
     version="0.1.0",
 )
 
+app.get("/")(lambda: {"status": "ok"})
 app.include_router(business_router)
 app.include_router(client_router)
 app.include_router(invoice_router)
 
 add_routes(app, get_chain())
-
 
 if __name__ == "__main__":
     import uvicorn

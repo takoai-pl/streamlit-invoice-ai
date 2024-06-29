@@ -1,15 +1,18 @@
 import functools
 import operator
-from typing import Sequence, TypedDict, Annotated
+from typing import Annotated, Sequence, TypedDict
 
 from langchain_core.messages import BaseMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
 from langgraph.graph import END, StateGraph
+from langgraph.graph.graph import CompiledGraph
 
-from backend.helpers.supervisor import llm, supervisor_chain, members
-from backend.helpers.tools import get_researcher_tools, get_accountant_tools, get_business_details_by_name
-from backend.helpers.utils import create_agent, agent_node
+from backend.helpers.supervisor import llm, members, supervisor_chain
+from backend.helpers.tools import (
+    get_accountant_tools,
+    get_business_details_by_name,
+    get_researcher_tools,
+)
+from backend.helpers.utils import agent_node, create_agent
 
 
 # The agent state is the input to each node in the graph
@@ -24,7 +27,9 @@ class AgentState(TypedDict):
 researcher_tools = get_researcher_tools()
 accountant_tools = get_accountant_tools()
 
-research_agent = create_agent(llm, [get_business_details_by_name], "You are a database researcher.")
+research_agent = create_agent(
+    llm, [get_business_details_by_name], "You are a database researcher."
+)
 research_node = functools.partial(agent_node, agent=research_agent, name="Researcher")
 
 accountant_agent = create_agent(
@@ -32,7 +37,7 @@ accountant_agent = create_agent(
     [get_business_details_by_name],
     """
         You are an accountant. Your task is to create invoices. All the fields are required.
-        
+
         This is an example of a valid invoice:
         {
           "invoiceNo": "2023/0001",
@@ -77,14 +82,16 @@ accountant_agent = create_agent(
           ],
           "language": "en"
         }
-        
+
         If you need help with finding information about the invoice fields, you can ask for it.
         e.g. "What is the invoice number?" or "What are the client details of {here goes the business name}?"
-        
+
         Always validate the invoice before moving to the next step.
     """,
 )
-accountant_node = functools.partial(agent_node, agent=accountant_agent, name="Accountant")
+accountant_node = functools.partial(
+    agent_node, agent=accountant_agent, name="Accountant"
+)
 
 workflow = StateGraph(AgentState)
 workflow.add_node("Researcher", research_node)
@@ -98,12 +105,12 @@ for member in members:
 # which routes to a node or finishes
 conditional_map = {k: k for k in members}
 conditional_map["FINISH"] = END
-workflow.add_conditional_edges("supervisor", lambda x: x["next"], conditional_map)
+workflow.add_conditional_edges("supervisor", lambda x: x["next"], conditional_map)  # type: ignore
 # Finally, add entrypoint
 workflow.set_entry_point("supervisor")
 
 graph = workflow.compile()
 
 
-def get_chain():
+def get_chain() -> CompiledGraph:
     return graph

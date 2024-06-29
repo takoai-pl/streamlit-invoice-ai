@@ -3,7 +3,7 @@
 import streamlit as st
 
 
-def build_agent():
+def build_agent() -> None:
     st.subheader("Agent Helper")
     st.text("This is a helper for the agent. He can help you manage your accounting.")
 

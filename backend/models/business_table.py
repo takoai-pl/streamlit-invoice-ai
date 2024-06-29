@@ -1,6 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-import json
 from typing import Any
 
 from sqlalchemy import Column, String
@@ -67,4 +66,3 @@ class BusinessTable(Base):
         )
 
         return business
-

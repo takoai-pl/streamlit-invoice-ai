@@ -4,9 +4,7 @@ from backend.controllers import BusinessController
 
 
 def get_researcher_tools() -> list:
-    return [
-        get_business_details_by_name
-    ]
+    return [get_business_details_by_name]
 
 
 def get_accountant_tools() -> list:
@@ -14,8 +12,8 @@ def get_accountant_tools() -> list:
 
 
 @tool()
-def get_business_details_by_name(business_name: str):
-    """ Get business details by name """
+def get_business_details_by_name() -> dict:
+    """Get business details by name"""
 
     business_controller = BusinessController("")
 

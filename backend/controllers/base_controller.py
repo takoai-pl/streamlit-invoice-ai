@@ -1,8 +1,8 @@
 from functools import wraps
-from typing import Callable, Any
+from typing import Any, Callable
 
 from sqlalchemy import create_engine
-from sqlalchemy.exc import OperationalError, ArgumentError
+from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import sessionmaker
 
 
@@ -33,7 +33,9 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 class BaseController:
-    def __init__(self, db_path: str) -> None:
+    def __init__(self, db_path: str | None) -> None:
+        if not db_path:
+            raise DatabaseConnectionException("Database path not provided.")
         self.db_path = db_path
         try:
             self.engine = create_engine(db_path)

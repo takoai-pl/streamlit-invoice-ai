@@ -1,8 +1,8 @@
+from dotenv import load_dotenv
 from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
-from dotenv import load_dotenv
 load_dotenv()
 
 
@@ -49,7 +49,7 @@ prompt = ChatPromptTemplate.from_messages(
 llm = ChatOpenAI(model="gpt-3.5-turbo")
 
 supervisor_chain = (
-        prompt
-        | llm.bind_functions(functions=[function_def], function_call="route")
-        | JsonOutputFunctionsParser()
+    prompt
+    | llm.bind_functions(functions=[function_def], function_call="route")
+    | JsonOutputFunctionsParser()
 )
