@@ -18,25 +18,12 @@ class APIInvoiceRepository(InvoiceRepositoryInterface):
         self.database_provider = api_provider
 
     def get_all_invoices(self) -> List[InvoiceEntity]:
-        invoices, businesses, clients, products_list = self.database_provider.invoice_list()
+        invoices = self.database_provider.invoice_list()
 
-        invoice_entities = []
-        for invoice, business, client, products in zip(invoices, businesses, clients, products_list):
-            invoice_entity = InvoiceEntity(
-                invoiceNo=invoice.invoiceNo,
-                currency=invoice.currency,
-                vatPercent=invoice.vatPercent,
-                issuedAt=invoice.issuedAt,
-                dueTo=invoice.dueTo,
-                client=ClientEntity(**client.__dict__),
-                business=BusinessEntity(**business.__dict__),
-                note=invoice.note,
-                products=[ProductEntity(**product.__dict__) for product in products],
-                language=invoice.language
-            )
-            invoice_entities.append(invoice_entity)
+        if not invoices:
+            return []
 
-        return invoice_entities
+        return [InvoiceEntity(**invoice.__dict__) for invoice in invoices]
 
     def get_invoice_by_number(
         self, invoice_number: str, language: str

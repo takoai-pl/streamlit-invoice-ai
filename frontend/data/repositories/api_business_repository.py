@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from frontend.data.providers.database_provider import APIProvider
+from frontend.data.providers.api_provider import APIProvider
 from frontend.domain.entities.business_entity import BusinessEntity
 from frontend.domain.repositories.business_repository_interface import (
     BusinessRepositoryInterface,

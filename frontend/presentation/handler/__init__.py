@@ -2,7 +2,7 @@
 
 import os
 
-from frontend.data.providers.database_provider import APIProvider
+from frontend.data.providers.api_provider import APIProvider
 from frontend.data.repositories.api_business_repository import APIBusinessRepository
 from frontend.data.repositories.api_clinet_repository import APIClientRepository
 from frontend.data.repositories.api_invoice_repository import APIInvoiceRepository
@@ -18,22 +18,21 @@ from frontend.domain.use_cases import (
     DownloadInvoiceUseCase,
 )
 from frontend.presentation.handler.handler import Handler
-from frontend.utils import assets_path
 from frontend.utils.generator import Generator
 
 from dotenv import load_dotenv
 
 load_dotenv(".env")
 
-database_provider = APIProvider(
+api_provider = APIProvider(
     os.getenv("BASE_URL"),
 )
 
 generator = Generator()
 
-business_repository = APIBusinessRepository(database_provider)
-client_repository = APIClientRepository(database_provider)
-invoice_repository = APIInvoiceRepository(database_provider)
+business_repository = APIBusinessRepository(api_provider)
+client_repository = APIClientRepository(api_provider)
+invoice_repository = APIInvoiceRepository(api_provider)
 
 edit_business_use_case = EditBusinessUseCase(business_repository)
 get_all_businesses_names_use_case = GetAllBusinessesNamesUseCase(business_repository)

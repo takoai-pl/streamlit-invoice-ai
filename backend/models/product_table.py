@@ -19,7 +19,7 @@ class ProductTable(Base):
     quantity = Column("quantity", Float)
     unit = Column("unit", String)
     price = Column("price", Float)
-    invoice_id = Column(Integer, ForeignKey("invoice.invoiceId"))
+    invoice_id = Column(String, ForeignKey("invoice.invoiceID"))
 
     invoice = relationship("InvoiceTable")
 
@@ -31,13 +31,22 @@ class ProductTable(Base):
         self.price = kwargs["price"]
         self.invoice_id = kwargs["invoice_id"]
 
-    def __repr__(self) -> str:
-        return json.dumps(
-            {
-                "description": self.description,
-                "quantity": self.quantity,
-                "unit": self.unit,
-                "price": self.price,
-                "invoice_id": self.invoice_id,
-            }
+    def to_json(self) -> dict:
+        return {
+            "description": self.description,
+            "quantity": self.quantity,
+            "unit": self.unit,
+            "price": self.price,
+        }
+
+    @staticmethod
+    def from_json(data: dict, invoice_id: str) -> "ProductTable":
+        product = ProductTable(
+            description=data.get("description"),
+            quantity=data.get("quantity"),
+            unit=data.get("unit"),
+            price=data.get("price"),
+            invoice_id=invoice_id,
         )
+
+        return product

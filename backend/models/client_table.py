@@ -28,14 +28,25 @@ class ClientTable(Base):
         self.country = kwargs["country"]
         self.vatNo = kwargs["vatNo"]
 
-    def __repr__(self) -> str:
-        return json.dumps(
-            {
-                "name": self.name,
-                "street": self.street,
-                "postCode": self.postCode,
-                "town": self.town,
-                "country": self.country,
-                "vatNo": self.vatNo,
-            }
+    def to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "street": self.street,
+            "postCode": self.postCode,
+            "town": self.town,
+            "country": self.country,
+            "vatNo": self.vatNo,
+        }
+
+    @staticmethod
+    def from_json(data: dict) -> "ClientTable":
+        client = ClientTable(
+            name=data.get("name"),
+            street=data.get("street"),
+            postCode=data.get("postCode"),
+            town=data.get("town"),
+            country=data.get("country"),
+            vatNo=data.get("vatNo"),
         )
+
+        return client

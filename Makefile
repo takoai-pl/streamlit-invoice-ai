@@ -10,11 +10,17 @@ licences:
 	@echo "Building licences..."
 	./scripts/generate_licences.sh
 
-start: locales
-	@echo "Starting the app..."
-	poetry run uvicorn backend.server:app --host 0.0.0.0 --port 8000 &
-	poetry run streamlit run frontend/app.py --server.port 8501
+start_frontend: locales
+	@echo "Starting the front-end..."
+	poetry run streamlit frontend/app.py --server.port 8501
 
+start_backend: locales
+	@echo "Starting the back-end..."
+	poetry run uvicorn backend.server:app --reload
+
+docker_dev:
+	@echo "Building the development Docker image..."
+	docker-compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 TEST_FILE ?= tests/
 
@@ -37,10 +43,6 @@ format format_diff:
 	poetry run black $(PYTHON_FILES)
 	poetry run ruff --select I --fix $(PYTHON_FILES)
 	poetry run ruff --select F --fix $(PYTHON_FILES) --ignore F821
-
-docker_dev:
-	@echo "Building the development Docker image..."
-	docker-compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 docker_prod:
 	@echo "Building the production Docker image..."

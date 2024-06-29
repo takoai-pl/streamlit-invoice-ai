@@ -1,6 +1,6 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from .database_provider import (
+from .api_provider import (
     APIProvider,
 )
 

@@ -1,7 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import json
-from typing import Any
+from datetime import datetime
+from typing import Any, List
 
 from sqlalchemy import (
     Column,
@@ -11,14 +12,17 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from backend.models import Base
+from backend.models.client_table import ClientTable
+from backend.models.base import Base
+from backend.models.business_table import BusinessTable
+from backend.models.product_table import ProductTable
 
 
 class InvoiceTable(Base):
     __tablename__ = "invoice"
 
-    invoiceId = Column(
-        "invoiceId", String, primary_key=True, default=Base.generate_uuid
+    invoiceID = Column(
+        "invoiceID", String, primary_key=True, default=Base.generate_uuid
     )
     invoiceNo = Column("invoiceNo", String)
     currency = Column("currency", String)
@@ -26,8 +30,8 @@ class InvoiceTable(Base):
     issuedAt = Column("issuedAt", String)
     dueTo = Column("dueTo", String)
     note = Column("note", String)
-    business_id = Column(Integer, ForeignKey("business.businessID"))
-    client_id = Column(Integer, ForeignKey("client.clientID"))
+    business_id = Column(String, ForeignKey("business.businessID"))
+    client_id = Column(String, ForeignKey("client.clientID"))
 
     business = relationship("BusinessTable")
     client = relationship("ClientTable")
@@ -46,17 +50,39 @@ class InvoiceTable(Base):
         self.client_id = kwargs["client_id"]
         self.language = kwargs["language"]
 
-    def __repr__(self) -> str:
-        return json.dumps(
-            {
-                "invoiceNo": self.invoiceNo,
-                "currency": self.currency,
-                "vatPercent": self.vatPercent,
-                "issuedAt": self.issuedAt,
-                "dueTo": self.dueTo,
-                "note": self.note,
-                "business_id": self.business_id,
-                "client_id": self.client_id,
-                "language": self.language,
-            }
+    def to_json(self, business: BusinessTable, client: ClientTable, products: List[ProductTable]) -> dict:
+        return {
+            "invoiceNo": self.invoiceNo,
+            "currency": self.currency,
+            "vatPercent": self.vatPercent,
+            "issuedAt": datetime.strptime(self.issuedAt, "%d/%m/%Y").date() if self.issuedAt else None,
+            "dueTo": datetime.strptime(self.dueTo, "%d/%m/%Y").date() if self.dueTo else None,
+            "note": self.note,
+            "business": business.to_json(),
+            "client": client.to_json(),
+            "products": [product.to_json() for product in products],
+            "language": self.language,
+        }
+
+    @staticmethod
+    def from_json(data: dict, business_id: str, client_id: str) -> ("InvoiceTable", List[ProductTable]):
+        invoice_id = Base.generate_uuid()
+        invoice = InvoiceTable(
+            invoiceID=invoice_id,
+            invoiceNo=data.get("invoiceNo"),
+            currency=data.get("currency"),
+            vatPercent=data.get("vatPercent"),
+            issuedAt=data.get("issuedAt"),
+            dueTo=data.get("dueTo"),
+            note=data.get("note"),
+            language=data.get("language"),
+            business_id=business_id,
+            client_id=client_id,
         )
+
+        products_data = data.get("products")
+        products = []
+        for product_data in products_data:
+            products.append(ProductTable.from_json(product_data, invoice.invoiceID))
+
+        return invoice, products

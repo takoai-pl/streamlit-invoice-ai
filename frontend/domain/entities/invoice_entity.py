@@ -71,14 +71,6 @@ class InvoiceEntity(BaseModel):
             if product.vat_amount is not None
         )
 
-    @classmethod
-    def from_json(cls, file_path: str) -> "InvoiceEntity":
-        return cls.parse_file(file_path)
-
-    def to_json(self, file_path: str) -> None:
-        with open(file_path, "w") as f:
-            f.write(self.json())
-
     def set_language(self, language: str) -> None:
         self.language = language
 

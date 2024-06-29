@@ -2,10 +2,10 @@
 
 import pytest
 
-from src.data.models.business_table import BusinessTable
-from src.data.providers.database_provider import DatabaseProvider
-from src.data.repositories.sql_business_repository import SQLBusinessRepository
-from src.domain.entities.business_entity import BusinessEntity
+from frontend.data.models.business_table import BusinessTable
+from frontend.data.providers.database_provider import DatabaseProvider
+from frontend.data.repositories.sql_business_repository import SQLBusinessRepository
+from frontend.domain.entities.business_entity import BusinessEntity
 from tests.mocks.populate_database_mock import (
     erase_database,
     populate_database,

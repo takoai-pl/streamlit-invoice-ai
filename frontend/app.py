@@ -8,7 +8,6 @@ from frontend.presentation.pages.client_details import build_client_fields
 from frontend.presentation.pages.history import build_history
 from frontend.presentation.pages.invoice_details import build_invoice_fields
 from frontend.presentation.widgets.language_selector import build_language_selector
-from frontend.utils.generator import Generator
 from frontend.utils.language import (
     Language,
 )

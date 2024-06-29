@@ -37,18 +37,34 @@ class BusinessTable(Base):
         self.phone = kwargs["phone"]
         self.email = kwargs["email"]
 
-    def __repr__(self) -> str:
-        return json.dumps(
-            {
-                "name": self.name,
-                "street": self.street,
-                "postCode": self.postCode,
-                "town": self.town,
-                "country": self.country,
-                "vatNo": self.vatNo,
-                "bic": self.bic,
-                "iban": self.iban,
-                "phone": self.phone,
-                "email": self.email,
-            }
+    def to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "street": self.street,
+            "postCode": self.postCode,
+            "town": self.town,
+            "country": self.country,
+            "vatNo": self.vatNo,
+            "bic": self.bic,
+            "iban": self.iban,
+            "phone": self.phone,
+            "email": self.email,
+        }
+
+    @staticmethod
+    def from_json(data: dict) -> "BusinessTable":
+        business = BusinessTable(
+            name=data.get("name"),
+            street=data.get("street"),
+            postCode=data.get("postCode"),
+            town=data.get("town"),
+            country=data.get("country"),
+            vatNo=data.get("vatNo"),
+            bic=data.get("bic"),
+            iban=data.get("iban"),
+            phone=data.get("phone"),
+            email=data.get("email"),
         )
+
+        return business
+

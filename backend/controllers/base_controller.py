@@ -55,6 +55,7 @@ class DatabaseConnectionException(Exception):
         self.message = message
         super().__init__(self.message)
 
+
 class BusinessAlreadyExistsException(Exception):
     """Exception raised when a business with the given name already exists."""
 
@@ -83,6 +84,57 @@ class BusinessNotFoundException(Exception):
 
 class BusinessRetrievalException(Exception):
     """Exception raised when there is an error retrieving businesses from the database."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+
+class ClientAlreadyExistsException(Exception):
+    """Exception raised when a client with the given name already exists."""
+
+    def __init__(self, client_name: str):
+        self.client_name = client_name
+        self.message = f"Client with name '{client_name}' already exists."
+        super().__init__(self.message)
+
+
+class ClientNameCannotBeChangedException(Exception):
+    """Exception raised when attempting to change the name of a client."""
+
+    def __init__(self) -> None:
+        self.message = "Client name cannot be changed."
+        super().__init__(self.message)
+
+
+class ClientNotFoundException(Exception):
+    """Exception raised when a client with the given name does not exist."""
+
+    def __init__(self, client_name: str):
+        self.client_name = client_name
+        self.message = f"No client found with name {client_name}"
+        super().__init__(self.message)
+
+
+class ClientRetrievalException(Exception):
+    """Exception raised when there is an error retrieving clients from the database."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvoiceNotFoundException(Exception):
+    """Exception raised when an invoice with the given id does not exist."""
+
+    def __init__(self, invoice_id: str):
+        self.invoice_id = invoice_id
+        self.message = f"No invoice found with id {invoice_id}"
+        super().__init__(self.message)
+
+
+class InvoiceRetrievalException(Exception):
+    """Exception raised when there is an error retrieving invoices from the database."""
 
     def __init__(self, message: str):
         self.message = message

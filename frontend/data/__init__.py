@@ -1,7 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from .providers import database_provider
+from .providers import api_provider
 
 __all__ = [
-    "database_provider"
+    "api_provider"
 ]
