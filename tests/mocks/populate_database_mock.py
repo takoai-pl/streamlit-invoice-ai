@@ -5,8 +5,8 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 from src.data.models.base import Base
+
 from tests.mocks.schema_mocks import (
     business_table_mock,
     client_table_mock,

@@ -3,7 +3,6 @@
 import pytest
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-
 from src.data.providers.database_provider import (
     BusinessAlreadyExistsException,
     BusinessNotFoundException,
@@ -11,6 +10,7 @@ from src.data.providers.database_provider import (
     DatabaseConnectionException,
     DatabaseProvider,
 )
+
 from tests.mocks.populate_database_mock import (
     erase_database,
     populate_database,
