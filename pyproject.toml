@@ -8,7 +8,8 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/takoai-pl/streamlit-invoice-ai.git"
 packages = [
-    { include = "src", from = "." },
+    { include = "frontend", from = "." },
+    { include = "backend", from = "." },
 ]
 
 [tool.poetry.dependencies]
@@ -16,8 +17,15 @@ python = "^3.10"
 streamlit = "^1.36.0"
 sqlalchemy = "^2.0.31"
 pydantic = "1.10.13"
-flask = "^3.0.1"
-
+fastapi = "^0.111.0"
+langchain = "0.2.0"
+langchain-community = "0.2.0"
+langchain-openai = "0.1.10"
+langgraph = "0.1.2"
+langserve = { version = ">=0.0.6", extras = ["server"] }
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
@@ -44,8 +52,3 @@ line-length = 120
 [tool.mypy]
 ignore_missing_imports = "True"
 disallow_untyped_defs = "True"
-
-include = [
-    { path = "assets/**", format = "file"},
-    { paht = "locales/**", format = "file"}
-]

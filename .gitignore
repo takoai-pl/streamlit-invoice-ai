@@ -156,3 +156,7 @@ data_map*
 *replit*
 
 .env.gcp.yaml
+docker-compose.prod.yml
+docker-compose.dev.yml
+.env.prod
+.env.dev

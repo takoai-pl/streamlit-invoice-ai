@@ -1,0 +1,62 @@
+from typing import Type
+
+from sqlalchemy.orm import Session
+
+from backend.controllers.base_controller import BaseController, session_scope, BusinessNameCannotBeChangedException, \
+    BusinessNotFoundException, BusinessAlreadyExistsException
+from backend.models import BusinessTable
+
+
+class BusinessController(BaseController):
+    def __init__(self, db_path: str) -> None:
+        super().__init__(db_path)
+
+    @session_scope
+    def list(
+            self, session: Session
+    ) -> list[Type[BusinessTable]] | list[BusinessTable]:
+        return session.query(BusinessTable).all()
+
+    @session_scope
+    def get(
+            self, session: Session, business_name: str
+    ) -> BusinessTable | None:
+        return session.query(BusinessTable).filter_by(name=business_name).first()
+
+    @session_scope
+    def add(self, session: Session, business: BusinessTable) -> None:
+        existing_business = (
+            session.query(BusinessTable).filter_by(name=business.name).first()
+        )
+        if existing_business:
+            raise BusinessAlreadyExistsException(str(business.name))
+        session.add(business)
+
+    @session_scope
+    def put(self, session: Session, business: BusinessTable) -> None:
+        result = session.query(BusinessTable).filter_by(name=business.name).first()
+
+        if result is None:
+            raise BusinessNotFoundException(
+                f"No business found with name {business.name}"
+            )
+
+        if result.name != business.name:
+            raise BusinessNameCannotBeChangedException()
+
+        for key, value in business.__dict__.items():
+            if key != "_sa_instance_state":
+                setattr(result, key, value)
+
+    @session_scope
+    def delete(self, session: Session, business_name: str) -> None:
+        business_table = (
+            session.query(BusinessTable).filter_by(name=business_name).first()
+        )
+        if business_table is None:
+            raise BusinessNotFoundException(
+                f"No business found with name {business_name}"
+            )
+        session.delete(business_table)
+
+

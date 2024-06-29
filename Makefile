@@ -12,7 +12,8 @@ licences:
 
 start: locales
 	@echo "Starting the app..."
-	poetry run streamlit run src/app.py
+	poetry run uvicorn backend.server:app --host 0.0.0.0 --port 8000 &
+	poetry run streamlit run frontend/app.py --server.port 8501 &
 
 
 # Define a variable for the test file path.
@@ -39,6 +40,13 @@ format format_diff:
 	poetry run ruff --select I --fix $(PYTHON_FILES)
 	poetry run ruff --select F --fix $(PYTHON_FILES) --ignore F821
 
+docker_dev:
+	@echo "Building the development Docker image..."
+	docker-compose --env-file .env.dev -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+docker_prod:
+	@echo "Building the production Docker image..."
+	docker-compose --env-file .env.prod -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
 ######################
 # HELP
