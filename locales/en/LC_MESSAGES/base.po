@@ -42,6 +42,12 @@ msgid "vat_percent"
 msgstr "VAT %"
 msgid "note"
 msgstr "Note"
+msgid "subtotal"
+msgstr "Subtotal"
+msgid "vat_value"
+msgstr "Vat value"
+msgid "total"
+msgstr "Total"
 
 # History
 msgid "history"

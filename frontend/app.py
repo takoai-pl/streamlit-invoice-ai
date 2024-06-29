@@ -3,6 +3,7 @@
 import streamlit as st
 
 from frontend.domain.entities.invoice_entity import InvoiceEntity
+from frontend.presentation.pages.ai_agent import build_agent
 from frontend.presentation.pages.business_details import build_business_fields
 from frontend.presentation.pages.client_details import build_client_fields
 from frontend.presentation.pages.history import build_history
@@ -62,6 +63,9 @@ class App:
 
         with self.History:
             build_history()
+
+        with self.AgentAI:
+            build_agent()
 
 
 if __name__ == "__main__":

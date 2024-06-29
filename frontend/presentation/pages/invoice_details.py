@@ -226,8 +226,22 @@ def build_invoice_fields() -> None:
                 args=(i,),
             )
 
-    st.button(
-        _("add_product"),
-        on_click=st.session_state.invoice.add_product,
-        args=("", 0, "", 0.0),
-    )
+    c1, c2, c3, c4 = st.columns([6.3, 2.1, 2, 1])
+
+    with c1:
+        st.button(
+            _("add_product"),
+            on_click=st.session_state.invoice.add_product,
+            args=("", 0, "", 0.0),
+        )
+
+    if len(st.session_state.invoice.products) > 0:
+        with c2:
+            st.text(f'{_("subtotal")}:')
+            st.text(f'{_("vat_value")}:')
+            st.text(f'{_("total")}:')
+        
+        with c3:
+            st.text(f'{st.session_state.invoice.subtotal}')
+            st.text(f'{st.session_state.invoice.vat_value}')
+            st.text(f'{st.session_state.invoice.subtotal + st.session_state.invoice.vat_value}')
