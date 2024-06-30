@@ -48,6 +48,26 @@ docker_prod:
 	@echo "Building the production Docker image..."
 	docker-compose --env-file .env.prod -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
+
+# Makefile
+
+# Check if .env file exists
+ifeq (,$(wildcard .env))
+    $(error .env file not found)
+endif
+
+# Include and export variables from .env file
+include .env
+export $(shell sed 's/=.*//' .env)
+
+connect_ec2:
+	@echo "Connecting to the EC2 instance..."
+	@ssh -i ./ec2_key.pem ubuntu@${EC2_URL}
+
+send_config_ec2:
+	@echo "Sending the .env file to the EC2 instance..."
+	@scp -i ./ec2_key.pem tako-ai.conf ubuntu@${EC2_URL}:/etc/nginx/sites-available/tako-ai.conf
+
 ######################
 # HELP
 ######################

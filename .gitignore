@@ -160,3 +160,4 @@ docker-compose.prod.yml
 docker-compose.dev.yml
 .env.prod
 .env.dev
+ec2_key.pem
