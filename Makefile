@@ -49,10 +49,8 @@ docker_prod:
 	docker-compose --env-file .env.prod -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
 
-# Makefile
-
-include .env
-export $(shell sed 's/=.*//' .env)
+-include .env
+-export $(shell sed 's/=.*//' .env)
 
 connect_ec2:
 	@echo "Connecting to the EC2 instance..."
