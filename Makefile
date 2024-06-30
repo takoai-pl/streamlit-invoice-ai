@@ -51,12 +51,6 @@ docker_prod:
 
 # Makefile
 
-# Check if .env file exists
-ifeq (,$(wildcard .env))
-    $(error .env file not found)
-endif
-
-# Include and export variables from .env file
 include .env
 export $(shell sed 's/=.*//' .env)
 
