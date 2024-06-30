@@ -54,11 +54,11 @@ docker_prod:
 
 connect_ec2:
 	@echo "Connecting to the EC2 instance..."
-	@ssh -i ./ec2_key.pem ubuntu@${EC2_URL}
+	-@ssh -i ./ec2_key.pem ubuntu@${EC2_URL}
 
 send_config_ec2:
 	@echo "Sending the .env file to the EC2 instance..."
-	@scp -i ./ec2_key.pem tako-ai.conf ubuntu@${EC2_URL}:/etc/nginx/sites-available/tako-ai.conf
+	-@scp -i ./ec2_key.pem tako-ai.conf ubuntu@${EC2_URL}:/etc/nginx/sites-available/tako-ai.conf
 
 ######################
 # HELP
