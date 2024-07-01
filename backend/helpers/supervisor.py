@@ -3,8 +3,6 @@ from langchain_core.output_parsers.openai_functions import JsonOutputFunctionsPa
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
-
 
 members = ["Researcher", "Accountant"]
 system_prompt = (
@@ -46,7 +44,10 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 ).partial(options=str(options), members=", ".join(members))
 
-llm = ChatOpenAI(model="gpt-3.5-turbo")
+llm = ChatOpenAI(
+    model="gpt-3.5-turbo",
+    api_key="sk-1234567890",
+)
 
 supervisor_chain = (
     prompt

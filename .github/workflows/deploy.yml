@@ -43,8 +43,26 @@ jobs:
             # Pull the latest images
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-api:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-streamlit:latest
+
+            # Ensure the PostgreSQL container is running
+            if [ ! "$(docker ps -q -f name=postgres)" ]; then
+              if [ "$(docker ps -aq -f status=exited -f name=postgres)" ]; then
+                # Start the PostgreSQL container if it is stopped
+                docker start postgres
+              else
+                # Run the PostgreSQL container if it does not exist
+                docker run -d \
+                  --name postgres \
+                  -e POSTGRES_USER= ${{ secrets.POSTGRES_USER }} \
+                  -e POSTGRES_PASSWORD= ${{ secrets.POSTGRES_PASSWORD }} \
+                  -e POSTGRES_DB= ${{ secrets.POSTGRES_DB }} \
+                  -v postgres_data:/var/lib/postgresql/data \
+                  -p 5432:5432 \
+                  postgres:latest
+              fi
+            fi
             
-            # Stop and remove existing containers
+            # Stop and remove existing API and Streamlit containers
             docker stop api streamlit || true
             docker rm api streamlit || true
             
