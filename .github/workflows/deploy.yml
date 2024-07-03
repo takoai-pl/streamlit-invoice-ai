@@ -73,7 +73,7 @@ jobs:
             docker run -d --name streamlit -p 8501:8501 -e BASE_URL="${{ secrets.BASE_URL }}" ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-streamlit:latest
             
             # Generate locales for the Streamlit container
-            docker exec -it make locales
+            docker exec -it streamlit make locales
             
             # Restart Nginx to apply the new configuration
             sudo systemctl restart nginx
