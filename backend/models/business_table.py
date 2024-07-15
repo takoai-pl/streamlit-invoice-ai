@@ -53,16 +53,16 @@ class BusinessTable(Base):
     @staticmethod
     def from_json(data: dict) -> "BusinessTable":
         business = BusinessTable(
-            name=data.get("name"),
-            street=data.get("street"),
-            postCode=data.get("postCode"),
-            town=data.get("town"),
-            country=data.get("country"),
-            vatNo=data.get("vatNo"),
-            bic=data.get("bic"),
-            iban=data.get("iban"),
-            phone=data.get("phone"),
-            email=data.get("email"),
+            name=data["name"],
+            street=data["street"],
+            postCode=data["postCode"],
+            town=data["town"],
+            country=data["country"],
+            vatNo=data["vatNo"],
+            bic=data["bic"],
+            iban=data["iban"],
+            phone=data["phone"],
+            email=data["email"],
         )
 
         return business

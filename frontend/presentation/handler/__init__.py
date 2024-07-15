@@ -21,9 +21,12 @@ from frontend.presentation.handler.handler import Handler
 from frontend.utils.generator import Generator
 
 try:
-    api_provider = APIProvider(os.getenv("BASE_URL"))
+    api_provider = APIProvider(
+        os.getenv("BASE_URL"),
+        os.getenv("API_KEY")
+    )
 except KeyError:
-    raise Exception("BASE_URL environment variable not set")
+    raise Exception("environment variables not set")
 
 generator = Generator()
 

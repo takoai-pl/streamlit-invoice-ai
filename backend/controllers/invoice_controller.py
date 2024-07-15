@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (
     BaseController,
-    InvoiceNotFoundException,
+    NotFoundException,
     session_scope,
 )
 from backend.models import BusinessTable, ClientTable, InvoiceTable, ProductTable
@@ -56,7 +56,7 @@ class InvoiceController(BaseController):
         )
 
         if invoice is None:
-            raise InvoiceNotFoundException(
+            raise NotFoundException(
                 f"No invoice found with invoice number {invoice_no} and language {language}"
             )
 
@@ -73,17 +73,17 @@ class InvoiceController(BaseController):
         )
 
         if business is None:
-            raise InvoiceNotFoundException(
+            raise NotFoundException(
                 f"No business found with id {invoice.business_id}"
             )
 
         if client is None:
-            raise InvoiceNotFoundException(
+            raise NotFoundException(
                 f"No client found with id {invoice.client_id}"
             )
 
         if not products:
-            raise InvoiceNotFoundException(
+            raise NotFoundException(
                 f"No products found for invoice with id {invoice.invoiceNo}"
             )
 
@@ -113,7 +113,7 @@ class InvoiceController(BaseController):
         )
 
         if result is None:
-            raise InvoiceNotFoundException(
+            raise NotFoundException(
                 f"No invoice found with id {invoice.invoiceNo}"
             )
 
@@ -134,7 +134,7 @@ class InvoiceController(BaseController):
             .first()
         )
         if invoice_table is None:
-            raise InvoiceNotFoundException(f"No invoice found with id {invoice_no}")
+            raise NotFoundException(f"No invoice found with id {invoice_no}")
 
         session.query(ProductTable).filter_by(
             invoice_id=invoice_table.invoiceID

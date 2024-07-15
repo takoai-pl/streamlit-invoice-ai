@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (
     BaseController,
-    BusinessAlreadyExistsException,
-    BusinessNameCannotBeChangedException,
-    BusinessNotFoundException,
+    AlreadyExistsException,
+    NameCannotBeChangedException,
+    NotFoundException,
     session_scope,
 )
 from backend.models import BusinessTable
@@ -32,7 +32,7 @@ class BusinessController(BaseController):
             session.query(BusinessTable).filter_by(name=business.name).first()
         )
         if existing_business:
-            raise BusinessAlreadyExistsException(str(business.name))
+            raise AlreadyExistsException(str(business.name))
         session.add(business)
 
     @session_scope
@@ -40,12 +40,12 @@ class BusinessController(BaseController):
         result = session.query(BusinessTable).filter_by(name=business.name).first()
 
         if result is None:
-            raise BusinessNotFoundException(
+            raise NotFoundException(
                 f"No business found with name {business.name}"
             )
 
         if result.name != business.name:
-            raise BusinessNameCannotBeChangedException()
+            raise NameCannotBeChangedException()
 
         for key, value in business.__dict__.items():
             if key != "_sa_instance_state":
@@ -57,7 +57,7 @@ class BusinessController(BaseController):
             session.query(BusinessTable).filter_by(name=business_name).first()
         )
         if business_table is None:
-            raise BusinessNotFoundException(
+            raise NotFoundException(
                 f"No business found with name {business_name}"
             )
         session.delete(business_table)

@@ -23,8 +23,11 @@ except KeyError:
 
 
 @invoice_router.get("/", response_model=List[InvoiceEntity])
-async def get_list_of_invoices() -> list:
-    invoices, businesses, clients, products = invoice_controller.list()
+async def get_list_of_invoices() -> JSONResponse:
+    try:
+        invoices, businesses, clients, products = invoice_controller.list()
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
 
     response = []
     for invoice, business, client, product in zip(
@@ -32,38 +35,71 @@ async def get_list_of_invoices() -> list:
     ):
         response.append(invoice.to_json(business, client, product))
 
-    return response
+    return JSONResponse(status_code=200, content=response)
 
 
 @invoice_router.get("/{invoice_no}/{language}/", response_model=InvoiceEntity)
-async def get_invoice(invoice_no: str, language: str) -> dict:
+async def get_invoice(invoice_no: str, language: str) -> JSONResponse:
     decoded_invoice_no = unquote(invoice_no)
-    invoice, business, client, products = invoice_controller.get(
-        decoded_invoice_no, language
-    )
-    return invoice.to_json(business, client, products)
+
+    try:
+        invoice, business, client, products = invoice_controller.get(
+            decoded_invoice_no, language
+        )
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
+
+    return JSONResponse(status_code=200, content=invoice.to_json(business, client, products))
 
 
 @invoice_router.post("/")
 async def add_invoice(data: dict) -> JSONResponse:
-    business_id = business_controller.get(data["business"]["name"]).businessID
-    client_id = client_controller.get(data["client"]["name"]).clientID
-    invoice, products = InvoiceTable.from_json(data, business_id, client_id)
-    invoice_controller.add(invoice, products)
+    try:
+        InvoiceEntity(**data).validate_invoice()
+    except Exception as e:
+        return JSONResponse(status_code=400, content=str(e))
+
+    try:
+        business_id = business_controller.get(data["business"]["name"]).businessID
+        client_id = client_controller.get(data["client"]["name"]).clientID
+        invoice, products = InvoiceTable.from_json(data, business_id, client_id)
+        invoice_controller.add(invoice, products)
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
+
     return JSONResponse(status_code=201, content="Invoice created")
 
 
 @invoice_router.put("/")
 async def put_invoice(data: dict) -> JSONResponse:
-    business_id = business_controller.get(data["business"]["name"]).businessID
-    client_id = client_controller.get(data["client"]["name"]).clientID
-    invoice, products = InvoiceTable.from_json(data, business_id, client_id)
-    invoice_controller.put(invoice.invoiceNo, products)
+    try:
+        InvoiceEntity(**data).validate_invoice()
+    except Exception as e:
+        return JSONResponse(status_code=400, content=str(e))
+
+    try:
+        business_id = business_controller.get(data["business"]["name"]).businessID
+        client_id = client_controller.get(data["client"]["name"]).clientID
+        invoice, products = InvoiceTable.from_json(data, business_id, client_id)
+        invoice_controller.put(invoice.invoiceNo, products)
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
+
     return JSONResponse(status_code=204, content="Invoice updated")
 
 
 @invoice_router.delete("/{invoice_no}/{language}/")
 async def delete_invoice(invoice_no: str, language: str) -> JSONResponse:
     decoded_invoice_no = unquote(invoice_no)
-    invoice_controller.delete(decoded_invoice_no, language)
+
+    try:
+        invoice_controller.get(decoded_invoice_no, language)
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
+
+    try:
+        invoice_controller.delete(decoded_invoice_no, language)
+    except Exception as e:
+        return JSONResponse(status_code=500, content=str(e))
+
     return JSONResponse(status_code=204, content="Invoice deleted")

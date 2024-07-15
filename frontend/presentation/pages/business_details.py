@@ -1,7 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import streamlit as st
-
+import requests
 from frontend.utils.language import (
     i18n as _,
 )
@@ -9,7 +9,10 @@ from frontend.utils.language import (
 
 def _on_change_business(key: str, attribute: str) -> None:
     current_value = st.session_state[key]
-    st.session_state.invoice.edit_business(**{attribute: current_value})
+    try:
+        st.session_state.invoice.edit_business(**{attribute: current_value})
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
 
 
 def build_business_fields() -> None:

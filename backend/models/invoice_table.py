@@ -56,10 +56,10 @@ class InvoiceTable(Base):
             "invoiceNo": self.invoiceNo,
             "currency": self.currency,
             "vatPercent": self.vatPercent,
-            "issuedAt": datetime.strptime(str(self.issuedAt), "%d/%m/%Y").date()
+            "issuedAt": str(datetime.strptime(str(self.issuedAt), "%d/%m/%Y").date())
             if self.issuedAt
             else None,
-            "dueTo": datetime.strptime(str(self.dueTo), "%d/%m/%Y").date()
+            "dueTo": str(datetime.strptime(str(self.dueTo), "%d/%m/%Y").date())
             if self.dueTo
             else None,
             "note": self.note,

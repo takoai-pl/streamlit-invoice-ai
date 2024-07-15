@@ -16,15 +16,15 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
             return result
         except Exception as e:
             session.rollback()
-            if isinstance(e, BusinessAlreadyExistsException):
+            if isinstance(e, AlreadyExistsException):
                 raise e
-            if isinstance(e, BusinessNameCannotBeChangedException):
+            if isinstance(e, NameCannotBeChangedException):
                 raise e
-            if isinstance(e, BusinessNotFoundException):
+            if isinstance(e, NotFoundException):
                 raise e
-            if isinstance(e, BusinessRetrievalException):
+            if isinstance(e, RetrievalException):
                 raise e
-            raise BusinessRetrievalException(f"Could not retrieve businesses: {str(e)}")
+            raise RetrievalException(f"Could not retrieve businesses: {str(e)}")
         finally:
             session.expunge_all()
             session.close()
@@ -58,85 +58,34 @@ class DatabaseConnectionException(Exception):
         super().__init__(self.message)
 
 
-class BusinessAlreadyExistsException(Exception):
-    """Exception raised when a business with the given name already exists."""
+class AlreadyExistsException(Exception):
+    """Exception raised when an entry with the given name already exists."""
 
-    def __init__(self, business_name: str):
-        self.business_name = business_name
-        self.message = f"Business with name '{business_name}' already exists."
+    def __init__(self, name: str):
+        self.name = name
+        self.message = f"Entry with name '{name}' already exists."
         super().__init__(self.message)
 
 
-class BusinessNameCannotBeChangedException(Exception):
-    """Exception raised when attempting to change the name of a business."""
+class NameCannotBeChangedException(Exception):
+    """Exception raised when attempting to change the name."""
 
     def __init__(self) -> None:
-        self.message = "Business name cannot be changed."
+        self.message = "Name cannot be changed."
         super().__init__(self.message)
 
 
-class BusinessNotFoundException(Exception):
-    """Exception raised when a business with the given name does not exist."""
+class NotFoundException(Exception):
+    """Exception raised when entry with the given name does not exist."""
 
-    def __init__(self, business_name: str):
-        self.business_name = business_name
-        self.message = f"No business found with name {business_name}"
+    def __init__(self, name: str):
+        self.name = name
+        self.message = f"Entry with name '{name}' does not exist."
         super().__init__(self.message)
 
 
-class BusinessRetrievalException(Exception):
-    """Exception raised when there is an error retrieving businesses from the database."""
-
-    def __init__(self, message: str):
-        self.message = message
-        super().__init__(self.message)
-
-
-class ClientAlreadyExistsException(Exception):
-    """Exception raised when a client with the given name already exists."""
-
-    def __init__(self, client_name: str):
-        self.client_name = client_name
-        self.message = f"Client with name '{client_name}' already exists."
-        super().__init__(self.message)
-
-
-class ClientNameCannotBeChangedException(Exception):
-    """Exception raised when attempting to change the name of a client."""
-
-    def __init__(self) -> None:
-        self.message = "Client name cannot be changed."
-        super().__init__(self.message)
-
-
-class ClientNotFoundException(Exception):
-    """Exception raised when a client with the given name does not exist."""
-
-    def __init__(self, client_name: str):
-        self.client_name = client_name
-        self.message = f"No client found with name {client_name}"
-        super().__init__(self.message)
-
-
-class ClientRetrievalException(Exception):
-    """Exception raised when there is an error retrieving clients from the database."""
-
-    def __init__(self, message: str):
-        self.message = message
-        super().__init__(self.message)
-
-
-class InvoiceNotFoundException(Exception):
-    """Exception raised when an invoice with the given id does not exist."""
-
-    def __init__(self, invoice_id: str):
-        self.invoice_id = invoice_id
-        self.message = f"No invoice found with id {invoice_id}"
-        super().__init__(self.message)
-
-
-class InvoiceRetrievalException(Exception):
-    """Exception raised when there is an error retrieving invoices from the database."""
+class RetrievalException(Exception):
+    """Exception raised when there is an error retrieving from the database."""
 
     def __init__(self, message: str):
         self.message = message

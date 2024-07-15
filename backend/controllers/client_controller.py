@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (
     BaseController,
-    ClientAlreadyExistsException,
-    ClientNameCannotBeChangedException,
-    ClientNotFoundException,
+    AlreadyExistsException,
+    NameCannotBeChangedException,
+    NotFoundException,
     session_scope,
 )
 from backend.models import ClientTable
