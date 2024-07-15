@@ -50,4 +50,4 @@ volumes:
 networks:
   invoice_ai_net:
     name: invoice_ai_net
-
+    driver: bridge
