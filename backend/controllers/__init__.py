@@ -1,11 +1,7 @@
 from .base_controller import (
-    BusinessAlreadyExistsException,
-    BusinessNameCannotBeChangedException,
-    BusinessNotFoundException,
-    ClientAlreadyExistsException,
-    ClientNameCannotBeChangedException,
-    ClientNotFoundException,
-    InvoiceNotFoundException,
+    AlreadyExistsException,
+    NameCannotBeChangedException,
+    NotFoundException,
     session_scope,
 )
 from .business_controller import BusinessController
@@ -16,12 +12,8 @@ __all__ = [
     "BusinessController",
     "ClientController",
     "InvoiceController",
-    "BusinessAlreadyExistsException",
-    "BusinessNameCannotBeChangedException",
-    "BusinessNotFoundException",
-    "ClientAlreadyExistsException",
-    "ClientNameCannotBeChangedException",
-    "ClientNotFoundException",
-    "InvoiceNotFoundException",
+    "AlreadyExistsException",
+    "NameCannotBeChangedException",
+    "NotFoundException",
     "session_scope",
 ]

@@ -23,6 +23,18 @@ class App:
         self.invoice = st.session_state.invoice
         self.language = Language()
 
+        if "openai_api_key" not in st.session_state:
+            st.session_state.openai_api_key = ""
+
+        if "database_connection_string" not in st.session_state:
+            st.session_state.database_connection_string = ""
+
+        if "tavily_api_key" not in  st.session_state:
+            st.session_state.tavily_api_key = ""
+
+        if "langchain_api_key" not in st.session_state:
+            st.session_state.langchain_api_key = ""
+
         tab_names = [
             str(_("invoice_details") + " :page_facing_up:"),
             str(
@@ -43,7 +55,24 @@ class App:
 
     def run(self) -> None:
         with st.sidebar:
-            st.header(_("invoice"))
+            st.header(_("invoice") + " AI")
+
+            st.session_state.openai_api_key = st.text_input(
+                "OpenAI API Key",
+                help=_("openai_api_key_help")
+            )
+            st.session_state.database_connection_string = st.text_input(
+                "Database Connection String",
+                help=_("database_connection_string_help")
+            )
+            st.session_state.tavily_key = st.text_input(
+                "Tavily API Key",
+                help=_("tavily_api_key_help")
+            )
+            st.session_state.langchain_api_key = st.text_input(
+                "Langchain API Key",
+                help=_("langchain_api_key_help")
+            )
 
             st.header(_("settings"))
             build_language_selector(self.language)

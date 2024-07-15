@@ -1,5 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-
+import requests.exceptions
 import streamlit as st
 
 from frontend.domain.entities.invoice_entity import InvoiceEntity
@@ -14,6 +14,8 @@ def _on_change_product(key: str, attribute: str, product_index: int) -> None:
         st.session_state.invoice.edit_product(
             product_index, **{attribute: current_value}
         )
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
     except Exception as e:
         st.warning(str(e))
 
@@ -27,6 +29,8 @@ def _on_change_details(key: str) -> None:
             InvoiceEntity.validate_dates(current_value)
 
         st.session_state.invoice.edit_field(key, current_value)
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
     except Exception as e:
         st.warning(str(e))
 
@@ -38,6 +42,8 @@ def _on_change_business(key: str) -> None:
     try:
         business_entity = handler.get_business_details(current_value)
         st.session_state.invoice.edit_business(**business_entity.__dict__)
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
     except Exception as e:
         st.warning(str(e))
 
@@ -49,6 +55,8 @@ def _on_change_client(key: str) -> None:
     try:
         client_entity = handler.get_client_details(current_value)
         st.session_state.invoice.edit_client(**client_entity.__dict__)
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
     except Exception as e:
         st.warning(str(e))
 
@@ -60,29 +68,37 @@ def build_invoice_fields() -> None:
 
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
-        st.selectbox(
-            _("client"),
-            handler.get_all_clients_names(),
-            index=None,
-            placeholder=_("select_client"),
-            on_change=_on_change_client,
-            key=key_client,
-            args=(key_client,),
-        )
+        try:
+            st.selectbox(
+                _("client"),
+                handler.get_all_clients_names(),
+                index=None,
+                placeholder=_("select_client"),
+                on_change=_on_change_client,
+                key=key_client,
+                args=(key_client,),
+            )
+        except requests.exceptions.HTTPError as e:
+            st.error(str(e))
+            return
 
     key_business = "business"
 
     with business:
         st.subheader(_("shared_details") + " " + _("business_details"))
-        st.selectbox(
-            _("business"),
-            handler.get_all_businesses_names(),
-            index=None,
-            placeholder=_("select_business"),
-            on_change=_on_change_business,
-            key=key_business,
-            args=(key_business,),
-        )
+        try:
+            st.selectbox(
+                _("business"),
+                handler.get_all_businesses_names(),
+                index=None,
+                placeholder=_("select_business"),
+                on_change=_on_change_business,
+                key=key_business,
+                args=(key_business,),
+            )
+        except requests.exceptions.HTTPError as e:
+            st.error(str(e))
+            return
 
     st.subheader(_("invoice_details"))
 

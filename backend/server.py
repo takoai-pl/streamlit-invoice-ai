@@ -1,25 +1,41 @@
-from fastapi import FastAPI
-from langserve import add_routes
+from fastapi import FastAPI, Depends, HTTPException, Security
+from fastapi.security.api_key import APIKeyHeader
+import os
 
 from backend.routes.business_router import business_router
 from backend.routes.client_router import client_router
-from backend.routes.graph import get_chain
 from backend.routes.invoice_router import invoice_router
+
+API_KEY = os.getenv("API_KEY")
+API_KEY_NAME = "Authorization"
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 app = FastAPI(
     title="Invoice AI API",
     description="API for Invoice AI",
-    version="0.1.0",
+    version="0.2.0",
 )
 
-app.get("/")(lambda: {"status": "ok"})
-app.include_router(business_router)
-app.include_router(client_router)
-app.include_router(invoice_router)
 
-add_routes(app, get_chain())
+def get_api_key(request_api_key_header: str = Security(api_key_header)):
+    if request_api_key_header == API_KEY:
+        return request_api_key_header
+    else:
+        raise HTTPException(
+            status_code=403,
+            detail="Not authorized",
+        )
+
+
+@app.get("/")
+def read_root():
+    return {"status": "ok"}
+
+
+app.include_router(business_router, dependencies=[Depends(get_api_key)])
+app.include_router(client_router, dependencies=[Depends(get_api_key)])
+app.include_router(invoice_router, dependencies=[Depends(get_api_key)])
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8000)

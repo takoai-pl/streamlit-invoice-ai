@@ -1,5 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-
+import requests
 import streamlit as st
 
 from frontend.utils.language import i18n as _
@@ -7,7 +7,10 @@ from frontend.utils.language import i18n as _
 
 def _on_change_client(key: str, attribute: str) -> None:
     current_value = st.session_state[key]
-    st.session_state.invoice.edit_client(**{attribute: current_value})
+    try:
+        st.session_state.invoice.edit_client(**{attribute: current_value})
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
 
 
 def build_client_fields() -> None:

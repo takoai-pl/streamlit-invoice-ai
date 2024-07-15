@@ -13,67 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-
-      - name: Build and push API
-        run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-api:latest -f backend.Dockerfile --push .
-
-      - name: Build and push Streamlit
-        run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-streamlit:latest -f frontend.Dockerfile --push .
-
-      - name: Deploy to EC2
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # Login to DockerHub
-            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-            
-            # Pull the latest images
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-api:latest
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-streamlit:latest
-
-            # Ensure the PostgreSQL container is running
-            if [ ! "$(docker ps -q -f name=postgres)" ]; then
-              if [ "$(docker ps -aq -f status=exited -f name=postgres)" ]; then
-                # Start the PostgreSQL container if it is stopped
-                docker start postgres
-              else
-                # Run the PostgreSQL container if it does not exist
-                docker run -d \
-                  --name postgres \
-                  -e POSTGRES_USER= ${{ secrets.POSTGRES_USER }} \
-                  -e POSTGRES_PASSWORD= "${{ secrets.POSTGRES_PASSWORD }}" \
-                  -e POSTGRES_DB= ${{ secrets.POSTGRES_DB }} \
-                  -v postgres_data:/var/lib/postgresql/data \
-                  -p 5432:5432 \
-                  postgres:latest
-              fi
+            # Clone the repository
+            cd /srv/
+            if [ -d "streamlit-invoice-ai" ]; then
+              cd streamlit-invoice-ai
+              git pull origin main
+            else
+              git clone https://github.com/takoai-pl/streamlit-invoice-ai.git
+              cd streamlit-invoice-ai
             fi
-            
-            # Stop and remove existing API and Streamlit containers
-            docker stop api streamlit || true
-            docker rm api streamlit || true
-            
-            # Run the API container
-            docker run -d --name api -p 8000:8000 -e POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}" -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-api:latest
-            
-            # Run the Streamlit container
-            docker run -d --name streamlit -p 8501:8501 -e BASE_URL="${{ secrets.BASE_URL }}" ${{ secrets.DOCKERHUB_USERNAME }}/invoice-ai-streamlit:latest
-            
-            # Generate locales for the Streamlit container
-            docker exec -it streamlit make locales
-            
-            # Restart Nginx to apply the new configuration
-            sudo systemctl restart nginx
+
+            # Run docker-compose
+            docker-compose up -d

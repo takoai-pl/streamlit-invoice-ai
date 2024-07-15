@@ -1,2 +1,3 @@
 [client]
 showSidebarNavigation = false
+showErrorDetails = false

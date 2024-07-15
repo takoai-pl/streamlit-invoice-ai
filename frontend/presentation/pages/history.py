@@ -1,5 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-
+import requests.exceptions
 import streamlit as st
 
 from frontend.presentation.handler import handler
@@ -9,7 +9,11 @@ from frontend.utils.language import i18n as _
 def build_history() -> None:
     st.subheader(_("history"))
 
-    invoices = handler.get_all_invoices()
+    try:
+        invoices = handler.get_all_invoices()
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+        return
 
     (
         issueddate,

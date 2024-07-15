@@ -142,3 +142,15 @@ class InvoiceEntity(BaseModel):
             )
 
         return invoice_fields_filled
+
+    def validate_invoice(self) -> None:
+        self.are_all_fields_filled()
+        self.validate_invoice_no(self.invoiceNo)
+        self.validate_currency(self.currency)
+        self.validate_dates(self.issuedAt)
+        self.validate_dates(self.dueTo)
+        self.validate_due_date(self.dueTo, {"issuedAt": self.issuedAt})
+        for product in self.products:
+            product.validate_product()
+        self.client.validate_client()
+        self.business.validate_business()
