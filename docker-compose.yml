@@ -3,8 +3,8 @@ version: '3.1'
 services:
   api:
     build:
-        context: .
-        dockerfile: backend.Dockerfile
+      context: .
+      dockerfile: backend.Dockerfile
     image: api
     environment:
       - POSTGRESQL_CONNECTION_STRING=${POSTGRESQL_CONNECTION_STRING}
@@ -13,6 +13,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - invoice_ai_net
 
   streamlit:
     build:
@@ -26,6 +28,8 @@ services:
       - "8501:8501"
     depends_on:
       - api
+    networks:
+      - invoice_ai_net
 
   db:
     image: postgres
@@ -37,6 +41,13 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - invoice_ai_net
 
 volumes:
   postgres_data:
+
+networks:
+  invoice_ai_net:
+    name: invoice_ai_net
+

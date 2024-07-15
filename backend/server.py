@@ -18,7 +18,10 @@ app = FastAPI(
 
 
 def get_api_key(request_api_key_header: str = Security(api_key_header)):
-    if request_api_key_header == API_KEY:
+    print(request_api_key_header)
+    print(Security(api_key_header))
+    print(API_KEY)
+    if request_api_key_header == API_KEY or request_api_key_header == f"Bearer {API_KEY}":
         return request_api_key_header
     else:
         raise HTTPException(
