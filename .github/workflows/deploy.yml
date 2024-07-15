@@ -21,12 +21,12 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             # Export environment variables
-            export POSTGRESQL_CONNECTION_STRING=${{ secrets.POSTGRESQL_CONNECTION_STRING }}
-            export API_KEY=${{ secrets.API_KEY }}
-            export BASE_URL=${{ secrets.BASE_URL }}
-            export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-            export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}"
+            export API_KEY="${{ secrets.API_KEY }}"
+            export BASE_URL="${{ secrets.BASE_URL }}"
+            export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
+            export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+            export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
             
             # Clone the repository
             cd /srv/
