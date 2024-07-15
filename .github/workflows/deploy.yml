@@ -33,6 +33,7 @@ jobs:
             if [ -d "streamlit-invoice-ai" ]; then
               cd streamlit-invoice-ai
               git config --global --add safe.directory /srv/streamlit-invoice-ai
+              git reset --hard HEAD
               git pull origin main
             else
               git clone https://github.com/takoai-pl/streamlit-invoice-ai.git
