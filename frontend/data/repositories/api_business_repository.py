@@ -27,8 +27,8 @@ class APIBusinessRepository(BusinessRepositoryInterface):
             for business in self.database_provider.business_list()
         ]
 
-    def get_business_by_name(self, business_name: str) -> BusinessEntity | None:
-        business = self.database_provider.business_get(business_name)
+    def get_business_by_id(self, business_id: str) -> BusinessEntity | None:
+        business = self.database_provider.business_get(business_id)
         if not business:
             return None
 
@@ -42,5 +42,5 @@ class APIBusinessRepository(BusinessRepositoryInterface):
         business = BusinessModel(**business.__dict__)
         self.database_provider.business_put(business)
 
-    def delete_business(self, business_name: str) -> None:
-        self.database_provider.business_del(business_name)
+    def delete_business(self, business_id: str) -> None:
+        self.database_provider.business_del(business_id)

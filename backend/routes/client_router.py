@@ -33,10 +33,10 @@ async def get_list_of_clients() -> JSONResponse:
     return JSONResponse(status_code=200, content=response)
 
 
-@client_router.get("/{client_name}/", response_model=ClientEntity)
-async def get_client(client_name: str) -> JSONResponse:
+@client_router.get("/{client_id}/", response_model=ClientEntity)
+async def get_client(client_id: str) -> JSONResponse:
     try:
-        client = client_controller.get(client_name)
+        client = client_controller.get(client_id)
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 
@@ -63,24 +63,18 @@ async def add_client(data: dict) -> JSONResponse:
 @client_router.put("/")
 async def put_client(data: dict) -> JSONResponse:
     try:
-        ClientEntity(**data).validate_client()
-    except Exception as e:
-        return JSONResponse(status_code=400, content=str(e))
-
-    client = ClientTable.from_json(data)
-
-    try:
+        client = ClientTable.from_json(data)
         client_controller.put(client)
     except Exception as e:
-        return JSONResponse(status_code=500, content=str(e))
+        return JSONResponse(status_code=400, content=str(e))
 
     return JSONResponse(status_code=204, content="Client updated successfully")
 
 
-@client_router.delete("/{client_name}/")
-async def delete_client(client_name: str) -> JSONResponse:
+@client_router.delete("/{client_id}/")
+async def delete_client(client_id: str) -> JSONResponse:
     try:
-        client_controller.delete(client_name)
+        client_controller.delete(client_id)
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 

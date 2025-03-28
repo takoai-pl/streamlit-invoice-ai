@@ -29,6 +29,7 @@ class ClientTable(Base):
 
     def to_json(self) -> dict:
         return {
+            "clientID": self.clientID,
             "name": self.name,
             "street": self.street,
             "postCode": self.postCode,
@@ -40,6 +41,7 @@ class ClientTable(Base):
     @staticmethod
     def from_json(data: dict) -> "ClientTable":
         client = ClientTable(
+            clientID=data.get("clientID", Base.generate_uuid()),
             name=data.get("name"),
             street=data.get("street"),
             postCode=data.get("postCode"),

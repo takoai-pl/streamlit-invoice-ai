@@ -85,9 +85,12 @@ def _on_change_business_select(key: str, *args) -> None:
     if current_value == "" or current_value is None:
         return
     try:
-        business_entity = handler.get_business_details(current_value)
-        if business_entity:
-            st.session_state.invoice.edit_business(**business_entity.__dict__)
+        # Get business by ID from the mapping
+        business_id = st.session_state.business_id_mapping.get(current_value)
+        if business_id:
+            business_entity = handler.get_business_details(business_id)
+            if business_entity:
+                st.session_state.invoice.edit_business(**business_entity.__dict__)
     except requests.exceptions.HTTPError as e:
         st.error(str(e))
     except Exception as e:
@@ -116,7 +119,7 @@ def _create_business() -> None:
 
 def _delete_business() -> None:
     try:
-        handler.delete_business(st.session_state.invoice.business.name)
+        handler.delete_business(st.session_state.invoice.business.businessID)
         st.session_state.invoice.business = BusinessEntity()
         st.success(_("business_deleted"))
     except requests.exceptions.HTTPError as e:
@@ -130,9 +133,14 @@ def _on_change_client_select(key: str, *args) -> None:
     if current_value == "" or current_value is None:
         return
     try:
-        client_entity = handler.get_client_details(current_value)
-        st.session_state.invoice.edit_client(**client_entity.__dict__)
-        logger.info(f"Client selection updated. Current client: {current_value}")
+        client_id = st.session_state.client_id_mapping.get(current_value)
+        if client_id:
+            client_entity = handler.get_client_details(client_id)
+            if client_entity:
+                st.session_state.invoice.edit_client(**client_entity.__dict__)
+                logger.info(
+                    f"Client selection updated. Current client: {current_value}"
+                )
     except requests.exceptions.HTTPError as e:
         logger.error(f"HTTP error while getting client details: {str(e)}")
         st.error(str(e))
@@ -190,7 +198,12 @@ def build_invoice_fields() -> None:
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
         try:
-            client_names = handler.get_all_clients_names()
+            clients = handler.get_all_clients()
+            client_names = [client.name for client in clients]
+            st.session_state.client_id_mapping = {
+                client.name: client.clientID for client in clients
+            }
+            client_names.append(_("add_new_client"))
             current_client = (
                 st.session_state.invoice.client.name
                 if st.session_state.invoice.client.name
@@ -222,7 +235,12 @@ def build_invoice_fields() -> None:
     with business:
         st.subheader(_("shared_details") + " " + _("business_details"))
         try:
-            business_names = handler.get_all_businesses_names()
+            businesses = handler.get_all_businesses()
+            business_names = [business.name for business in businesses]
+            st.session_state.business_id_mapping = {
+                business.name: business.businessID for business in businesses
+            }
+            business_names.append(_("add_new_business"))
             current_business = (
                 st.session_state.invoice.business.name
                 if st.session_state.invoice.business.name

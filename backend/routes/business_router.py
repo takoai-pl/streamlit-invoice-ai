@@ -47,12 +47,12 @@ async def get_list_of_businesses() -> JSONResponse:
     return JSONResponse(status_code=200, content=response)
 
 
-@business_router.get("/{business_name}/", response_model=BusinessEntity)
-async def get_business(business_name: str) -> JSONResponse:
+@business_router.get("/{business_id}/", response_model=BusinessEntity)
+async def get_business(business_id: str) -> JSONResponse:
     try:
-        business = business_controller.get(business_name)
+        business = business_controller.get(business_id)
         if business is None:
-            raise NotFoundException(business_name)
+            raise NotFoundException(business_id)
     except NotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))
     except RetrievalException as e:
@@ -99,10 +99,10 @@ async def put_business(data: dict) -> JSONResponse:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
-@business_router.delete("/{business_name}/")
-async def delete_business(business_name: str) -> JSONResponse:
+@business_router.delete("/{business_id}/")
+async def delete_business(business_id: str) -> JSONResponse:
     try:
-        business_controller.delete(business_name)
+        business_controller.delete(business_id)
         return JSONResponse(status_code=204, content="Business deleted successfully")
     except NotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))

@@ -12,7 +12,7 @@ class ClientRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_client_by_name(self, client_name: str) -> ClientEntity | None:
+    def get_client_by_id(self, client_id: str) -> ClientEntity | None:
         pass
 
     @abstractmethod
@@ -24,5 +24,5 @@ class ClientRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def delete_client(self, client_name: str) -> None:
+    def delete_client(self, client_id: str) -> None:
         pass

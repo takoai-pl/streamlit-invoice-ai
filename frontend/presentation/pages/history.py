@@ -51,7 +51,6 @@ def build_history() -> None:
             icon=":material/edit:",
             key=f"edit-{i}",
         ):
-            # Create a deep copy of the invoice data
             invoice_data = {
                 "invoiceID": invoice.invoiceID,
                 "invoiceNo": invoice.invoiceNo,

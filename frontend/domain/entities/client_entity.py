@@ -1,11 +1,11 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-import re
 from typing import Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 
 class ClientEntity(BaseModel):
+    clientID: Optional[str] = ""
     name: Optional[str] = ""
     street: Optional[str] = ""
     postCode: Optional[str] = ""
@@ -13,7 +13,15 @@ class ClientEntity(BaseModel):
     country: Optional[str] = ""
     vatNo: Optional[str] = ""
 
+    @classmethod
+    def validate_id(cls, v: str) -> str:
+        if not v:
+            raise ValueError("Client ID must be set")
+        return v
+
     def validate_client(self) -> None:
+        if self.clientID is None or self.clientID == "":
+            raise ValueError("Client ID must be set")
         if self.name is None:
             raise ValueError("Name must be set")
         if self.street is None:

@@ -1,10 +1,34 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+import uuid
+
 import requests
 import streamlit as st
 
 from frontend.domain.entities.client_entity import ClientEntity
 from frontend.presentation.handler import handler
 from frontend.utils.language import i18n as _
+
+
+def _on_change_client_select(key: str, *args) -> None:
+    current_value = st.session_state[key]
+    if current_value == "" or current_value is None:
+        return
+
+    if current_value == _("add_new_client"):
+        st.session_state.invoice.client = ClientEntity()
+        st.session_state.invoice.client.clientID = str(uuid.uuid4())
+        return
+
+    try:
+        client_id = st.session_state.client_id_mapping.get(current_value)
+        if client_id:
+            client_entity = handler.get_client_details(client_id)
+            if client_entity:
+                st.session_state.invoice.edit_client(**client_entity.__dict__)
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
 
 
 def _on_change_client_field(key: str, field: str) -> None:
@@ -17,27 +41,10 @@ def _on_change_client_field(key: str, field: str) -> None:
         st.warning(str(e))
 
 
-def _on_change_client_select(key: str, *args) -> None:
-    current_value = st.session_state[key]
-    if current_value == "" or current_value is None:
-        return
-
-    if current_value == _("add_new_client"):
-        st.session_state.invoice.client = ClientEntity()
-        return
-
-    try:
-        client_entity = handler.get_client_details(current_value)
-        if client_entity:
-            st.session_state.invoice.edit_client(**client_entity.__dict__)
-    except requests.exceptions.HTTPError as e:
-        st.error(str(e))
-    except Exception as e:
-        st.warning(str(e))
-
-
 def _create_client() -> None:
     try:
+        if not st.session_state.invoice.client.clientID:
+            st.session_state.invoice.client.clientID = str(uuid.uuid4())
         handler.create_client(st.session_state.invoice.client)
         st.success(_("client_created"))
     except requests.exceptions.HTTPError as e:
@@ -48,7 +55,7 @@ def _create_client() -> None:
 
 def _delete_client() -> None:
     try:
-        handler.delete_client(st.session_state.invoice.client.name)
+        handler.delete_client(st.session_state.invoice.client.clientID)
         st.session_state.invoice.client = ClientEntity()
         st.success(_("client_deleted"))
     except requests.exceptions.HTTPError as e:
@@ -70,7 +77,11 @@ def _update_client() -> None:
 def build_client_fields() -> None:
     st.subheader(_("client_details"))
 
-    client_names = handler.get_all_clients_names()
+    clients = handler.get_all_clients()
+    client_names = [client.name for client in clients]
+    st.session_state.client_id_mapping = {
+        client.name: client.clientID for client in clients
+    }
     client_names.append(_("add_new_client"))
 
     current_client = (
@@ -92,12 +103,20 @@ def build_client_fields() -> None:
         args=("client_select",),
     )
 
-    if selected_client == _("add_new_client"):
+    if selected_client == "":
         st.session_state.invoice.client = ClientEntity()
+        st.session_state.invoice.client.clientID = str(uuid.uuid4())
 
-    client_fields = ["name", "street", "postCode", "town", "country", "vatNo"]
+    client_fields = [
+        ("name", ""),
+        ("street", ""),
+        ("postCode", ""),
+        ("town", ""),
+        ("country", ""),
+        ("vatNo", ""),
+    ]
 
-    for field in client_fields:
+    for field, help_text in client_fields:
         class_name = st.session_state.invoice.client.__class__.__name__.lower()
         key = f"{class_name}_{field}"
         st.text_input(
@@ -106,6 +125,7 @@ def build_client_fields() -> None:
             key=key,
             on_change=_on_change_client_field,
             args=(key, field),
+            help=help_text,
         )
 
     col1, col2 = st.columns(2)

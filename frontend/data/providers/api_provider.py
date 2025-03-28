@@ -90,9 +90,9 @@ class APIProvider:
         response.raise_for_status()
         return [ClientModel.from_json(client) for client in response.json()]
 
-    def client_get(self, client_name: str) -> ClientModel:
+    def client_get(self, client_id: str) -> ClientModel:
         response = requests.get(
-            f"{self.base_url}/client/{client_name}/", headers=self.headers
+            f"{self.base_url}/client/{client_id}/", headers=self.headers
         )
         response.raise_for_status()
         return ClientModel.from_json(response.json())
@@ -105,14 +105,14 @@ class APIProvider:
 
     def client_put(self, client: ClientModel) -> None:
         response = requests.put(
-            f"{self.base_url}/client/{client.name}/",
+            f"{self.base_url}/client/",
             json=client.to_json(),
             headers=self.headers,
         )
         response.raise_for_status()
 
-    def client_del(self, client_name: str) -> None:
+    def client_del(self, client_id: str) -> None:
         response = requests.delete(
-            f"{self.base_url}/client/{client_name}/", headers=self.headers
+            f"{self.base_url}/client/{client_id}/", headers=self.headers
         )
         response.raise_for_status()

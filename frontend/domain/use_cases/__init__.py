@@ -3,15 +3,16 @@
 from .business_use_cases import (
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
-    GetAllBusinessesNamesUseCase,
+    GetAllBusinessesUseCase,
     GetBusinessDetailsUseCase,
     UpdateBusinessUseCase,
 )
 from .client_use_cases import (
     CreateClientUseCase,
     DeleteClientUseCase,
-    GetAllClientsNamesUseCase,
+    GetAllClientsUseCase,
     GetClientDetailsUseCase,
+    UpdateClientUseCase,
 )
 from .invoice_use_cases import (
     AddInvoiceUseCase,
@@ -22,12 +23,12 @@ from .invoice_use_cases import (
 )
 
 __all__ = [
-    "EditBusinessUseCase",
+    "UpdateBusinessUseCase",
     "CreateBusinessUseCase",
     "DeleteBusinessUseCase",
-    "GetAllBusinessesNamesUseCase",
+    "GetAllBusinessesUseCase",
     "GetBusinessDetailsUseCase",
-    "GetAllClientsNamesUseCase",
+    "GetAllClientsUseCase",
     "GetClientDetailsUseCase",
     "CreateClientUseCase",
     "DeleteClientUseCase",
@@ -36,4 +37,5 @@ __all__ = [
     "DownloadInvoiceUseCase",
     "UpdateInvoiceUseCase",
     "DeleteInvoiceUseCase",
+    "UpdateClientUseCase",
 ]

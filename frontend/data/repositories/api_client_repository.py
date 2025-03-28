@@ -27,8 +27,8 @@ class APIClientRepository(ClientRepositoryInterface, ABC):
             for client in self.database_provider.client_list()
         ]
 
-    def get_client_by_name(self, client_name: str) -> ClientEntity | None:
-        client = self.database_provider.client_get(client_name)
+    def get_client_by_id(self, client_id: str) -> ClientEntity | None:
+        client = self.database_provider.client_get(client_id)
         if not client:
             return None
 
@@ -42,5 +42,5 @@ class APIClientRepository(ClientRepositoryInterface, ABC):
         client = ClientModel(**client.__dict__)
         self.database_provider.client_put(client)
 
-    def delete_client(self, client_name: str) -> None:
-        self.database_provider.client_del(client_name)
+    def delete_client(self, client_id: str) -> None:
+        self.database_provider.client_del(client_id)

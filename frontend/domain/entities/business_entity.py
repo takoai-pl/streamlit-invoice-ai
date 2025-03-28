@@ -26,10 +26,17 @@ class BusinessEntity(BaseModel):
             raise ValueError("Invalid VAT number. It should be 10 digits")
         return v
 
+    @classmethod
+    def validate_id(cls, v: str) -> str:
+        if not v:
+            raise ValueError("Business ID must be set")
+        return v
+
     def validate_business(self) -> None:
         try:
             self.are_all_fields_filled()
             self.validate_vat_no(self.vatNo)
+            self.validate_id(self.businessID)
         except ValueError as e:
             raise ValueError(f"Validation failed: {str(e)}")
         except Exception as e:
