@@ -21,6 +21,7 @@ def _on_change_business_select(key: str, *args) -> None:
     if current_value == _("add_new_business"):
         st.session_state.invoice.business = BusinessEntity()
         st.session_state.invoice.business.businessID = str(uuid.uuid4())
+        st.session_state.invoice.business.name = ""
         return
 
     try:
@@ -81,7 +82,6 @@ def _update_business() -> None:
 def build_business_fields() -> None:
     st.subheader(_("business_details"))
 
-    # Get all businesses and create a mapping of names to IDs
     businesses = handler.get_all_businesses()
     business_names = [business.name for business in businesses]
     st.session_state.business_id_mapping = {
@@ -114,67 +114,71 @@ def build_business_fields() -> None:
         st.session_state.invoice.business = BusinessEntity()
         st.session_state.invoice.business.businessID = str(uuid.uuid4())
 
-    # Business fields
-    business_fields = [
-        ("name", ""),
-        ("street", ""),
-        ("postCode", ""),
-        ("town", ""),
-        ("country", ""),
-        ("vatNo", ""),
-        ("bic", ""),
-        ("iban", ""),
-        ("phone", ""),
-        ("email", ""),
-    ]
+    # Create two columns for the main content
+    main_col, logo_col = st.columns([3, 1])
 
-    for field, help_text in business_fields:
-        class_name = st.session_state.invoice.business.__class__.__name__.lower()
-        key = f"{class_name}_{field}"
-        st.text_input(
-            _(field),
-            value=getattr(st.session_state.invoice.business, field, ""),
-            key=key,
-            on_change=_on_change_business_field,
-            args=(key, field),
-            help=help_text,
-        )
+    with main_col:
+        # Business fields
+        business_fields = [
+            ("name", ""),
+            ("street", ""),
+            ("postCode", ""),
+            ("town", ""),
+            ("country", ""),
+            ("vatNo", ""),
+            ("bic", ""),
+            ("iban", ""),
+            ("phone", ""),
+            ("email", ""),
+        ]
 
-    st.subheader(_("business_logo"))
-    uploaded_file = st.file_uploader(
-        _("upload_logo"),
-        type=["png", "jpg", "jpeg"],
-        key="business_logo_uploader",
-    )
-
-    if uploaded_file is not None:
-        file_bytes = uploaded_file.getvalue()
-        base64_image = base64.b64encode(file_bytes).decode()
-        st.session_state.invoice.business.logo = base64_image
-
-        st.image(uploaded_file, caption=_("current_logo"))
-    elif st.session_state.invoice.business.logo:
-        st.image(
-            base64.b64decode(st.session_state.invoice.business.logo),
-            caption=_("current_logo"),
-        )
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if not selected_business or selected_business == "":
-            st.button(
-                _("create_business"),
-                on_click=_create_business,
-                type="primary",
+        for field, help_text in business_fields:
+            class_name = st.session_state.invoice.business.__class__.__name__.lower()
+            key = f"{class_name}_{field}"
+            st.text_input(
+                _(field),
+                value=getattr(st.session_state.invoice.business, field, ""),
+                key=key,
+                on_change=_on_change_business_field,
+                args=(key, field),
+                help=help_text,
             )
-        else:
+
+    with logo_col:
+        st.subheader(_("business_logo"))
+        uploaded_file = st.file_uploader(
+            _("upload_logo"),
+            type=["png", "jpg", "jpeg"],
+            key="business_logo_uploader",
+        )
+
+        if uploaded_file is not None:
+            file_bytes = uploaded_file.getvalue()
+            base64_image = base64.b64encode(file_bytes).decode()
+            st.session_state.invoice.business.logo = base64_image
+            st.image(uploaded_file, caption=_("current_logo"))
+        elif st.session_state.invoice.business.logo:
+            st.image(
+                base64.b64decode(st.session_state.invoice.business.logo),
+                caption=_("current_logo"),
+            )
+
+    # Action buttons at the bottom
+    if selected_business == _("add_new_business") or not selected_business:
+        st.button(
+            _("create_business"),
+            on_click=_create_business,
+            type="primary",
+        )
+    else:
+        col1, col2 = st.columns(2)
+        with col1:
             st.button(
                 _("update_business"),
                 on_click=_update_business,
                 type="primary",
             )
-    with col2:
-        if selected_business and selected_business != "":
+        with col2:
             st.button(
                 _("delete_business"),
                 on_click=_delete_business,

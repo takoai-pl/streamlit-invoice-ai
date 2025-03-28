@@ -107,43 +107,52 @@ def build_client_fields() -> None:
         st.session_state.invoice.client = ClientEntity()
         st.session_state.invoice.client.clientID = str(uuid.uuid4())
 
-    client_fields = [
-        ("name", ""),
-        ("street", ""),
-        ("postCode", ""),
-        ("town", ""),
-        ("country", ""),
-        ("vatNo", ""),
-    ]
+    # Create two columns for the main content
+    main_col, extra_col = st.columns([3, 1])
 
-    for field, help_text in client_fields:
-        class_name = st.session_state.invoice.client.__class__.__name__.lower()
-        key = f"{class_name}_{field}"
-        st.text_input(
-            _(field),
-            value=getattr(st.session_state.invoice.client, field, ""),
-            key=key,
-            on_change=_on_change_client_field,
-            args=(key, field),
-            help=help_text,
-        )
+    with main_col:
+        client_fields = [
+            ("name", ""),
+            ("street", ""),
+            ("postCode", ""),
+            ("town", ""),
+            ("country", ""),
+            ("vatNo", ""),
+        ]
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if selected_client == _("add_new_client") or not selected_client:
-            st.button(
-                _("create_client"),
-                on_click=_create_client,
-                type="primary",
+        for field, help_text in client_fields:
+            class_name = st.session_state.invoice.client.__class__.__name__.lower()
+            key = f"{class_name}_{field}"
+            st.text_input(
+                _(field),
+                value=getattr(st.session_state.invoice.client, field, ""),
+                key=key,
+                on_change=_on_change_client_field,
+                args=(key, field),
+                help=help_text,
             )
-        else:
+
+    with extra_col:
+        # This column is reserved for any future additional client information
+        # that might be added later
+        pass
+
+    # Action buttons at the bottom
+    if selected_client == _("add_new_client") or not selected_client:
+        st.button(
+            _("create_client"),
+            on_click=_create_client,
+            type="primary",
+        )
+    else:
+        col1, col2 = st.columns(2)
+        with col1:
             st.button(
                 _("update_client"),
                 on_click=_update_client,
                 type="primary",
             )
-    with col2:
-        if selected_client and selected_client != _("add_new_client"):
+        with col2:
             st.button(
                 _("delete_client"),
                 on_click=_delete_client,

@@ -20,6 +20,30 @@ def build_history() -> None:
         st.error(str(e))
         return
 
+    col1, col2 = st.columns(2)
+
+    with col1:
+        client_names = sorted(list(set(invoice.client.name for invoice in invoices)))
+        selected_client = st.selectbox(
+            _("filter_by_client"), options=["All"] + client_names, index=0
+        )
+
+    with col2:
+        sort_by = st.radio(
+            _("sort_by"), options=["date", "invoice_id"], horizontal=True
+        )
+
+    filtered_invoices = invoices
+    if selected_client != "All":
+        filtered_invoices = [
+            inv for inv in invoices if inv.client.name == selected_client
+        ]
+
+    if sort_by == "date":
+        filtered_invoices.sort(key=lambda x: x.issuedAt, reverse=True)
+    else:  # sort by invoice_id
+        filtered_invoices.sort(key=lambda x: x.invoiceID, reverse=True)
+
     (
         issueddate,
         invoiceno,
@@ -28,9 +52,9 @@ def build_history() -> None:
         edit,
         download,
         delete,
-    ) = st.columns([2, 2, 2, 2, 1, 1, 1])
+    ) = st.columns([2, 2, 4, 4, 1, 1, 1])
 
-    for i, invoice in enumerate(invoices):
+    for i, invoice in enumerate(filtered_invoices):
         issueddate.button(
             str(invoice.issuedAt), disabled=True, key=f"issueddate-{i}", type="tertiary"
         )

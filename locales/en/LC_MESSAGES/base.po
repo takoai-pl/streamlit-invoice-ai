@@ -59,13 +59,13 @@ msgstr "Total"
 
 # History
 msgid "history"
-msgstr "Geschiedenis"
+msgstr "History"
 msgid "edit"
-msgstr "Bewerken"
+msgstr "Edit"
 msgid "download"
-msgstr "Downloaden"
+msgstr "Download"
 msgid "delete"
-msgstr "Verwijderen"
+msgstr "Delete"
 msgid "no_invoices_yet"
 msgstr "No invoices yet"
 

@@ -160,18 +160,6 @@ def _on_change_client_field(key: str, field: str) -> None:
 
 
 def build_invoice_fields() -> None:
-    # Log the current invoice state
-    logger.info("Current invoice state:")
-    logger.info(f"Invoice No: {st.session_state.invoice.invoiceNo}")
-    logger.info(f"Currency: {st.session_state.invoice.currency}")
-    logger.info(f"VAT %: {st.session_state.invoice.vatPercent}")
-    logger.info(f"Issued At: {st.session_state.invoice.issuedAt}")
-    logger.info(f"Due To: {st.session_state.invoice.dueTo}")
-    logger.info(f"Note: {st.session_state.invoice.note}")
-    logger.info(f"Client: {st.session_state.invoice.client.__dict__}")
-    logger.info(f"Business: {st.session_state.invoice.business.__dict__}")
-    logger.info(f"Products: {[p.__dict__ for p in st.session_state.invoice.products]}")
-
     if "issuedAt" not in st.session_state:
         st.session_state.issuedAt = st.session_state.invoice.issuedAt
     if "dueTo" not in st.session_state:
@@ -203,7 +191,6 @@ def build_invoice_fields() -> None:
             st.session_state.client_id_mapping = {
                 client.name: client.clientID for client in clients
             }
-            client_names.append(_("add_new_client"))
             current_client = (
                 st.session_state.invoice.client.name
                 if st.session_state.invoice.client.name
@@ -240,7 +227,6 @@ def build_invoice_fields() -> None:
             st.session_state.business_id_mapping = {
                 business.name: business.businessID for business in businesses
             }
-            business_names.append(_("add_new_business"))
             current_business = (
                 st.session_state.invoice.business.name
                 if st.session_state.invoice.business.name

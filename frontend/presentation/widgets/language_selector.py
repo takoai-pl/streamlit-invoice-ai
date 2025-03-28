@@ -13,7 +13,6 @@ from frontend.utils.language import (
 def _on_change_language(key: str, language: Language) -> None:
     selected_language = st.session_state[key]
     selected_language_value = Language.language_dict[selected_language]
-    st.session_state.invoice.set_language(selected_language_value)
     language.change_language(selected_language_value)
 
 

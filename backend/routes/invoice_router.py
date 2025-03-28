@@ -70,8 +70,8 @@ async def add_invoice(data: dict) -> JSONResponse:
         return JSONResponse(status_code=400, content=str(e))
 
     try:
-        business_id = business_controller.get(data["business"]["name"]).businessID
-        client_id = client_controller.get(data["client"]["name"]).clientID
+        business_id = business_controller.get(data["business"]["businessID"]).businessID
+        client_id = client_controller.get(data["client"]["clientID"]).clientID
         invoice, products = InvoiceTable.from_json(data, business_id, client_id)
         invoice_controller.add(invoice, products)
     except Exception as e:

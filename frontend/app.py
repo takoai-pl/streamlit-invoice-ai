@@ -36,19 +36,19 @@ class App:
             st.session_state.langchain_api_key = ""
 
         tab_names = [
-            str(_("invoice_details") + " :page_facing_up:"),
+            str(_("invoice_details") + " :material/description:"),
+            str(_("history") + " :material/history:"),
             str(
                 _("shared_details")
                 + " "
                 + _("client_details")
                 + " & "
                 + _("business_details")
-                + " :bust_in_silhouette:"
+                + " :material/apartment:"
             ),
-            str(_("history") + " :scroll:"),
         ]
 
-        self.InvoiceDetails, self.ClientDetails, self.History = st.tabs(tab_names)
+        self.InvoiceDetails, self.History, self.ClientDetails = st.tabs(tab_names)
 
     def run(self) -> None:
         with st.sidebar:
@@ -58,17 +58,16 @@ class App:
         with self.InvoiceDetails:
             build_invoice_fields()
 
-        with self.ClientDetails:
-            client_column, business_column = st.columns(2)
-
-            with client_column:
-                build_client_fields()
-
-            with business_column:
-                build_business_fields()
-
         with self.History:
             build_history()
+
+        with self.ClientDetails:
+            # Create expandable sections for client and business details
+            with st.expander(_("client_details"), expanded=True):
+                build_client_fields()
+
+            with st.expander(_("business_details"), expanded=True):
+                build_business_fields()
 
 
 if __name__ == "__main__":
