@@ -1,5 +1,4 @@
 # Copyright (c) TaKo AI Sp. z o.o.
-from datetime import date
 from typing import Any
 
 from frontend.domain import InvoiceEntity
