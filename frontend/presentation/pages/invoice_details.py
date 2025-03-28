@@ -184,7 +184,7 @@ def build_invoice_fields() -> None:
     key_client = "client"
 
     with client:
-        st.subheader(_("shared_details") + " " + _("client_details"))
+        st.subheader(_("client_details"))
         try:
             clients = handler.get_all_clients()
             client_names = [client.name for client in clients]
@@ -220,7 +220,7 @@ def build_invoice_fields() -> None:
     key_business = "business"
 
     with business:
-        st.subheader(_("shared_details") + " " + _("business_details"))
+        st.subheader(_("business_details"))
         try:
             businesses = handler.get_all_businesses()
             business_names = [business.name for business in businesses]

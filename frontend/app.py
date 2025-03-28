@@ -39,9 +39,7 @@ class App:
             str(_("invoice_details") + " :material/description:"),
             str(_("history") + " :material/history:"),
             str(
-                _("shared_details")
-                + " "
-                + _("client_details")
+                _("client_details")
                 + " & "
                 + _("business_details")
                 + " :material/apartment:"

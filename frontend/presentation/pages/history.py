@@ -3,6 +3,10 @@ import requests.exceptions
 import streamlit as st
 
 from frontend.domain.entities import InvoiceEntity
+from frontend.presentation.dialogs import (
+    show_delete_confirmation,
+    show_generation_options,
+)
 from frontend.presentation.handler import handler
 from frontend.utils.generator import Generator
 from frontend.utils.language import i18n as _
@@ -127,29 +131,11 @@ def build_history() -> None:
             icon=":material/download:",
             key=f"download-{i}",
         ):
-            try:
-                generator = Generator()
-                pdf_data = generator.generate(invoice)
-                if pdf_data:
-                    st.download_button(
-                        label=_("download_invoice"),
-                        data=pdf_data,
-                        file_name=f"invoice_{invoice.invoiceNo}.pdf",
-                        mime="application/pdf",
-                        key=f"download_pdf_{i}",
-                    )
-                else:
-                    st.error(_("invoice_generation_failed"))
-            except Exception as e:
-                st.error(str(e))
+            show_generation_options(invoice)
 
         if delete.button(
             label="",
             icon=":material/delete:",
             key=f"delete-{i}",
         ):
-            try:
-                handler.delete_invoice(invoice.invoiceID)
-                st.rerun()
-            except requests.exceptions.HTTPError as e:
-                st.error(str(e))
+            show_delete_confirmation(invoice)
