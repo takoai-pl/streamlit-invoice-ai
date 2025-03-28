@@ -16,6 +16,7 @@ from frontend.utils.language import i18n as _
 
 class App:
     def __init__(self) -> None:
+        st.set_page_config(initial_sidebar_state="collapsed")
         if "invoice" not in st.session_state:
             st.session_state.invoice = InvoiceEntity()
 
@@ -53,9 +54,6 @@ class App:
         with st.sidebar:
             st.header(_("settings"))
             build_language_selector(self.language)
-
-            if st.button("debug"):
-                print(self.invoice)
 
         with self.InvoiceDetails:
             build_invoice_fields()

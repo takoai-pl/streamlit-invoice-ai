@@ -35,8 +35,6 @@ class InvoiceTable(Base):
     business = relationship("BusinessTable")
     client = relationship("ClientTable")
 
-    language = Column("language", String)
-
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.invoiceNo = kwargs["invoiceNo"]
@@ -47,7 +45,6 @@ class InvoiceTable(Base):
         self.note = kwargs["note"]
         self.business_id = kwargs["business_id"]
         self.client_id = kwargs["client_id"]
-        self.language = kwargs["language"]
 
     def to_json(
         self, business: BusinessTable, client: ClientTable, products: List[ProductTable]
@@ -69,7 +66,6 @@ class InvoiceTable(Base):
             "business": business.to_json(),
             "client": client.to_json(),
             "products": [product.to_json() for product in products],
-            "language": self.language,
         }
 
     @staticmethod
@@ -95,7 +91,6 @@ class InvoiceTable(Base):
             issuedAt=issued_at,
             dueTo=due_to,
             note=data.get("note"),
-            language=data.get("language"),
             business_id=business_id,
             client_id=client_id,
         )

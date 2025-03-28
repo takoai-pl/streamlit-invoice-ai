@@ -40,16 +40,17 @@ class BusinessController(BaseController):
         result = session.query(BusinessTable).filter_by(name=business.name).first()
 
         if result is None:
-            raise NotFoundException(
-                f"No business found with name {business.name}"
-            )
+            raise NotFoundException(f"No business found with name {business.name}")
 
         if result.name != business.name:
             raise NameCannotBeChangedException()
 
         for key, value in business.__dict__.items():
-            if key != "_sa_instance_state":
+            if key not in ["name", "_sa_instance_state"]:
                 setattr(result, key, value)
+
+        if hasattr(business, "logo") and business.logo is not None:
+            result.logo = business.logo
 
     @session_scope
     def delete(self, session: Session, business_name: str) -> None:
@@ -57,7 +58,5 @@ class BusinessController(BaseController):
             session.query(BusinessTable).filter_by(name=business_name).first()
         )
         if business_table is None:
-            raise NotFoundException(
-                f"No business found with name {business_name}"
-            )
+            raise NotFoundException(f"No business found with name {business_name}")
         session.delete(business_table)

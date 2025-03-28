@@ -25,11 +25,10 @@ def build_history() -> None:
         invoiceno,
         client,
         business,
-        language,
         edit,
         download,
         delete,
-    ) = st.columns([2, 2, 2, 2, 1, 1, 1, 1])
+    ) = st.columns([2, 2, 2, 2, 1, 1, 1])
 
     for i, invoice in enumerate(invoices):
         issueddate.button(
@@ -47,9 +46,6 @@ def build_history() -> None:
             key=f"business-{i}",
             type="tertiary",
         )
-        language.button(
-            invoice.language, disabled=True, key=f"language-{i}", type="tertiary"
-        )
         if edit.button(
             label="",
             icon=":material/edit:",
@@ -66,7 +62,6 @@ def build_history() -> None:
                 ),
                 "dueTo": invoice.dueTo.strftime("%Y-%m-%d") if invoice.dueTo else None,
                 "note": invoice.note,
-                "language": invoice.language,
                 "client": {
                     "name": invoice.client.name,
                     "street": invoice.client.street,

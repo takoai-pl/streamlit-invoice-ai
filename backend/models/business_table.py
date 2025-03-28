@@ -1,8 +1,9 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
+import base64
 from typing import Any
 
-from sqlalchemy import Column, String
+from sqlalchemy import Column, LargeBinary, String
 
 from backend.models.base import Base
 
@@ -22,6 +23,7 @@ class BusinessTable(Base):
     iban = Column("iban", String)
     phone = Column("phone", String)
     email = Column("email", String)
+    logo = Column("logo", LargeBinary, nullable=True)
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -31,13 +33,15 @@ class BusinessTable(Base):
         self.town = kwargs["town"]
         self.country = kwargs["country"]
         self.vatNo = kwargs["vatNo"]
-        self.bic = kwargs["bic"]
-        self.iban = kwargs["iban"]
-        self.phone = kwargs["phone"]
-        self.email = kwargs["email"]
+        self.bic = kwargs.get("bic", "")
+        self.iban = kwargs.get("iban", "")
+        self.phone = kwargs.get("phone", "")
+        self.email = kwargs.get("email", "")
+        self.logo = kwargs.get("logo")
 
     def to_json(self) -> dict:
         return {
+            "businessID": self.businessID,
             "name": self.name,
             "street": self.street,
             "postCode": self.postCode,
@@ -48,21 +52,29 @@ class BusinessTable(Base):
             "iban": self.iban,
             "phone": self.phone,
             "email": self.email,
+            "logo": base64.b64encode(self.logo).decode() if self.logo else None,
         }
 
     @staticmethod
     def from_json(data: dict) -> "BusinessTable":
-        business = BusinessTable(
+        logo_data = None
+        if data.get("logo"):
+            try:
+                logo_data = base64.b64decode(data["logo"])
+            except Exception:
+                logo_data = None
+
+        return BusinessTable(
+            businessID=data.get("businessID", Base.generate_uuid()),
             name=data["name"],
             street=data["street"],
             postCode=data["postCode"],
             town=data["town"],
             country=data["country"],
             vatNo=data["vatNo"],
-            bic=data["bic"],
-            iban=data["iban"],
-            phone=data["phone"],
-            email=data["email"],
+            bic=data.get("bic", ""),
+            iban=data.get("iban", ""),
+            phone=data.get("phone", ""),
+            email=data.get("email", ""),
+            logo=logo_data,
         )
-
-        return business

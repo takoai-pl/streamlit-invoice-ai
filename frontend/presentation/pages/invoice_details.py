@@ -5,13 +5,12 @@ import uuid
 import requests.exceptions
 import streamlit as st
 
+from frontend.domain.entities.business_entity import BusinessEntity
 from frontend.domain.entities.invoice_entity import InvoiceEntity
 from frontend.presentation.handler import handler
 from frontend.utils.const import currencies
-from frontend.utils.generator import Generator
 from frontend.utils.language import i18n as _
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -161,33 +160,23 @@ def build_invoice_fields() -> None:
     logger.info(f"Issued At: {st.session_state.invoice.issuedAt}")
     logger.info(f"Due To: {st.session_state.invoice.dueTo}")
     logger.info(f"Note: {st.session_state.invoice.note}")
-    logger.info(f"Language: {st.session_state.invoice.language}")
     logger.info(f"Client: {st.session_state.invoice.client.__dict__}")
     logger.info(f"Business: {st.session_state.invoice.business.__dict__}")
     logger.info(f"Products: {[p.__dict__ for p in st.session_state.invoice.products]}")
 
-    # Initialize session state for dates if not exists
     if "issuedAt" not in st.session_state:
         st.session_state.issuedAt = st.session_state.invoice.issuedAt
     if "dueTo" not in st.session_state:
         st.session_state.dueTo = st.session_state.invoice.dueTo
 
-    # Show editing mode indicator
     if st.session_state.get("is_editing", False):
         st.warning(_("editing_mode"))
 
-    # Ensure invoice language is set to current session language
-    if "language" in st.session_state:
-        logger.info(f"Setting invoice language to: {st.session_state.language}")
-        st.session_state.invoice.set_language(st.session_state.language)
-
-    # Ensure VAT is set (can be 0)
     if st.session_state.invoice.vatPercent is None:
-        st.session_state.invoice.vatPercent = 0  # Default to 0 if not set
+        st.session_state.invoice.vatPercent = 0
         logger.info(
             f"Setting default invoice VAT to: {st.session_state.invoice.vatPercent}"
         )
-        # Update all products' VAT
         for product in st.session_state.invoice.products:
             product.vat = st.session_state.invoice.vatPercent
             logger.info(
@@ -287,16 +276,13 @@ def build_invoice_fields() -> None:
     with column3:
         key_vat_percent = "vatPercent"
 
-        # Include 0 in VAT options
         vat_percent_options = [0, 4, 5, 7, 8, 9, 21, 23]
 
-        # Get current VAT value
         current_vat = st.session_state.invoice.vatPercent
 
         try:
             vat_index = vat_percent_options.index(current_vat)
         except ValueError:
-            vat_index = 0  # Default to 0 if current not in list
             current_vat = 0
             st.session_state.invoice.vatPercent = current_vat
             logger.info(f"Setting VAT rate to default: {current_vat}")
@@ -443,12 +429,6 @@ def build_invoice_fields() -> None:
             if st.button(_("save_changes"), type="primary"):
                 try:
                     logger.info("Attempting to save invoice changes")
-                    # Ensure language is set before validation
-                    if "language" in st.session_state:
-                        st.session_state.invoice.set_language(st.session_state.language)
-                        logger.info(
-                            f"Set invoice language to: {st.session_state.language}"
-                        )
                     # Get the original invoice ID from the session state
                     original_invoice_id = st.session_state.get("original_invoice_id")
                     if original_invoice_id:
@@ -472,28 +452,19 @@ def build_invoice_fields() -> None:
                     logger.error(f"Error while updating invoice: {str(e)}")
                     st.error(str(e))
         else:
-            if st.button(_("generate_invoice"), type="primary"):
+            if st.button(_("add_invoice"), type="primary"):
                 try:
-                    logger.info("Attempting to generate invoice")
-                    # Ensure language is set before validation
-                    if "language" in st.session_state:
-                        st.session_state.invoice.set_language(st.session_state.language)
-                        logger.info(
-                            f"Set invoice language to: {st.session_state.language}"
-                        )
-                    # Generate UUID for new invoice
+                    logger.info("Attempting to add invoice")
                     st.session_state.invoice.invoiceID = str(uuid.uuid4())
-                    # Validate invoice before saving
                     st.session_state.invoice.validate_invoice()
-                    # Save invoice to database
                     handler.add_invoice(st.session_state.invoice)
-                    logger.info("Invoice generated successfully")
-                    st.success(_("invoice_generated"))
+                    logger.info("Invoice added successfully")
+                    st.success(_("invoice_added"))
                 except ValueError as e:
-                    logger.error(f"Validation error while generating invoice: {str(e)}")
+                    logger.error(f"Validation error while adding invoice: {str(e)}")
                     st.error(f"Validation error: {str(e)}")
                 except Exception as e:
-                    logger.error(f"Error while generating invoice: {str(e)}")
+                    logger.error(f"Error while adding invoice: {str(e)}")
                     st.error(str(e))
 
     with col2:

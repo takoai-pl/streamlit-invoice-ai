@@ -10,13 +10,13 @@ from frontend.domain import (
     DeleteClientUseCase,
     DeleteInvoiceUseCase,
     DownloadInvoiceUseCase,
-    EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
     GetAllClientsNamesUseCase,
     GetAllInvoicesUseCase,
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
     InvoiceEntity,
+    UpdateBusinessUseCase,
     UpdateInvoiceUseCase,
 )
 
@@ -26,7 +26,7 @@ class Handler:
 
     def __init__(
         self,
-        edit_business_use_case: EditBusinessUseCase,
+        update_business_use_case: UpdateBusinessUseCase,
         get_all_businesses_names_use_case: GetAllBusinessesNamesUseCase,
         get_business_details_use_case: GetBusinessDetailsUseCase,
         create_business_use_case: CreateBusinessUseCase,
@@ -41,7 +41,7 @@ class Handler:
         update_invoice_use_case: UpdateInvoiceUseCase,
         delete_invoice_use_case: DeleteInvoiceUseCase,
     ):
-        self.edit_business_use_case = edit_business_use_case
+        self.update_business_use_case = update_business_use_case
         self.get_all_businesses_names_use_case = get_all_businesses_names_use_case
         self.get_business_details_use_case = get_business_details_use_case
         self.create_business_use_case = create_business_use_case
@@ -56,8 +56,8 @@ class Handler:
         self.update_invoice_use_case = update_invoice_use_case
         self.delete_invoice_use_case = delete_invoice_use_case
 
-    def edit_business(self, business: BusinessEntity) -> None:
-        self.edit_business_use_case.execute(business)
+    def update_business(self, business: BusinessEntity) -> None:
+        self.update_business_use_case.execute(business)
 
     def get_all_businesses_names(self) -> list[str | None]:
         return self.get_all_businesses_names_use_case.execute()

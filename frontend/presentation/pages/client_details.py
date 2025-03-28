@@ -21,6 +21,11 @@ def _on_change_client_select(key: str, *args) -> None:
     current_value = st.session_state[key]
     if current_value == "" or current_value is None:
         return
+
+    if current_value == _("add_new_client"):
+        st.session_state.invoice.client = ClientEntity()
+        return
+
     try:
         client_entity = handler.get_client_details(current_value)
         if client_entity:
@@ -52,10 +57,22 @@ def _delete_client() -> None:
         st.warning(str(e))
 
 
+def _update_client() -> None:
+    try:
+        handler.update_client(st.session_state.invoice.client)
+        st.success(_("client_updated"))
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
+
+
 def build_client_fields() -> None:
     st.subheader(_("client_details"))
 
     client_names = handler.get_all_clients_names()
+    client_names.append(_("add_new_client"))
+
     current_client = (
         st.session_state.invoice.client.name
         if st.session_state.invoice.client.name
@@ -65,7 +82,7 @@ def build_client_fields() -> None:
         client_names.index(current_client) if current_client in client_names else None
     )
 
-    st.selectbox(
+    selected_client = st.selectbox(
         _("client"),
         client_names,
         index=current_index,
@@ -74,6 +91,9 @@ def build_client_fields() -> None:
         key="client_select",
         args=("client_select",),
     )
+
+    if selected_client == _("add_new_client"):
+        st.session_state.invoice.client = ClientEntity()
 
     client_fields = ["name", "street", "postCode", "town", "country", "vatNo"]
 
@@ -90,13 +110,20 @@ def build_client_fields() -> None:
 
     col1, col2 = st.columns(2)
     with col1:
-        st.button(
-            _("create_client"),
-            on_click=_create_client,
-            type="primary",
-        )
+        if selected_client == _("add_new_client") or not selected_client:
+            st.button(
+                _("create_client"),
+                on_click=_create_client,
+                type="primary",
+            )
+        else:
+            st.button(
+                _("update_client"),
+                on_click=_update_client,
+                type="primary",
+            )
     with col2:
-        if current_client:
+        if selected_client and selected_client != _("add_new_client"):
             st.button(
                 _("delete_client"),
                 on_click=_delete_client,

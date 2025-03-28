@@ -3,9 +3,9 @@
 from .business_use_cases import (
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
-    EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
     GetBusinessDetailsUseCase,
+    UpdateBusinessUseCase,
 )
 from .client_use_cases import (
     CreateClientUseCase,

@@ -27,9 +27,7 @@ class InvoiceController(BaseController):
         products = []
 
         for invoice in all_invoices:
-            invoice, business, client, product = self.get(
-                invoice.invoiceNo, invoice.language
-            )
+            invoice, business, client, product = self.get(invoice.invoiceID)
 
             invoices.append(invoice)
             businesses.append(business)
@@ -39,7 +37,7 @@ class InvoiceController(BaseController):
         return invoices, businesses, clients, products
 
     @session_scope
-    def get(self, session: Session, invoice_no: str, language: str) -> Tuple[
+    def get(self, session: Session, invoice_id: str) -> Tuple[
         InvoiceTable,
         BusinessTable,
         ClientTable,
@@ -47,19 +45,12 @@ class InvoiceController(BaseController):
     ]:
         invoice = (
             session.query(InvoiceTable)
-            .filter(
-                and_(
-                    InvoiceTable.invoiceNo == invoice_no,
-                    InvoiceTable.language == language,
-                )
-            )
+            .filter(InvoiceTable.invoiceID == invoice_id)
             .first()
         )
 
         if invoice is None:
-            raise NotFoundException(
-                f"No invoice found with invoice number {invoice_no} and language {language}"
-            )
+            raise NotFoundException(f"No invoice found with ID {invoice_id}")
 
         business = (
             session.query(BusinessTable)
@@ -81,7 +72,7 @@ class InvoiceController(BaseController):
 
         if not products:
             raise NotFoundException(
-                f"No products found for invoice with id {invoice.invoiceNo}"
+                f"No products found for invoice with id {invoice.invoiceID}"
             )
 
         return invoice, business, client, products

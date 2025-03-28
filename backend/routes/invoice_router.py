@@ -39,14 +39,12 @@ async def get_list_of_invoices() -> JSONResponse:
     return JSONResponse(status_code=200, content=response)
 
 
-@invoice_router.get("/{invoice_no}/{language}/", response_model=InvoiceEntity)
-async def get_invoice(invoice_no: str, language: str) -> JSONResponse:
-    decoded_invoice_no = unquote(invoice_no)
+@invoice_router.get("/{invoice_id}/", response_model=InvoiceEntity)
+async def get_invoice(invoice_id: str) -> JSONResponse:
+    decoded_invoice_id = unquote(invoice_id)
 
     try:
-        invoice, business, client, products = invoice_controller.get(
-            decoded_invoice_no, language
-        )
+        invoice, business, client, products = invoice_controller.get(decoded_invoice_id)
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 

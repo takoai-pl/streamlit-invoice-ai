@@ -102,6 +102,12 @@ msgid "client_details"
 msgstr "Klienta"
 msgid "client"
 msgstr "Klient"
+msgid "add_new_client"
+msgstr "Dodaj nowego klienta"
+msgid "update_client"
+msgstr "Aktualizuj Klienta"
+msgid "client_updated"
+msgstr "Klient został pomyślnie zaktualizowany"
 
 # Business Details
 msgid "select_business"
@@ -112,6 +118,18 @@ msgid "business"
 msgstr "Biznes"
 msgid "iban"
 msgstr "IBAN"
+msgid "add_new_business"
+msgstr "Dodaj nową firmę"
+msgid "update_business"
+msgstr "Aktualizuj Firmę"
+msgid "business_updated"
+msgstr "Firma została pomyślnie zaktualizowana"
+msgid "business_logo"
+msgstr "Logo Firmy"
+msgid "upload_logo"
+msgstr "Prześlij Logo"
+msgid "current_logo"
+msgstr "Aktualne Logo"
 
 # Agent AI
 msgid "agent_ai"
@@ -166,6 +184,12 @@ msgid "delete_client"
 msgstr "Usuń Klienta"
 
 # Invoice Generation
+msgid "add_invoice"
+msgstr "Dodaj Fakturę"
+
+msgid "invoice_added"
+msgstr "Faktura została pomyślnie dodana"
+
 msgid "generate_invoice"
 msgstr "Generuj Fakturę"
 
@@ -174,3 +198,15 @@ msgstr "Faktura została pomyślnie wygenerowana"
 
 msgid "invoice_generation_failed"
 msgstr "Nie udało się wygenerować faktury"
+
+msgid "save_changes"
+msgstr "Zapisz Zmiany"
+
+msgid "invoice_updated"
+msgstr "Faktura została pomyślnie zaktualizowana"
+
+msgid "editing_mode"
+msgstr "Obecnie edytujesz istniejącą fakturę"
+
+msgid "switch_to_generate"
+msgstr "Przełącz do Generowania Nowej Faktury"

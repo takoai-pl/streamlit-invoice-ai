@@ -16,9 +16,9 @@ from frontend.domain.repositories.invoice_repository_interface import (
 from frontend.domain.use_cases.business_use_cases import (
     CreateBusinessUseCase,
     DeleteBusinessUseCase,
-    EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
     GetBusinessDetailsUseCase,
+    UpdateBusinessUseCase,
 )
 from frontend.domain.use_cases.client_use_cases import (
     CreateClientUseCase,
@@ -44,8 +44,8 @@ __all__ = [
     "CreateClientUseCase",
     "DeleteBusinessUseCase",
     "DeleteClientUseCase",
+    "DeleteInvoiceUseCase",
     "DownloadInvoiceUseCase",
-    "EditBusinessUseCase",
     "GetAllBusinessesNamesUseCase",
     "GetAllClientsNamesUseCase",
     "GetAllInvoicesUseCase",
@@ -54,4 +54,6 @@ __all__ = [
     "InvoiceEntity",
     "InvoiceRepositoryInterface",
     "ProductEntity",
+    "UpdateBusinessUseCase",
+    "UpdateInvoiceUseCase",
 ]

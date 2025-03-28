@@ -22,7 +22,7 @@ class GetAllBusinessesNamesUseCase:
         return [business.name for business in response]
 
 
-class EditBusinessUseCase:
+class UpdateBusinessUseCase:
     def __init__(self, business_repository: BusinessRepositoryInterface):
         self.business_repository = business_repository
 

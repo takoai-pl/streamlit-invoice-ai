@@ -21,7 +21,7 @@ msgstr "Als je wilt dat de AI Agent toegang heeft tot internet, voer dan de Tavi
 msgid "langchain_api_key_help"
 msgstr "Als je wilt dat de AI Agent antwoorden opslaat in LangService, voer dan de Langchain API-sleutel in"
 
-# Invoice Details
+# Product Details
 msgid "invoice_details"
 msgstr "Factuurgegevens"
 msgid "invoice_no"
@@ -102,6 +102,12 @@ msgid "client_details"
 msgstr "Klantdetails"
 msgid "client"
 msgstr "Klant"
+msgid "add_new_client"
+msgstr "Nieuwe klant toevoegen"
+msgid "update_client"
+msgstr "Klant Bijwerken"
+msgid "client_updated"
+msgstr "Klant succesvol bijgewerkt"
 
 # Business Details
 msgid "select_business"
@@ -112,6 +118,18 @@ msgid "business"
 msgstr "Bedrijf"
 msgid "iban"
 msgstr "IBAN"
+msgid "add_new_business"
+msgstr "Nieuw bedrijf toevoegen"
+msgid "update_business"
+msgstr "Bedrijf Bijwerken"
+msgid "business_updated"
+msgstr "Bedrijf succesvol bijgewerkt"
+msgid "business_logo"
+msgstr "Bedrijfslogo"
+msgid "upload_logo"
+msgstr "Logo Uploaden"
+msgid "current_logo"
+msgstr "Huidig Logo"
 
 # Agent AI
 msgid "agent_ai"
@@ -166,6 +184,12 @@ msgid "delete_client"
 msgstr "Klant Verwijderen"
 
 # Invoice Generation
+msgid "add_invoice"
+msgstr "Factuur Toevoegen"
+
+msgid "invoice_added"
+msgstr "Factuur succesvol toegevoegd"
+
 msgid "generate_invoice"
 msgstr "Factuur Genereren"
 
@@ -174,3 +198,15 @@ msgstr "Factuur succesvol gegenereerd"
 
 msgid "invoice_generation_failed"
 msgstr "Genereren van factuur mislukt"
+
+msgid "save_changes"
+msgstr "Wijzigingen Opslaan"
+
+msgid "invoice_updated"
+msgstr "Factuur succesvol bijgewerkt"
+
+msgid "editing_mode"
+msgstr "U bewerkt momenteel een bestaande factuur"
+
+msgid "switch_to_generate"
+msgstr "Overschakelen naar Nieuwe Factuur"

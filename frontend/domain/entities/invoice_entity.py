@@ -22,7 +22,6 @@ class InvoiceEntity(BaseModel):
     business: BusinessEntity = BusinessEntity()
     note: Optional[str] = ""
     products: List[ProductEntity] = []
-    language: Optional[str] = ""
 
     @classmethod
     def validate_invoice_no(cls, v: str) -> str:
@@ -90,9 +89,6 @@ class InvoiceEntity(BaseModel):
             return 0.0
         return self.subtotal * self.vatPercent / 100
 
-    def set_language(self, language: str) -> None:
-        self.language = language
-
     def edit_field(self, field: str, value: Any) -> None:
         valid_fields = {
             "invoiceNo",
@@ -137,7 +133,7 @@ class InvoiceEntity(BaseModel):
     def delete_product(self, product_index: int) -> None:
         if product_index < 0 or product_index >= len(self.products):
             raise ValueError(f"Invalid product index: {product_index}")
-        del self.products[product_index]
+        self.products.pop(product_index)
 
     def are_all_fields_filled(self) -> bool:
         empty_fields = []

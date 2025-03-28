@@ -73,7 +73,7 @@ class APIProvider:
 
     def business_put(self, business: BusinessModel) -> None:
         response = requests.put(
-            f"{self.base_url}/business/{business.name}/",
+            f"{self.base_url}/business/",
             json=business.to_json(),
             headers=self.headers,
         )

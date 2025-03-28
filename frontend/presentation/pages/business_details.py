@@ -1,5 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
+import base64
+
 import requests
 import streamlit as st
 
@@ -14,6 +16,11 @@ def _on_change_business_select(key: str, *args) -> None:
     current_value = st.session_state[key]
     if current_value == "" or current_value is None:
         return
+
+    if current_value == _("add_new_business"):
+        st.session_state.invoice.business = BusinessEntity()
+        return
+
     try:
         business_entity = handler.get_business_details(current_value)
         if business_entity:
@@ -55,14 +62,34 @@ def _delete_business() -> None:
         st.warning(str(e))
 
 
+def _update_business() -> None:
+    try:
+        handler.update_business(st.session_state.invoice.business)
+        st.success(_("business_updated"))
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
+
+
 def build_business_fields() -> None:
     st.subheader(_("business_details"))
 
     business_names = handler.get_all_businesses_names()
-    current_business = st.session_state.invoice.business.name if st.session_state.invoice.business.name else None
-    current_index = business_names.index(current_business) if current_business in business_names else None
+    business_names.append(_("add_new_business"))
 
-    st.selectbox(
+    current_business = (
+        st.session_state.invoice.business.name
+        if st.session_state.invoice.business.name
+        else None
+    )
+    current_index = (
+        business_names.index(current_business)
+        if current_business in business_names
+        else None
+    )
+
+    selected_business = st.selectbox(
         _("business"),
         business_names,
         index=current_index,
@@ -71,6 +98,9 @@ def build_business_fields() -> None:
         key="business_select",
         args=("business_select",),
     )
+
+    if selected_business == _("add_new_business"):
+        st.session_state.invoice.business = BusinessEntity()
 
     # Business fields
     business_fields = [
@@ -98,16 +128,45 @@ def build_business_fields() -> None:
             help=help_text,
         )
 
-    # Create/Delete buttons
+    # Logo upload section at the bottom
+    st.subheader(_("business_logo"))
+    uploaded_file = st.file_uploader(
+        _("upload_logo"),
+        type=["png", "jpg", "jpeg"],
+        key="business_logo_uploader",
+    )
+
+    if uploaded_file is not None:
+        # Convert uploaded file to base64
+        file_bytes = uploaded_file.getvalue()
+        base64_image = base64.b64encode(file_bytes).decode()
+        st.session_state.invoice.business.logo = base64_image
+
+        # Display the uploaded image
+        st.image(uploaded_file, caption=_("current_logo"))
+    elif st.session_state.invoice.business.logo:
+        # Display existing logo if available
+        st.image(
+            base64.b64decode(st.session_state.invoice.business.logo),
+            caption=_("current_logo"),
+        )
+
     col1, col2 = st.columns(2)
     with col1:
-        st.button(
-            _("create_business"),
-            on_click=_create_business,
-            type="primary",
-        )
+        if selected_business == _("add_new_business") or not selected_business:
+            st.button(
+                _("create_business"),
+                on_click=_create_business,
+                type="primary",
+            )
+        else:
+            st.button(
+                _("update_business"),
+                on_click=_update_business,
+                type="primary",
+            )
     with col2:
-        if current_business:
+        if selected_business and selected_business != _("add_new_business"):
             st.button(
                 _("delete_business"),
                 on_click=_delete_business,
