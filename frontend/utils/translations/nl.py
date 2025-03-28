@@ -21,5 +21,5 @@ INVOICE_TRANSLATIONS = {
     "currency_gbp": "GBP",
     "footer_first": "Deze factuur is uitgegeven door ",
     "footer_second": " Factuurnummer: ",
-    "payment_instructions": "Ik verzoek u vriendelijk het bovenstaande factuurbedrag binnen {days} dagen na de factuurdatum over te maken naar rekeningnummer {account_number} onder vermelding van het factuurnummer: {invoice_no}",
+    "payment_instructions": "Ik verzoek u vriendelijk het bovenstaande factuurbedrag binnen {days} dagen na de factuurdatum over te maken naar rekeningnummer {account_number} onder vermelding van het factuurnummer: {invoice_no}",  # noqa: E501
 }

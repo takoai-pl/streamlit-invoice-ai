@@ -21,5 +21,5 @@ INVOICE_TRANSLATIONS = {
     "currency_gbp": "GBP",
     "footer_first": "This invoice was issued by ",
     "footer_second": " Invoice number: ",
-    "payment_instructions": "I kindly request you to transfer the above invoice amount within {days} days after the invoice date to account number {account_number} quoting the invoice number: {invoice_no}",
+    "payment_instructions": "I kindly request you to transfer the above invoice amount within {days} days after the invoice date to account number {account_number} quoting the invoice number: {invoice_no}",  # noqa: E501
 }

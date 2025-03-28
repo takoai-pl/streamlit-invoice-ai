@@ -8,7 +8,6 @@ from frontend.presentation.dialogs import (
     show_generation_options,
 )
 from frontend.presentation.handler import handler
-from frontend.utils.generator import Generator
 from frontend.utils.language import i18n as _
 
 

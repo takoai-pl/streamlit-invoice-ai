@@ -54,8 +54,8 @@ class Generator:
         self.substitute("TABLE3", translations["unit"])
         self.substitute("TABLE4", translations["price"])
         self.substitute(
-            "TABLE5", f"{translations['vat']} ({str(invoice.vatPercent)}\%)"
-        )  # noqa: W605
+            "TABLE5", f"{translations['vat']} ({str(invoice.vatPercent)}\%)"  # noqa: W605
+        )
         self.substitute("TABLE6", translations["total"])
 
     def substitute_invoice_details(
