@@ -9,7 +9,8 @@ CREATE TABLE "business" (
                             "bic" VARCHAR UNIQUE,
                             "iban" VARCHAR,
                             "phone" VARCHAR,
-                            "email" VARCHAR
+                            "email" VARCHAR,
+                            "logo" VARCHAR
 );
 CREATE TABLE "client" (
                           "clientID" VARCHAR PRIMARY KEY,

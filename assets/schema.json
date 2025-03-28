@@ -1,6 +1,6 @@
 {
 	"inovice": "INVOICE",
-	"invoiceNo": "INVOICENO",
+	"invoiceNo": "INO",
 	"issuedAt": "ISSUEDATTEXT",
 	"issuedAtDate": "ISSUEDDATE",
 	"dueTo": "DUETOTEXT",

@@ -81,6 +81,7 @@ def build_history() -> None:
                     "iban": invoice.business.iban,
                     "phone": invoice.business.phone,
                     "email": invoice.business.email,
+                    "logo": invoice.business.logo,
                 },
                 "products": [
                     {

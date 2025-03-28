@@ -26,17 +26,25 @@
 \newcommand{\lline}[2]{{\color{#1}\noindent\makebox[\linewidth][c]{\rule{1.02\textwidth}{#2}}}}
 \definecolor{blue}{rgb}{0.2156,0.3019,0.4941}
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
+
+% Logo handling with better error handling
+\newcommand{\includelogo}[1]{%
+    \IfFileExists{#1}{%
+        \includegraphics[width=\linewidth,keepaspectratio]{#1}%
+    }{%
+        \vspace{}
+    }%
+}
+
 \begin{document}
     \noindent
     \begin{minipage}[t]{0.35\textwidth}
-        \IfFileExists{logo.png}
-        {\includegraphics[width=\linewidth]{logo.png}}
-        {}
+        \includelogo{logo.png}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.6\textwidth}
         \begin{flushright}
-            \huge{INVOICE INVOICENO} \\[10pt]
+            \huge{INVOICE INO} \\[10pt]
             \normalsize{ISSUEDATTEXT: ISSUEDDATE} \\
             \normalsize{DUETOTEXT: DUETODATE}
         \end{flushright}
@@ -91,31 +99,32 @@
     \vspace*{20pt} % Add vertical space here
     \noindent
 
+    % Improved table formatting with better spacing
     \begin{tabularx}{\linewidth}{
-            >{\hsize=2\hsize}X
+            >{\hsize=1.5\hsize}X
+            >{\hsize=0.75\hsize}X
             >{\hsize=1\hsize}X
-            >{\hsize=0.5\hsize}X
-            >{\hsize=0.5\hsize}X
             >{\hsize=1\hsize}X
+            >{\hsize=0.75\hsize}X
             >{\raggedleft\arraybackslash\hsize=1\hsize}X}
         \textbf{TABLE1} & \textbf{TABLE2} & \textbf{TABLE3} & \textbf{TABLE4} & \textbf{TABLE5} & \textbf{TABLE6}
     \end{tabularx}
-    \definecolor{blue}{rgb}{0.2156,0.3019,0.4941}
     \vspace*{-10pt}
     \lline{blue}{0.8pt}
 
     \vspace*{10pt}
     % PRODUCTS %
 
+    % Improved totals section with better alignment and spacing
     \begin{tabularx}{\linewidth}{
-            >{\hsize=2\hsize}X
             >{\hsize=1\hsize}X
-            >{\hsize=0.5\hsize}X
-            >{\hsize=0.5\hsize}X
+            >{\hsize=1\hsize}X
+            >{\hsize=1\hsize}X
+            >{\hsize=1\hsize}X
             >{\raggedleft\arraybackslash\hsize=1\hsize}X
             >{\raggedleft\arraybackslash\hsize=1\hsize}X}
-        &&&& TOTAL1 & TOTAL2 \\ \\
-        &&&& TABLE5 & TOTAL3 \\ \\
-        &&&& \textbf{TOTAL4} & \textbf{TOTAL5} \\ \\
+        &&&& \textbf{TOTAL1} & \textbf{TOTAL2} \\[2pt]
+        &&&& \textbf{TABLE5} & \textbf{TOTAL3} \\[2pt]
+        &&&& \textbf{TOTAL4} & \textbf{TOTAL5} \\[2pt]
     \end{tabularx}
 \end{document}

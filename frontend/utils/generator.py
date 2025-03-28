@@ -1,6 +1,8 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
+import base64
 import os
+import tempfile
 
 from frontend.domain.entities.invoice_entity import InvoiceEntity
 from frontend.domain.entities.product_entity import ProductEntity
@@ -46,6 +48,7 @@ class Generator:
         self.substitute("TABLE6", total)
 
     def substitute_invoice_details(self, invoice: InvoiceEntity) -> None:
+        print(invoice)
         try:
             invoice.are_all_fields_filled()
         except ValueError as e:
@@ -64,7 +67,7 @@ class Generator:
             "LINE10": "IBAN",
             "LINE11": invoice.business.iban,
             "INVOICE": str_invoice,
-            "INVOICENO": invoice.invoiceNo,
+            "INO": invoice.invoiceNo,
             "ISSUEDATTEXT": issued_at,
             "ISSUEDDATE": (
                 invoice.issuedAt.strftime("%Y-%m-%d") if invoice.issuedAt else ""
@@ -101,5 +104,12 @@ class Generator:
         self.substitute("TOTAL3", str(invoice.vat_value))
         self.substitute("TOTAL4", "Total")
         self.substitute("TOTAL5", str(invoice.total))
+
+        if invoice.business.logo:
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
+                temp_file.write(base64.b64decode(invoice.business.logo))
+                self.substitute("logo.png", temp_file.name)
+        else:
+            self.substitute("logo.png", "")
 
         return self.layout

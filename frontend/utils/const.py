@@ -291,13 +291,13 @@ currencies = [
 
 product_latex_template = r"""
 \begin{{tabularx}}{{\linewidth}}{{
->{{\hsize=2.25\hsize}}X
+>{{\hsize=1.5\hsize}}X
 >{{\hsize=0.75\hsize}}X
+>{{\hsize=1\hsize}}X
+>{{\hsize=1\hsize}}X
 >{{\hsize=0.75\hsize}}X
->{{\hsize=0.75\hsize}}X
->{{\hsize=0.75\hsize}}X
->{{\raggedleft\arraybackslash\hsize=0.75\hsize}}X}}
-{description} & {quantity} & {unit} & {price} & {vat} & {sum} \\
+>{{\raggedleft\arraybackslash\hsize=1\hsize}}X}}
+{description} & {quantity} & {unit} & {price} & {vat} & {sum} \\[2pt]
 \end{{tabularx}}
 \lline{{grey}}{{0.25pt}}
 """
