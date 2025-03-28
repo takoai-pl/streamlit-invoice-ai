@@ -281,7 +281,7 @@ def build_invoice_fields() -> None:
         current_vat = st.session_state.invoice.vatPercent
 
         try:
-            vat_index = vat_percent_options.index(current_vat)
+            _vat_index = vat_percent_options.index(current_vat)
         except ValueError:
             current_vat = 0
             st.session_state.invoice.vatPercent = current_vat

@@ -2,7 +2,7 @@ from typing import Tuple
 
 from sqlalchemy.orm import Session
 
-from backend.models.business import BusinessTable
+from backend.models.business_table import BusinessTable
 
 
 class BusinessHandler:

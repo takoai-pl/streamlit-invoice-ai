@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (

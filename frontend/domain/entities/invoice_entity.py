@@ -50,11 +50,10 @@ class InvoiceEntity(BaseModel):
 
         if isinstance(v, str):
             try:
-                # Try DD/MM/YYYY format first
                 return datetime.strptime(v, "%d/%m/%Y").date()
             except ValueError as e:
                 try:
-                    # Try YYYY-MM-DD format as fallback
+                    print(e)
                     return datetime.strptime(v, "%Y-%m-%d").date()
                 except ValueError as e:
                     raise ValueError(
