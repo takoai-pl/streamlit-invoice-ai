@@ -66,6 +66,8 @@ msgid "download"
 msgstr "Downloaden"
 msgid "delete"
 msgstr "Verwijderen"
+msgid "no_invoices_yet"
+msgstr "Nog geen facturen"
 
 # Units
 msgid "piece"
@@ -138,3 +140,37 @@ msgid "generated_footer_first_part"
 msgstr "Gelieve vriendelijk het bovenstaande factuurbedrag binnen 14 dagen na de factuurdatum over te maken naar het rekeningnummer "
 msgid "generated_footer_second_part"
 msgstr " onder vermelding van het factuurnummer: "
+
+msgid "business_created"
+msgstr "Bedrijf succesvol aangemaakt"
+
+msgid "business_deleted"
+msgstr "Bedrijf succesvol verwijderd"
+
+msgid "create_business"
+msgstr "Bedrijf Aanmaken"
+
+msgid "delete_business"
+msgstr "Bedrijf Verwijderen"
+
+msgid "client_created"
+msgstr "Klant succesvol aangemaakt"
+
+msgid "client_deleted"
+msgstr "Klant succesvol verwijderd"
+
+msgid "create_client"
+msgstr "Klant Aanmaken"
+
+msgid "delete_client"
+msgstr "Klant Verwijderen"
+
+# Invoice Generation
+msgid "generate_invoice"
+msgstr "Factuur Genereren"
+
+msgid "invoice_generated"
+msgstr "Factuur succesvol gegenereerd"
+
+msgid "invoice_generation_failed"
+msgstr "Genereren van factuur mislukt"

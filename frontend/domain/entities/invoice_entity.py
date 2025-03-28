@@ -12,6 +12,7 @@ from frontend.domain.entities.product_entity import ProductEntity
 
 
 class InvoiceEntity(BaseModel):
+    invoiceID: Optional[str] = ""
     invoiceNo: Optional[str] = ""
     currency: Optional[str] = ""
     vatPercent: Optional[int] = 0
@@ -41,16 +42,38 @@ class InvoiceEntity(BaseModel):
         return v
 
     @classmethod
-    def validate_dates(cls, v: date) -> date:
-        if not isinstance(v, (datetime, date)):
-            raise ValueError("Invalid date. It should be a datetime or date object")
-        return v
+    def validate_dates(cls, v: Any) -> date:
+        if v is None:
+            raise ValueError("Date cannot be None")
+
+        if isinstance(v, date):
+            return v
+
+        if isinstance(v, str):
+            try:
+                # Try DD/MM/YYYY format first
+                return datetime.strptime(v, "%d/%m/%Y").date()
+            except ValueError as e:
+                try:
+                    # Try YYYY-MM-DD format as fallback
+                    return datetime.strptime(v, "%Y-%m-%d").date()
+                except ValueError as e:
+                    raise ValueError(
+                        f"Invalid date format: '{v}'. Expected DD/MM/YYYY or YYYY-MM-DD. "
+                        f"Error: {str(e)}"
+                    )
+
+        raise ValueError(
+            f"Invalid date type: {type(v)}. Expected date object or string in DD/MM/YYYY or YYYY-MM-DD format"
+        )
 
     @classmethod
     def validate_due_date(cls, v: date, values: Dict[str, Any]) -> date:
         if "issuedAt" in values and v is not None:
             if v < values["issuedAt"]:
-                raise ValueError("dueTo date must be after issuedAt date")
+                raise ValueError(
+                    f"Due date ({v}) must be after issue date ({values['issuedAt']})"
+                )
         return v
 
     @property
@@ -59,9 +82,7 @@ class InvoiceEntity(BaseModel):
 
     @property
     def subtotal(self) -> float:
-        return sum(
-            product.price for product in self.products if product.price is not None
-        )
+        return sum(product.sum for product in self.products if product.sum is not None)
 
     @property
     def vat_value(self) -> float:
@@ -83,6 +104,8 @@ class InvoiceEntity(BaseModel):
         }
 
         if field in valid_fields:
+            if field in ["issuedAt", "dueTo"] and isinstance(value, str):
+                value = self.validate_dates(value)
             setattr(self, field, value)
         else:
             raise ValueError(f"Invalid field: {field}")
@@ -144,13 +167,18 @@ class InvoiceEntity(BaseModel):
         return invoice_fields_filled
 
     def validate_invoice(self) -> None:
-        self.are_all_fields_filled()
-        self.validate_invoice_no(self.invoiceNo)
-        self.validate_currency(self.currency)
-        self.validate_dates(self.issuedAt)
-        self.validate_dates(self.dueTo)
-        self.validate_due_date(self.dueTo, {"issuedAt": self.issuedAt})
-        for product in self.products:
-            product.validate_product()
-        self.client.validate_client()
-        self.business.validate_business()
+        try:
+            self.are_all_fields_filled()
+            self.validate_invoice_no(self.invoiceNo)
+            self.validate_currency(self.currency)
+            self.validate_dates(self.issuedAt)
+            self.validate_dates(self.dueTo)
+            self.validate_due_date(self.dueTo, {"issuedAt": self.issuedAt})
+            for product in self.products:
+                product.validate_product()
+            self.client.validate_client()
+            self.business.validate_business()
+        except ValueError as e:
+            raise ValueError(f"Validation failed: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Unexpected error during validation: {str(e)}")

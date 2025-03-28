@@ -13,9 +13,7 @@ from backend.models import BusinessTable, ClientTable, InvoiceTable, ProductTabl
 
 class InvoiceController(BaseController):
     @session_scope
-    def list(
-        self, session: Session
-    ) -> Tuple[
+    def list(self, session: Session) -> Tuple[
         List[InvoiceTable],
         List[BusinessTable],
         List[ClientTable],
@@ -41,9 +39,12 @@ class InvoiceController(BaseController):
         return invoices, businesses, clients, products
 
     @session_scope
-    def get(
-        self, session: Session, invoice_no: str, language: str
-    ) -> Tuple[InvoiceTable, BusinessTable, ClientTable, List[ProductTable],]:
+    def get(self, session: Session, invoice_no: str, language: str) -> Tuple[
+        InvoiceTable,
+        BusinessTable,
+        ClientTable,
+        List[ProductTable],
+    ]:
         invoice = (
             session.query(InvoiceTable)
             .filter(
@@ -73,14 +74,10 @@ class InvoiceController(BaseController):
         )
 
         if business is None:
-            raise NotFoundException(
-                f"No business found with id {invoice.business_id}"
-            )
+            raise NotFoundException(f"No business found with id {invoice.business_id}")
 
         if client is None:
-            raise NotFoundException(
-                f"No client found with id {invoice.client_id}"
-            )
+            raise NotFoundException(f"No client found with id {invoice.client_id}")
 
         if not products:
             raise NotFoundException(
@@ -103,38 +100,33 @@ class InvoiceController(BaseController):
     ) -> None:
         result = (
             session.query(InvoiceTable)
-            .filter(
-                and_(
-                    InvoiceTable.invoiceID == invoice.invoiceNo,
-                    InvoiceTable.language == invoice.language,
-                )
-            )
+            .filter(InvoiceTable.invoiceID == invoice.invoiceID)
             .first()
         )
 
         if result is None:
-            raise NotFoundException(
-                f"No invoice found with id {invoice.invoiceNo}"
-            )
+            raise NotFoundException(f"No invoice found with ID {invoice.invoiceID}")
 
+        # Delete existing products
         session.query(ProductTable).filter_by(invoice_id=result.invoiceID).delete()
 
-        for product in products:
-            session.delete(product)
-
+        # Update invoice fields
         for key, value in invoice.__dict__.items():
             if key != "_sa_instance_state":
                 setattr(result, key, value)
 
+        # Add new products
+        for product in products:
+            product.invoice_id = result.invoiceID
+            session.add(product)
+
     @session_scope
-    def delete(self, session: Session, invoice_no: str, language: str) -> None:
+    def delete(self, session: Session, invoice_id: str) -> None:
         invoice_table = (
-            session.query(InvoiceTable)
-            .filter_by(invoiceNo=invoice_no, language=language)
-            .first()
+            session.query(InvoiceTable).filter_by(invoiceID=invoice_id).first()
         )
         if invoice_table is None:
-            raise NotFoundException(f"No invoice found with id {invoice_no}")
+            raise NotFoundException(f"No invoice found with id {invoice_id}")
 
         session.query(ProductTable).filter_by(
             invoice_id=invoice_table.invoiceID

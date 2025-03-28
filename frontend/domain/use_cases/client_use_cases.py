@@ -20,3 +20,19 @@ class GetClientDetailsUseCase:
 
     def execute(self, client_name: str) -> ClientEntity | None:
         return self.client_repository.get_client_by_name(client_name)
+
+
+class CreateClientUseCase:
+    def __init__(self, client_repository: ClientRepositoryInterface):
+        self.client_repository = client_repository
+
+    def execute(self, client: ClientEntity) -> ClientEntity | None:
+        return self.client_repository.create_client(client)
+
+
+class DeleteClientUseCase:
+    def __init__(self, client_repository: ClientRepositoryInterface):
+        self.client_repository = client_repository
+
+    def execute(self, client_name: str) -> None:
+        return self.client_repository.delete_client(client_name)

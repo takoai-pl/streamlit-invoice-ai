@@ -39,5 +39,5 @@ class APIInvoiceRepository(InvoiceRepositoryInterface):
         invoice = InvoiceModel(**invoice.__dict__)
         self.api_provider.invoice_put(invoice)
 
-    def delete_invoice(self, invoice_number: str, language: str) -> None:
-        self.api_provider.invoice_del(invoice_number, language)
+    def delete_invoice(self, invoice_id: str) -> None:
+        self.api_provider.invoice_del(invoice_id)

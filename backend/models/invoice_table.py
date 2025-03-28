@@ -1,6 +1,6 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, List, Tuple
 
 from sqlalchemy import (
@@ -52,16 +52,19 @@ class InvoiceTable(Base):
     def to_json(
         self, business: BusinessTable, client: ClientTable, products: List[ProductTable]
     ) -> dict:
+        def parse_date(date_str: str) -> date:
+            try:
+                return datetime.strptime(date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return datetime.strptime(date_str, "%d/%m/%Y").date()
+
         return {
+            "invoiceID": self.invoiceID,
             "invoiceNo": self.invoiceNo,
             "currency": self.currency,
             "vatPercent": self.vatPercent,
-            "issuedAt": str(datetime.strptime(str(self.issuedAt), "%d/%m/%Y").date())
-            if self.issuedAt
-            else None,
-            "dueTo": str(datetime.strptime(str(self.dueTo), "%d/%m/%Y").date())
-            if self.dueTo
-            else None,
+            "issuedAt": str(parse_date(str(self.issuedAt))) if self.issuedAt else None,
+            "dueTo": str(parse_date(str(self.dueTo))) if self.dueTo else None,
             "note": self.note,
             "business": business.to_json(),
             "client": client.to_json(),
@@ -73,14 +76,24 @@ class InvoiceTable(Base):
     def from_json(
         data: dict, business_id: str, client_id: str
     ) -> Tuple["InvoiceTable", List[ProductTable]]:
-        invoice_id = Base.generate_uuid()
+        # Use existing invoice ID if provided, otherwise generate new one
+        invoice_id = data.get("invoiceID", Base.generate_uuid())
+
+        issued_at = data.get("issuedAt")
+        due_to = data.get("dueTo")
+
+        if isinstance(issued_at, date):
+            issued_at = issued_at.strftime("%d/%m/%Y")
+        if isinstance(due_to, date):
+            due_to = due_to.strftime("%d/%m/%Y")
+
         invoice = InvoiceTable(
             invoiceID=invoice_id,
             invoiceNo=data.get("invoiceNo"),
             currency=data.get("currency"),
             vatPercent=data.get("vatPercent"),
-            issuedAt=data.get("issuedAt"),
-            dueTo=data.get("dueTo"),
+            issuedAt=issued_at,
+            dueTo=due_to,
             note=data.get("note"),
             language=data.get("language"),
             business_id=business_id,

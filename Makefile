@@ -12,7 +12,7 @@ licences:
 
 start_frontend: locales
 	@echo "Starting the front-end..."
-	poetry run streamlit frontend/app.py --server.port 8501
+	poetry run streamlit run frontend/app.py --server.port 8501
 
 start_backend: locales
 	@echo "Starting the back-end..."
@@ -48,15 +48,6 @@ docker_prod:
 	@echo "Building the production Docker image..."
 	docker-compose --env-file .env.prod -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 
-connect_ec2:
-	@echo "Connecting to the EC2 instance..."
-	@source ./scripts/load_env.sh && ssh -i ./ec2_key.pem ubuntu@$$EC2_URL
-
-send_config_ec2:
-	@echo "Sending the .env file to the EC2 instance..."
-	./scripts/load_env.sh
-	@source ./scripts/load_env.sh && scp -i ./ec2_key.pem tako-ai.conf ubuntu@${EC2_URL}:/etc/nginx/sites-available/tako-ai.conf
-
 ######################
 # HELP
 ######################
@@ -71,8 +62,6 @@ help:
 	@echo "  help        to display this help message"
 	@echo "  docker_dev  to build the development Docker image"
 	@echo "  docker_prod to build the production Docker image"
-	@echo "  connect_ec2 to connect to the EC2 instance"
-	@echo "  send_config_ec2 to send the .env file to the EC2 instance"
 	@echo "  start_frontend to start the front-end"
 	@echo "  start_backend to start the back-end"
 	@echo "  lint_diff   to run linters on the diff"

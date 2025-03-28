@@ -3,7 +3,7 @@ name = "invoice-ai"
 version = "0.1.0"
 package-mode = true
 description = "Invoice generator powered with the use of AI Agent made by TaKo AI."
-authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>", "Piotr Kazimierczak <piotr.kazimierczak@takoai.pl>"]
+authors = ["Maciej Tarasiuk <maciej.tarasiuk@takoai.pl>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/takoai-pl/streamlit-invoice-ai.git"
@@ -14,18 +14,18 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-streamlit = "^1.36.0"
-sqlalchemy = "^2.0.31"
-pydantic = "1.10.13"
-fastapi = "^0.111.0"
+streamlit = "^1.31.1"
+sqlalchemy = "^2.0.27"
+pydantic = "^2.6.1"
+fastapi = "^0.109.2"
 langchain = "0.2.0"
 langchain-community = "0.2.0"
 langchain-openai = "0.1.10"
 langgraph = "0.1.2"
 langserve = { version = ">=0.0.6", extras = ["server"] }
-uvicorn = {extras = ["standard"], version = "^0.22.0"}
+uvicorn = { extras = ["standard"], version = "^0.27.1" }
 python-dotenv = "^1.0.1"
-psycopg2-binary = "^2.9.1"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
@@ -41,15 +41,6 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-select = [
-    "E",
-    "F",
-    "I",
-    "W",
-]
+select = ["E", "F", "I", "W"]
 ignore = ["F821"]
 line-length = 120
-
-[tool.mypy]
-ignore_missing_imports = "True"
-disallow_untyped_defs = "True"

@@ -5,7 +5,10 @@ from frontend.domain import (
     BusinessEntity,
     ClientEntity,
     CreateBusinessUseCase,
+    CreateClientUseCase,
     DeleteBusinessUseCase,
+    DeleteClientUseCase,
+    DeleteInvoiceUseCase,
     DownloadInvoiceUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
@@ -14,6 +17,7 @@ from frontend.domain import (
     GetBusinessDetailsUseCase,
     GetClientDetailsUseCase,
     InvoiceEntity,
+    UpdateInvoiceUseCase,
 )
 
 
@@ -32,6 +36,10 @@ class Handler:
         get_all_invoices_use_case: GetAllInvoicesUseCase,
         add_invoice_use_case: AddInvoiceUseCase,
         download_invoice_use_case: DownloadInvoiceUseCase,
+        create_client_use_case: CreateClientUseCase,
+        delete_client_use_case: DeleteClientUseCase,
+        update_invoice_use_case: UpdateInvoiceUseCase,
+        delete_invoice_use_case: DeleteInvoiceUseCase,
     ):
         self.edit_business_use_case = edit_business_use_case
         self.get_all_businesses_names_use_case = get_all_businesses_names_use_case
@@ -43,6 +51,10 @@ class Handler:
         self.get_all_invoices_use_case = get_all_invoices_use_case
         self.add_invoice_use_case = add_invoice_use_case
         self.download_invoice_use_case = download_invoice_use_case
+        self.create_client_use_case = create_client_use_case
+        self.delete_client_use_case = delete_client_use_case
+        self.update_invoice_use_case = update_invoice_use_case
+        self.delete_invoice_use_case = delete_invoice_use_case
 
     def edit_business(self, business: BusinessEntity) -> None:
         self.edit_business_use_case.execute(business)
@@ -73,3 +85,15 @@ class Handler:
 
     def download_invoice(self, invoice: InvoiceEntity) -> None:
         self.download_invoice_use_case.execute(invoice)
+
+    def create_client(self, client: ClientEntity) -> None:
+        self.create_client_use_case.execute(client)
+
+    def delete_client(self, client_name: str) -> None:
+        self.delete_client_use_case.execute(client_name)
+
+    def update_invoice(self, invoice: InvoiceEntity) -> None:
+        self.update_invoice_use_case.execute(invoice)
+
+    def delete_invoice(self, invoice_id: str) -> None:
+        self.delete_invoice_use_case.execute(invoice_id)

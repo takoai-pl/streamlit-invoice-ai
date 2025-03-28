@@ -1,4 +1,5 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+from datetime import date
 from typing import Any
 
 from frontend.domain import InvoiceEntity
@@ -15,7 +16,12 @@ class InvoiceModel(InvoiceEntity):
     def to_json(
         self,
     ) -> dict:
-        return self.dict()
+        data = self.dict()
+        if self.issuedAt:
+            data["issuedAt"] = self.issuedAt.strftime("%d/%m/%Y")
+        if self.dueTo:
+            data["dueTo"] = self.dueTo.strftime("%d/%m/%Y")
+        return data
 
     def to_entity(self) -> InvoiceEntity:
         return InvoiceEntity(**self.dict())

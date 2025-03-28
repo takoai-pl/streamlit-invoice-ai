@@ -66,6 +66,8 @@ msgid "download"
 msgstr "Downloaden"
 msgid "delete"
 msgstr "Verwijderen"
+msgid "no_invoices_yet"
+msgstr "No invoices yet"
 
 # Units
 msgid "piece"
@@ -138,3 +140,49 @@ msgid "generated_footer_first_part"
 msgstr "Please kindly transfer the above invoice amount within 14 days from the invoice date to the account number "
 msgid "generated_footer_second_part"
 msgstr " stating the invoice number: "
+
+msgid "business_created"
+msgstr "Business created successfully"
+
+msgid "business_deleted"
+msgstr "Business deleted successfully"
+
+msgid "create_business"
+msgstr "Create Business"
+
+msgid "delete_business"
+msgstr "Delete Business"
+
+msgid "client_created"
+msgstr "Client created successfully"
+
+msgid "client_deleted"
+msgstr "Client deleted successfully"
+
+msgid "create_client"
+msgstr "Create Client"
+
+msgid "delete_client"
+msgstr "Delete Client"
+
+# Invoice Generation
+msgid "generate_invoice"
+msgstr "Generate Invoice"
+
+msgid "invoice_generated"
+msgstr "Invoice generated successfully"
+
+msgid "invoice_generation_failed"
+msgstr "Failed to generate invoice"
+
+msgid "save_changes"
+msgstr "Save Changes"
+
+msgid "invoice_updated"
+msgstr "Invoice updated successfully"
+
+msgid "editing_mode"
+msgstr "You are currently editing an existing invoice"
+
+msgid "switch_to_generate"
+msgstr "Switch to Generate New Invoice"

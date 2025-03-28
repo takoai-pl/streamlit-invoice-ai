@@ -38,5 +38,3 @@ class ClientEntity(BaseModel):
             raise ValueError("Country must not be empty")
         if self.vatNo == "":
             raise ValueError("VAT number must not be empty")
-        if not re.match(r'^[A-Z]{2}\d{10}$', self.vatNo):
-            raise ValueError("Invalid VAT number format. It must be two letters followed by 10 digits.")

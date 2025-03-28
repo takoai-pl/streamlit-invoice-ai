@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from typing import List
 from urllib.parse import unquote
 
@@ -49,12 +50,23 @@ async def get_invoice(invoice_no: str, language: str) -> JSONResponse:
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 
-    return JSONResponse(status_code=200, content=invoice.to_json(business, client, products))
+    return JSONResponse(
+        status_code=200, content=invoice.to_json(business, client, products)
+    )
 
 
 @invoice_router.post("/")
 async def add_invoice(data: dict) -> JSONResponse:
     try:
+        if "issuedAt" in data:
+            issued_at = datetime.strptime(data["issuedAt"], "%d/%m/%Y").strftime(
+                "%Y-%m-%d"
+            )
+            data["issuedAt"] = issued_at
+        if "dueTo" in data:
+            due_to = datetime.strptime(data["dueTo"], "%d/%m/%Y").strftime("%Y-%m-%d")
+            data["dueTo"] = due_to
+
         InvoiceEntity(**data).validate_invoice()
     except Exception as e:
         return JSONResponse(status_code=400, content=str(e))
@@ -73,6 +85,14 @@ async def add_invoice(data: dict) -> JSONResponse:
 @invoice_router.put("/")
 async def put_invoice(data: dict) -> JSONResponse:
     try:
+        if "issuedAt" in data:
+            issued_at = datetime.strptime(data["issuedAt"], "%d/%m/%Y").strftime(
+                "%Y-%m-%d"
+            )
+            data["issuedAt"] = issued_at
+        if "dueTo" in data:
+            due_to = datetime.strptime(data["dueTo"], "%d/%m/%Y").strftime("%Y-%m-%d")
+            data["dueTo"] = due_to
         InvoiceEntity(**data).validate_invoice()
     except Exception as e:
         return JSONResponse(status_code=400, content=str(e))
@@ -81,24 +101,17 @@ async def put_invoice(data: dict) -> JSONResponse:
         business_id = business_controller.get(data["business"]["name"]).businessID
         client_id = client_controller.get(data["client"]["name"]).clientID
         invoice, products = InvoiceTable.from_json(data, business_id, client_id)
-        invoice_controller.put(invoice.invoiceNo, products)
+        invoice_controller.put(invoice, products)
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 
     return JSONResponse(status_code=204, content="Invoice updated")
 
 
-@invoice_router.delete("/{invoice_no}/{language}/")
-async def delete_invoice(invoice_no: str, language: str) -> JSONResponse:
-    decoded_invoice_no = unquote(invoice_no)
-
+@invoice_router.delete("/{invoice_id}/")
+async def delete_invoice(invoice_id: str) -> JSONResponse:
     try:
-        invoice_controller.get(decoded_invoice_no, language)
-    except Exception as e:
-        return JSONResponse(status_code=500, content=str(e))
-
-    try:
-        invoice_controller.delete(decoded_invoice_no, language)
+        invoice_controller.delete(invoice_id)
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
 

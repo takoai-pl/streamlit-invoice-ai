@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Depends, HTTPException, Security
-from fastapi.security.api_key import APIKeyHeader
 import os
+
+from fastapi import Depends, FastAPI, HTTPException, Security
+from fastapi.security.api_key import APIKeyHeader
 
 from backend.routes.business_router import business_router
 from backend.routes.client_router import client_router
@@ -18,9 +19,6 @@ app = FastAPI(
 
 
 def get_api_key(request_api_key_header: str = Security(api_key_header)):
-    print(request_api_key_header)
-    print(Security(api_key_header))
-    print(API_KEY)
     if request_api_key_header == API_KEY or request_api_key_header == f"Bearer {API_KEY}":
         return request_api_key_header
     else:

@@ -66,6 +66,8 @@ msgid "download"
 msgstr "Pobierz"
 msgid "delete"
 msgstr "Usuń"
+msgid "no_invoices_yet"
+msgstr "Brak faktur"
 
 # Units
 msgid "piece"
@@ -138,3 +140,37 @@ msgid "generated_footer_first_part"
 msgstr "Uprzejmie proszę o przelanie powyższej kwoty faktury w ciągu 14 dni od daty faktury na numer konta "
 msgid "generated_footer_second_part"
 msgstr " podając numer faktury: "
+
+msgid "business_created"
+msgstr "Firma została pomyślnie utworzona"
+
+msgid "business_deleted"
+msgstr "Firma została pomyślnie usunięta"
+
+msgid "create_business"
+msgstr "Utwórz Firmę"
+
+msgid "delete_business"
+msgstr "Usuń Firmę"
+
+msgid "client_created"
+msgstr "Klient został pomyślnie utworzony"
+
+msgid "client_deleted"
+msgstr "Klient został pomyślnie usunięty"
+
+msgid "create_client"
+msgstr "Utwórz Klienta"
+
+msgid "delete_client"
+msgstr "Usuń Klienta"
+
+# Invoice Generation
+msgid "generate_invoice"
+msgstr "Generuj Fakturę"
+
+msgid "invoice_generated"
+msgstr "Faktura została pomyślnie wygenerowana"
+
+msgid "invoice_generation_failed"
+msgstr "Nie udało się wygenerować faktury"

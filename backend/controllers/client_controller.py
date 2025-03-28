@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (
     BaseController,
-    AlreadyExistsException,
     NameCannotBeChangedException,
     NotFoundException,
     session_scope,
@@ -25,7 +24,7 @@ class ClientController(BaseController):
     def add(self, session: Session, client: ClientTable) -> None:
         existing_client = session.query(ClientTable).filter_by(name=client.name).first()
         if existing_client:
-            raise ClientAlreadyExistsException(str(client.name))
+            raise str(client.name)
         session.add(client)
 
     @session_scope
@@ -33,10 +32,10 @@ class ClientController(BaseController):
         result = session.query(ClientTable).filter_by(name=client.name).first()
 
         if result is None:
-            raise ClientNotFoundException(f"No client found with name {client.name}")
+            raise NotFoundException(f"No client found with name {client.name}")
 
         if result.name != client.name:
-            raise ClientNameCannotBeChangedException()
+            raise NameCannotBeChangedException()
 
         for key, value in client.__dict__.items():
             if key != "_sa_instance_state":
@@ -46,5 +45,5 @@ class ClientController(BaseController):
     def delete(self, session: Session, client_name: str) -> None:
         client_table = session.query(ClientTable).filter_by(name=client_name).first()
         if client_table is None:
-            raise ClientNotFoundException(f"No client found with name {client_name}")
+            raise NotFoundException(f"No client found with name {client_name}")
         session.delete(client_table)

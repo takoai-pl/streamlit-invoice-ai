@@ -3,8 +3,8 @@ from typing import Type
 from sqlalchemy.orm import Session
 
 from backend.controllers.base_controller import (
-    BaseController,
     AlreadyExistsException,
+    BaseController,
     NameCannotBeChangedException,
     NotFoundException,
     session_scope,

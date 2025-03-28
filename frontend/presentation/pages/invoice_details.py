@@ -1,22 +1,47 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+import logging
+import uuid
+
 import requests.exceptions
 import streamlit as st
 
 from frontend.domain.entities.invoice_entity import InvoiceEntity
 from frontend.presentation.handler import handler
 from frontend.utils.const import currencies
+from frontend.utils.generator import Generator
 from frontend.utils.language import i18n as _
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def _on_change_product(key: str, attribute: str, product_index: int) -> None:
     current_value = st.session_state[key]
     try:
+        if attribute in ["price", "quantity"]:
+            product = st.session_state.invoice.products[product_index]
+            product.vat = st.session_state.invoice.vatPercent
+            logger.info(
+                f"Setting product {product_index} VAT to match invoice VAT: {st.session_state.invoice.vatPercent}"
+            )
+
+        if attribute == "description" and current_value is None:
+            current_value = ""
+
         st.session_state.invoice.edit_product(
             product_index, **{attribute: current_value}
         )
+        logger.info(f"Product {product_index} {attribute} updated to: {current_value}")
     except requests.exceptions.HTTPError as e:
+        logger.error(
+            f"HTTP error while updating product {product_index} {attribute}: {str(e)}"
+        )
         st.error(str(e))
     except Exception as e:
+        logger.warning(
+            f"Warning while updating product {product_index} {attribute}: {str(e)}"
+        )
         st.warning(str(e))
 
 
@@ -24,37 +49,103 @@ def _on_change_details(key: str) -> None:
     current_value = st.session_state[key]
     try:
         if key == "invoiceNo":
+            logger.info(f"Validating invoice number: {current_value}")
             InvoiceEntity.validate_invoice_no(current_value)
-        elif key == "issuedAt" or key == "dueTo":
+        elif key == "issuedAt":
+            logger.info(f"Validating issue date: {current_value}")
             InvoiceEntity.validate_dates(current_value)
+            if st.session_state.dueTo:
+                InvoiceEntity.validate_due_date(
+                    st.session_state.dueTo, {"issuedAt": current_value}
+                )
+        elif key == "dueTo":
+            logger.info(f"Validating due date: {current_value}")
+            InvoiceEntity.validate_dates(current_value)
+            if st.session_state.issuedAt:
+                InvoiceEntity.validate_due_date(
+                    current_value, {"issuedAt": st.session_state.issuedAt}
+                )
+        elif key == "vatPercent":
+            # When VAT changes, update all products' VAT
+            logger.info(f"Updating all products' VAT to: {current_value}")
+            for product in st.session_state.invoice.products:
+                product.vat = current_value
 
         st.session_state.invoice.edit_field(key, current_value)
+        logger.info(f"Field {key} updated to: {current_value}")
     except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error while updating field {key}: {str(e)}")
         st.error(str(e))
     except Exception as e:
+        logger.warning(f"Warning while updating field {key}: {str(e)}")
         st.warning(str(e))
 
 
-def _on_change_business(key: str) -> None:
+def _on_change_business_select(key: str, *args) -> None:
     current_value = st.session_state[key]
     if current_value == "" or current_value is None:
         return
     try:
         business_entity = handler.get_business_details(current_value)
-        st.session_state.invoice.edit_business(**business_entity.__dict__)
+        if business_entity:
+            st.session_state.invoice.edit_business(**business_entity.__dict__)
     except requests.exceptions.HTTPError as e:
         st.error(str(e))
     except Exception as e:
         st.warning(str(e))
 
 
-def _on_change_client(key: str) -> None:
+def _on_change_business_field(key: str, field: str) -> None:
+    current_value = st.session_state[key]
+    try:
+        st.session_state.invoice.edit_business(**{field: current_value})
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
+
+
+def _create_business() -> None:
+    try:
+        handler.create_business(st.session_state.invoice.business)
+        st.success(_("business_created"))
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
+
+
+def _delete_business() -> None:
+    try:
+        handler.delete_business(st.session_state.invoice.business.name)
+        st.session_state.invoice.business = BusinessEntity()
+        st.success(_("business_deleted"))
+    except requests.exceptions.HTTPError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.warning(str(e))
+
+
+def _on_change_client_select(key: str, *args) -> None:
     current_value = st.session_state[key]
     if current_value == "" or current_value is None:
         return
     try:
         client_entity = handler.get_client_details(current_value)
         st.session_state.invoice.edit_client(**client_entity.__dict__)
+        logger.info(f"Client selection updated. Current client: {current_value}")
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error while getting client details: {str(e)}")
+        st.error(str(e))
+    except Exception as e:
+        logger.warning(f"Warning while getting client details: {str(e)}")
+        st.warning(str(e))
+
+
+def _on_change_client_field(key: str, field: str) -> None:
+    current_value = st.session_state[key]
+    try:
+        st.session_state.invoice.edit_client(**{field: current_value})
     except requests.exceptions.HTTPError as e:
         st.error(str(e))
     except Exception as e:
@@ -62,6 +153,47 @@ def _on_change_client(key: str) -> None:
 
 
 def build_invoice_fields() -> None:
+    # Log the current invoice state
+    logger.info("Current invoice state:")
+    logger.info(f"Invoice No: {st.session_state.invoice.invoiceNo}")
+    logger.info(f"Currency: {st.session_state.invoice.currency}")
+    logger.info(f"VAT %: {st.session_state.invoice.vatPercent}")
+    logger.info(f"Issued At: {st.session_state.invoice.issuedAt}")
+    logger.info(f"Due To: {st.session_state.invoice.dueTo}")
+    logger.info(f"Note: {st.session_state.invoice.note}")
+    logger.info(f"Language: {st.session_state.invoice.language}")
+    logger.info(f"Client: {st.session_state.invoice.client.__dict__}")
+    logger.info(f"Business: {st.session_state.invoice.business.__dict__}")
+    logger.info(f"Products: {[p.__dict__ for p in st.session_state.invoice.products]}")
+
+    # Initialize session state for dates if not exists
+    if "issuedAt" not in st.session_state:
+        st.session_state.issuedAt = st.session_state.invoice.issuedAt
+    if "dueTo" not in st.session_state:
+        st.session_state.dueTo = st.session_state.invoice.dueTo
+
+    # Show editing mode indicator
+    if st.session_state.get("is_editing", False):
+        st.warning(_("editing_mode"))
+
+    # Ensure invoice language is set to current session language
+    if "language" in st.session_state:
+        logger.info(f"Setting invoice language to: {st.session_state.language}")
+        st.session_state.invoice.set_language(st.session_state.language)
+
+    # Ensure VAT is set (can be 0)
+    if st.session_state.invoice.vatPercent is None:
+        st.session_state.invoice.vatPercent = 0  # Default to 0 if not set
+        logger.info(
+            f"Setting default invoice VAT to: {st.session_state.invoice.vatPercent}"
+        )
+        # Update all products' VAT
+        for product in st.session_state.invoice.products:
+            product.vat = st.session_state.invoice.vatPercent
+            logger.info(
+                f"Setting product VAT to match invoice VAT: {st.session_state.invoice.vatPercent}"
+            )
+
     client, business = st.columns(2)
 
     key_client = "client"
@@ -69,16 +201,30 @@ def build_invoice_fields() -> None:
     with client:
         st.subheader(_("shared_details") + " " + _("client_details"))
         try:
+            client_names = handler.get_all_clients_names()
+            current_client = (
+                st.session_state.invoice.client.name
+                if st.session_state.invoice.client.name
+                else None
+            )
+            current_index = (
+                client_names.index(current_client)
+                if current_client in client_names
+                else None
+            )
+
             st.selectbox(
                 _("client"),
-                handler.get_all_clients_names(),
-                index=None,
+                client_names,
+                index=current_index,
                 placeholder=_("select_client"),
-                on_change=_on_change_client,
+                on_change=_on_change_client_select,
                 key=key_client,
                 args=(key_client,),
             )
+            logger.info(f"Client selection updated. Current client: {current_client}")
         except requests.exceptions.HTTPError as e:
+            logger.error(f"HTTP error while getting client names: {str(e)}")
             st.error(str(e))
             return
 
@@ -87,12 +233,24 @@ def build_invoice_fields() -> None:
     with business:
         st.subheader(_("shared_details") + " " + _("business_details"))
         try:
+            business_names = handler.get_all_businesses_names()
+            current_business = (
+                st.session_state.invoice.business.name
+                if st.session_state.invoice.business.name
+                else None
+            )
+            current_index = (
+                business_names.index(current_business)
+                if current_business in business_names
+                else None
+            )
+
             st.selectbox(
                 _("business"),
-                handler.get_all_businesses_names(),
-                index=None,
+                business_names,
+                index=current_index,
                 placeholder=_("select_business"),
-                on_change=_on_change_business,
+                on_change=_on_change_business_select,
                 key=key_business,
                 args=(key_business,),
             )
@@ -129,12 +287,24 @@ def build_invoice_fields() -> None:
     with column3:
         key_vat_percent = "vatPercent"
 
+        # Include 0 in VAT options
         vat_percent_options = [0, 4, 5, 7, 8, 9, 21, 23]
+
+        # Get current VAT value
+        current_vat = st.session_state.invoice.vatPercent
+
+        try:
+            vat_index = vat_percent_options.index(current_vat)
+        except ValueError:
+            vat_index = 0  # Default to 0 if current not in list
+            current_vat = 0
+            st.session_state.invoice.vatPercent = current_vat
+            logger.info(f"Setting VAT rate to default: {current_vat}")
 
         st.select_slider(
             _("vat_percent"),
             vat_percent_options,
-            value=st.session_state.invoice.vatPercent,
+            value=current_vat,
             key=key_vat_percent,
             on_change=_on_change_details,
             args=(key_vat_percent,),
@@ -147,7 +317,7 @@ def build_invoice_fields() -> None:
     with c1:
         st.date_input(
             _("issued_date"),
-            value=st.session_state.invoice.issuedAt,
+            value=st.session_state.issuedAt,
             key=key_issued_at,
             format="DD/MM/YYYY",
             on_change=_on_change_details,
@@ -156,12 +326,12 @@ def build_invoice_fields() -> None:
 
         st.date_input(
             _("due_date"),
-            value=st.session_state[key_issued_at],
+            value=st.session_state.dueTo,
             key=key_due_to,
             format="DD/MM/YYYY",
             on_change=_on_change_details,
             args=(key_due_to,),
-            min_value=st.session_state[key_issued_at],
+            min_value=st.session_state.issuedAt,
         )
 
     with c2:
@@ -263,3 +433,71 @@ def build_invoice_fields() -> None:
             st.text(
                 f"{st.session_state.invoice.subtotal + st.session_state.invoice.vat_value}"
             )
+
+    st.divider()
+
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        if st.session_state.get("is_editing", False):
+            if st.button(_("save_changes"), type="primary"):
+                try:
+                    logger.info("Attempting to save invoice changes")
+                    # Ensure language is set before validation
+                    if "language" in st.session_state:
+                        st.session_state.invoice.set_language(st.session_state.language)
+                        logger.info(
+                            f"Set invoice language to: {st.session_state.language}"
+                        )
+                    # Get the original invoice ID from the session state
+                    original_invoice_id = st.session_state.get("original_invoice_id")
+                    if original_invoice_id:
+                        st.session_state.invoice.invoiceID = original_invoice_id
+                        logger.info(
+                            f"Preserving original invoice ID: {original_invoice_id}"
+                        )
+                    # Validate invoice before saving
+                    st.session_state.invoice.validate_invoice()
+                    # Update invoice in database
+                    handler.update_invoice(st.session_state.invoice)
+                    logger.info("Invoice updated successfully")
+                    st.success(_("invoice_updated"))
+                    # Clear editing state
+                    st.session_state.is_editing = False
+                    st.rerun()
+                except ValueError as e:
+                    logger.error(f"Validation error while updating invoice: {str(e)}")
+                    st.error(f"Validation error: {str(e)}")
+                except Exception as e:
+                    logger.error(f"Error while updating invoice: {str(e)}")
+                    st.error(str(e))
+        else:
+            if st.button(_("generate_invoice"), type="primary"):
+                try:
+                    logger.info("Attempting to generate invoice")
+                    # Ensure language is set before validation
+                    if "language" in st.session_state:
+                        st.session_state.invoice.set_language(st.session_state.language)
+                        logger.info(
+                            f"Set invoice language to: {st.session_state.language}"
+                        )
+                    # Generate UUID for new invoice
+                    st.session_state.invoice.invoiceID = str(uuid.uuid4())
+                    # Validate invoice before saving
+                    st.session_state.invoice.validate_invoice()
+                    # Save invoice to database
+                    handler.add_invoice(st.session_state.invoice)
+                    logger.info("Invoice generated successfully")
+                    st.success(_("invoice_generated"))
+                except ValueError as e:
+                    logger.error(f"Validation error while generating invoice: {str(e)}")
+                    st.error(f"Validation error: {str(e)}")
+                except Exception as e:
+                    logger.error(f"Error while generating invoice: {str(e)}")
+                    st.error(str(e))
+
+    with col2:
+        if st.session_state.get("is_editing", False):
+            if st.button(_("switch_to_generate")):
+                st.session_state.is_editing = False
+                st.rerun()

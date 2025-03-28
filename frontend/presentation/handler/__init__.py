@@ -2,14 +2,21 @@
 
 import os
 
-from frontend.data.providers.api_provider import APIProvider
+from frontend.data.providers import APIProvider
 from frontend.data.repositories.api_business_repository import APIBusinessRepository
-from frontend.data.repositories.api_clinet_repository import APIClientRepository
+from frontend.data.repositories.api_client_repository import APIClientRepository
 from frontend.data.repositories.api_invoice_repository import APIInvoiceRepository
-from frontend.domain import AddInvoiceUseCase, GetAllInvoicesUseCase
+from frontend.domain import (
+    AddInvoiceUseCase,
+    DeleteInvoiceUseCase,
+    GetAllInvoicesUseCase,
+    UpdateInvoiceUseCase,
+)
 from frontend.domain.use_cases import (
     CreateBusinessUseCase,
+    CreateClientUseCase,
     DeleteBusinessUseCase,
+    DeleteClientUseCase,
     DownloadInvoiceUseCase,
     EditBusinessUseCase,
     GetAllBusinessesNamesUseCase,
@@ -21,10 +28,7 @@ from frontend.presentation.handler.handler import Handler
 from frontend.utils.generator import Generator
 
 try:
-    api_provider = APIProvider(
-        os.getenv("BASE_URL"),
-        os.getenv("API_KEY")
-    )
+    api_provider = APIProvider(os.getenv("BASE_URL"), os.getenv("API_KEY"))
 except KeyError:
     raise Exception("environment variables not set")
 
@@ -46,6 +50,11 @@ get_client_details_use_case = GetClientDetailsUseCase(client_repository)
 get_all_invoices_use_case = GetAllInvoicesUseCase(invoice_repository)
 add_invoice_use_case = AddInvoiceUseCase(invoice_repository)
 download_invoice_use_case = DownloadInvoiceUseCase(generator)
+update_invoice_use_case = UpdateInvoiceUseCase(invoice_repository)
+delete_invoice_use_case = DeleteInvoiceUseCase(invoice_repository)
+
+create_client_use_case = CreateClientUseCase(client_repository)
+delete_client_use_case = DeleteClientUseCase(client_repository)
 
 handler = Handler(
     edit_business_use_case=edit_business_use_case,
@@ -58,4 +67,8 @@ handler = Handler(
     get_all_invoices_use_case=get_all_invoices_use_case,
     add_invoice_use_case=add_invoice_use_case,
     download_invoice_use_case=download_invoice_use_case,
+    create_client_use_case=create_client_use_case,
+    delete_client_use_case=delete_client_use_case,
+    update_invoice_use_case=update_invoice_use_case,
+    delete_invoice_use_case=delete_invoice_use_case,
 )
