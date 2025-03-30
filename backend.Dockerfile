@@ -8,7 +8,7 @@ COPY . .
 
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 
-EXPOSE 8000
+EXPOSE 8080
 
-ENTRYPOINT ["uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8080"]
 
