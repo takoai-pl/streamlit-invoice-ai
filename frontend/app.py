@@ -1,5 +1,6 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
+import importlib
 import time
 
 import streamlit as st
@@ -73,7 +74,8 @@ class App:
             if st.button(_("logout")):
                 clear_session_cookies(self.controller)
                 st.rerun()
-
+            st.markdown(f"**Version:** {importlib.metadata.version('invoice-ai')}")
+git a
         with self.InvoiceDetails:
             build_invoice_fields()
 
