@@ -1,0 +1,33 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "confirm_delete"
+msgstr "Potwierdź Usunięcie"
+
+msgid "delete_invoice_confirmation"
+msgstr "Czy na pewno chcesz usunąć tę fakturę?"
+
+msgid "invoice_to_delete"
+msgstr "Zamierzasz usunąć fakturę {invoice_no} dla klienta {client}"
+
+msgid "cancel"
+msgstr "Anuluj"
+
+msgid "generation_options_title"
+msgstr "Opcje Generowania Faktury"
+
+msgid "invoice_to_generate"
+msgstr "Generowanie faktury {invoice_no} dla klienta {client}"
+
+msgid "currency_multiplier"
+msgstr "Mnożnik Waluty"
+
+msgid "original_currency_info"
+msgstr "Oryginalna waluta: {currency}"
+
+msgid "generate"
+msgstr "Generuj" 

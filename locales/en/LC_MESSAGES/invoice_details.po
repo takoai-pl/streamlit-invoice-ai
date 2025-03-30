@@ -1,0 +1,87 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "invoice"
+msgstr "Invoice"
+
+msgid "invoice_details"
+msgstr "Invoice details"
+
+msgid "invoice_no"
+msgstr "Invoice No"
+
+msgid "issued_date"
+msgstr "Issued date"
+
+msgid "due_date"
+msgstr "Due date"
+
+msgid "currency"
+msgstr "Currency"
+
+msgid "select_currency"
+msgstr "Select currency"
+
+msgid "products"
+msgstr "Products"
+
+msgid "add_product"
+msgstr "Add product"
+
+msgid "description"
+msgstr "Description"
+
+msgid "quantity"
+msgstr "Quantity"
+
+msgid "unit"
+msgstr "Unit"
+
+msgid "price"
+msgstr "Price"
+
+msgid "vat_percent"
+msgstr "VAT %"
+
+msgid "note"
+msgstr "Note"
+
+msgid "subtotal"
+msgstr "Subtotal"
+
+msgid "vat_value"
+msgstr "Vat value"
+
+msgid "total"
+msgstr "Total"
+
+msgid "add_invoice"
+msgstr "Add Invoice"
+
+msgid "invoice_added"
+msgstr "Invoice added successfully"
+
+msgid "generate_invoice"
+msgstr "Generate Invoice"
+
+msgid "invoice_generated"
+msgstr "Invoice generated successfully"
+
+msgid "invoice_generation_failed"
+msgstr "Failed to generate invoice"
+
+msgid "save_changes"
+msgstr "Save Changes"
+
+msgid "invoice_updated"
+msgstr "Invoice updated successfully"
+
+msgid "editing_mode"
+msgstr "You are currently editing an existing invoice"
+
+msgid "switch_to_generate"
+msgstr "Switch to Generate New Invoice"

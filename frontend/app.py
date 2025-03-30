@@ -75,7 +75,7 @@ class App:
                 clear_session_cookies(self.controller)
                 st.rerun()
             st.markdown(f"**Version:** {importlib.metadata.version('invoice-ai')}")
-git a
+
         with self.InvoiceDetails:
             build_invoice_fields()
 

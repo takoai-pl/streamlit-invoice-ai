@@ -1,0 +1,36 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "settings"
+msgstr "Ustawienia"
+
+msgid "language"
+msgstr "Język"
+
+msgid "select_language"
+msgstr "Wybierz język"
+
+msgid "openai_api_key_help"
+msgstr "Wprowadź klucz API OpenAI"
+
+msgid "database_connection_string_help"
+msgstr "Wprowadź ciąg połączenia z bazą danych"
+
+msgid "tavily_api_key_help"
+msgstr "Jeśli chcesz, aby Agent AI miał dostęp do internetu, wprowadź klucz API Tavily"
+
+msgid "langchain_api_key_help"
+msgstr "Jeśli chcesz, aby Agent AI zapisywał odpowiedzi w LangService, wprowadź klucz API Langchain"
+
+msgid "language_en"
+msgstr "Angielski"
+
+msgid "language_pl"
+msgstr "Polski"
+
+msgid "language_nl"
+msgstr "Holenderski" 

@@ -1,0 +1,45 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "select_business"
+msgstr "Select business"
+
+msgid "business_details"
+msgstr "Business details"
+
+msgid "iban"
+msgstr "IBAN"
+
+msgid "add_new_business"
+msgstr "Add new business"
+
+msgid "update_business"
+msgstr "Update Business"
+
+msgid "business_updated"
+msgstr "Business updated successfully"
+
+msgid "business_logo"
+msgstr "Business Logo"
+
+msgid "upload_logo"
+msgstr "Upload Logo"
+
+msgid "current_logo"
+msgstr "Current Logo"
+
+msgid "business_created"
+msgstr "Business created successfully"
+
+msgid "business_deleted"
+msgstr "Business deleted successfully"
+
+msgid "create_business"
+msgstr "Create Business"
+
+msgid "delete_business"
+msgstr "Delete Business"

@@ -1,0 +1,60 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "history"
+msgstr "History"
+
+msgid "filter_by_client"
+msgstr "Filter by Client"
+
+msgid "sort_by"
+msgstr "Sort by"
+
+msgid "date"
+msgstr "Date"
+
+msgid "invoice_id"
+msgstr "Invoice ID"
+
+msgid "issued_at"
+msgstr "Issued At"
+
+msgid "client"
+msgstr "Client"
+
+msgid "business"
+msgstr "Business"
+
+msgid "edit"
+msgstr "Edit"
+
+msgid "download"
+msgstr "Download"
+
+msgid "delete"
+msgstr "Delete"
+
+msgid "no_invoices_yet"
+msgstr "No invoices yet"
+
+msgid "all"
+msgstr "All"
+
+msgid "sort_by_date"
+msgstr "Sort by Date"
+
+msgid "sort_by_invoice_id"
+msgstr "Sort by Invoice ID"
+
+msgid "sort_by_vat_no"
+msgstr "Sort by VAT No"
+
+msgid "sort_by_postal_code"
+msgstr "Sort by Postal Code"
+
+msgid "sort_by_phone"
+msgstr "Sort by Phone"

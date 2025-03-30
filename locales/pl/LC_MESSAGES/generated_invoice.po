@@ -1,0 +1,42 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "generated_invoice"
+msgstr "Faktura"
+
+msgid "generated_issued_at"
+msgstr "Data wystawienia"
+
+msgid "generated_due_to"
+msgstr "Data płatności"
+
+msgid "generated_description"
+msgstr "Opis"
+
+msgid "generated_quantity"
+msgstr "Ilość"
+
+msgid "generated_unit"
+msgstr "Jednostka"
+
+msgid "generated_price"
+msgstr "Cena"
+
+msgid "generated_vat_percent"
+msgstr "VAT %"
+
+msgid "generated_sum"
+msgstr "Suma"
+
+msgid "generated_footer_first_part"
+msgstr "Proszę o przelanie kwoty faktury w ciągu 14 dni od daty wystawienia na numer konta "
+
+msgid "generated_footer_second_part"
+msgstr " z podaniem numeru faktury: "
+
+msgid "payment_instructions"
+msgstr "Uprzejmie proszę o przelanie kwoty faktury w ciągu {days} dni od daty wystawienia na numer konta {account_number} z podaniem numeru faktury: {invoice_no}" 

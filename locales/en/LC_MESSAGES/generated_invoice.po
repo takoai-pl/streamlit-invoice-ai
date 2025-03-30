@@ -1,0 +1,42 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "generated_invoice"
+msgstr "Invoice"
+
+msgid "generated_issued_at"
+msgstr "Issued at"
+
+msgid "generated_due_to"
+msgstr "Due to"
+
+msgid "generated_description"
+msgstr "Description"
+
+msgid "generated_quantity"
+msgstr "Quantity"
+
+msgid "generated_unit"
+msgstr "Unit"
+
+msgid "generated_price"
+msgstr "Price"
+
+msgid "generated_vat_percent"
+msgstr "VAT %"
+
+msgid "generated_sum"
+msgstr "Sum"
+
+msgid "generated_footer_first_part"
+msgstr "Please kindly transfer the above invoice amount within 14 days from the invoice date to the account number "
+
+msgid "generated_footer_second_part"
+msgstr " stating the invoice number: "
+
+msgid "payment_instructions"
+msgstr "I kindly request you to transfer the above invoice amount within {days} days after the invoice date to account number {account_number} quoting the invoice number: {invoice_no}"

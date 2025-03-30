@@ -1,0 +1,45 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "select_business"
+msgstr "Wybierz firmę"
+
+msgid "business_details"
+msgstr "Szczegóły firmy"
+
+msgid "iban"
+msgstr "IBAN"
+
+msgid "add_new_business"
+msgstr "Dodaj nową firmę"
+
+msgid "update_business"
+msgstr "Aktualizuj Firmę"
+
+msgid "business_updated"
+msgstr "Firma została pomyślnie zaktualizowana"
+
+msgid "business_logo"
+msgstr "Logo Firmy"
+
+msgid "upload_logo"
+msgstr "Prześlij Logo"
+
+msgid "current_logo"
+msgstr "Aktualne Logo"
+
+msgid "business_created"
+msgstr "Firma została pomyślnie utworzona"
+
+msgid "business_deleted"
+msgstr "Firma została pomyślnie usunięta"
+
+msgid "create_business"
+msgstr "Utwórz Firmę"
+
+msgid "delete_business"
+msgstr "Usuń Firmę" 

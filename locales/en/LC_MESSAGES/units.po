@@ -1,0 +1,15 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "piece"
+msgstr "Piece"
+
+msgid "hour"
+msgstr "Hour"
+
+msgid "day"
+msgstr "Day"

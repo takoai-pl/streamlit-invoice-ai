@@ -1,0 +1,30 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "shared_details"
+msgstr "Details"
+
+msgid "name"
+msgstr "Name"
+
+msgid "street"
+msgstr "Street"
+
+msgid "town"
+msgstr "City"
+
+msgid "country"
+msgstr "Country"
+
+msgid "postcode"
+msgstr "Postcode"
+
+msgid "vat_no"
+msgstr "VAT No."
+
+msgid "vat"
+msgstr "VAT"

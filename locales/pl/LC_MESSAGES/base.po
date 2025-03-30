@@ -4,250 +4,333 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+msgid "select_business"
+msgstr "Wybierz firmę"
 
-# Settings
-msgid "invoice"
-msgstr "Faktura"
-msgid "settings"
-msgstr "Ustawienia"
-msgid "language"
-msgstr "Język"
-msgid "select_language"
-msgstr "Wybierz język"
-msgid "openai_api_key_help"
-msgstr "Wprowadź klucz API OpenAI"
-msgid "database_connection_string_help"
-msgstr "Wprowadź ciąg połączenia z bazą danych"
-msgid "tavily_api_key_help"
-msgstr "Jeśli chcesz, aby Agent AI miał dostęp do internetu, wprowadź klucz API Tavily"
-msgid "langchain_api_key_help"
-msgstr "Jeśli chcesz, aby Agent AI zapisywał odpowiedzi w LangService, wprowadź klucz API Langchain"
+msgid "business_details"
+msgstr "Szczegóły firmy"
 
-# Product Details
-msgid "invoice_details"
-msgstr "Szczegóły faktury"
-msgid "invoice_no"
-msgstr "Numer faktury"
-msgid "issued_date"
-msgstr "Data wystawienia"
-msgid "due_date"
-msgstr "Data płatności"
-msgid "currency"
-msgstr "Waluta"
-msgid "select_currency"
-msgstr "Wybierz walutę"
-msgid "products"
-msgstr "Produkty"
-msgid "add_product"
-msgstr "Dodaj produkt"
-msgid "description"
-msgstr "Opis"
-msgid "quantity"
-msgstr "Ilość"
-msgid "unit"
-msgstr "Jednostka"
-msgid "price"
-msgstr "Cena"
-msgid "vat_percent"
-msgstr "VAT %"
-msgid "note"
-msgstr "Notatka"
-msgid "subtotal"
-msgstr "Suma częściowa"
-msgid "vat_value"
-msgstr "Wartość VAT"
-msgid "total"
-msgstr "Razem"
+msgid "iban"
+msgstr "IBAN"
 
-# History
-msgid "history"
-msgstr "Historia"
-msgid "filter_by_client"
-msgstr "Filtruj po Kliencie"
-msgid "sort_by"
-msgstr "Sortuj po"
-msgid "date"
-msgstr "Data"
-msgid "invoice_id"
-msgstr "ID Faktury"
-msgid "issued_at"
-msgstr "Data Wystawienia"
-msgid "client"
-msgstr "Klient"
-msgid "business"
-msgstr "Firma"
-msgid "edit"
-msgstr "Edytuj"
-msgid "download"
-msgstr "Pobierz"
-msgid "delete"
-msgstr "Usuń"
-msgid "no_invoices_yet"
-msgstr "Brak faktur"
-msgid "all"
-msgstr "Wszystkie"
-msgid "vat_no"
-msgstr "NIP"
-msgid "vatNo"
-msgstr "NIP"
-msgid "postal_code"
-msgstr "Kod Pocztowy"
-msgid "phone"
-msgstr "Telefon"
-msgid "sort_by_date"
-msgstr "Sortuj po Dacie"
-msgid "sort_by_invoice_id"
-msgstr "Sortuj po ID Faktury"
-msgid "sort_by_vat_no"
-msgstr "Sortuj po NIP"
-msgid "sort_by_postal_code"
-msgstr "Sortuj po Kodzie Pocztowym"
-msgid "sort_by_phone"
-msgstr "Sortuj po Telefonie"
+msgid "add_new_business"
+msgstr "Dodaj nową firmę"
 
-# Units
-msgid "piece"
-msgstr "Sztuka"
-msgid "hour"
-msgstr "Godzina"
-msgid "day"
-msgstr "Dzień"
+msgid "update_business"
+msgstr "Aktualizuj Firmę"
 
-# Shared Details
-msgid "shared_details"
-msgstr "Szczegóły"
-msgid "name"
-msgstr "Nazwa"
-msgid "street"
-msgstr "Ulica"
-msgid "city"
-msgstr "Miasto"
-msgid "country"
-msgstr "Kraj"
-msgid "vat"
-msgstr "VAT"
+msgid "business_updated"
+msgstr "Firma została pomyślnie zaktualizowana"
 
-# Client Details
+msgid "business_logo"
+msgstr "Logo Firmy"
+
+msgid "upload_logo"
+msgstr "Prześlij Logo"
+
+msgid "current_logo"
+msgstr "Aktualne Logo"
+
+msgid "business_created"
+msgstr "Firma została pomyślnie utworzona"
+
+msgid "business_deleted"
+msgstr "Firma została pomyślnie usunięta"
+
+msgid "create_business"
+msgstr "Utwórz Firmę"
+
+msgid "delete_business"
+msgstr "Usuń Firmę" 
+
 msgid "select_client"
 msgstr "Wybierz klienta"
+
 msgid "client_details"
 msgstr "Szczegóły klienta"
+
 msgid "add_new_client"
 msgstr "Dodaj nowego klienta"
+
 msgid "update_client"
 msgstr "Aktualizuj Klienta"
+
 msgid "client_updated"
 msgstr "Klient został pomyślnie zaktualizowany"
+
 msgid "client_created"
 msgstr "Klient został pomyślnie utworzony"
+
 msgid "client_deleted"
 msgstr "Klient został pomyślnie usunięty"
+
 msgid "create_client"
 msgstr "Utwórz Klienta"
+
 msgid "delete_client"
 msgstr "Usuń Klienta"
 
+msgid "vat_no"
+msgstr "NIP"
 
-# Business Details
-msgid "select_business"
-msgstr "Wybierz firmę"
-msgid "business_details"
-msgstr "Szczegóły firmy"
-msgid "iban"
-msgstr "IBAN"
-msgid "add_new_business"
-msgstr "Dodaj nową firmę"
-msgid "update_business"
-msgstr "Aktualizuj Firmę"
-msgid "business_updated"
-msgstr "Firma została pomyślnie zaktualizowana"
-msgid "business_logo"
-msgstr "Logo Firmy"
-msgid "upload_logo"
-msgstr "Prześlij Logo"
-msgid "current_logo"
-msgstr "Aktualne Logo"
-msgid "business_created"
-msgstr "Firma została pomyślnie utworzona"
-msgid "business_deleted"
-msgstr "Firma została pomyślnie usunięta"
-msgid "create_business"
-msgstr "Utwórz Firmę"
-msgid "delete_business"
-msgstr "Usuń Firmę"
+msgid "postal_code"
+msgstr "Kod Pocztowy"
 
-# Agent AI
-msgid "agent_ai"
-msgstr "Agent AI"
+msgid "phone"
+msgstr "Telefon" 
 
-# Generated Invoice
+msgid "confirm_delete"
+msgstr "Potwierdź Usunięcie"
+
+msgid "delete_invoice_confirmation"
+msgstr "Czy na pewno chcesz usunąć tę fakturę?"
+
+msgid "invoice_to_delete"
+msgstr "Zamierzasz usunąć fakturę {invoice_no} dla klienta {client}"
+
+msgid "cancel"
+msgstr "Anuluj"
+
+msgid "generation_options_title"
+msgstr "Opcje Generowania Faktury"
+
+msgid "invoice_to_generate"
+msgstr "Generowanie faktury {invoice_no} dla klienta {client}"
+
+msgid "currency_multiplier"
+msgstr "Mnożnik Waluty"
+
+msgid "original_currency_info"
+msgstr "Oryginalna waluta: {currency}"
+
+msgid "generate"
+msgstr "Generuj" 
+
 msgid "generated_invoice"
 msgstr "Faktura"
+
 msgid "generated_issued_at"
 msgstr "Data wystawienia"
+
 msgid "generated_due_to"
 msgstr "Data płatności"
+
 msgid "generated_description"
 msgstr "Opis"
+
 msgid "generated_quantity"
 msgstr "Ilość"
+
 msgid "generated_unit"
 msgstr "Jednostka"
+
 msgid "generated_price"
 msgstr "Cena"
+
 msgid "generated_vat_percent"
 msgstr "VAT %"
+
 msgid "generated_sum"
 msgstr "Suma"
+
 msgid "generated_footer_first_part"
 msgstr "Proszę o przelanie kwoty faktury w ciągu 14 dni od daty wystawienia na numer konta "
+
 msgid "generated_footer_second_part"
 msgstr " z podaniem numeru faktury: "
 
-# Invoice Generation
+msgid "payment_instructions"
+msgstr "Uprzejmie proszę o przelanie kwoty faktury w ciągu {days} dni od daty wystawienia na numer konta {account_number} z podaniem numeru faktury: {invoice_no}" 
+
+msgid "history"
+msgstr "Historia"
+
+msgid "filter_by_client"
+msgstr "Filtruj po Kliencie"
+
+msgid "sort_by"
+msgstr "Sortuj po"
+
+msgid "date"
+msgstr "Data"
+
+msgid "invoice_id"
+msgstr "ID Faktury"
+
+msgid "issued_at"
+msgstr "Data Wystawienia"
+
+msgid "client"
+msgstr "Klient"
+
+msgid "business"
+msgstr "Firma"
+
+msgid "edit"
+msgstr "Edytuj"
+
+msgid "download"
+msgstr "Pobierz"
+
+msgid "delete"
+msgstr "Usuń"
+
+msgid "no_invoices_yet"
+msgstr "Brak faktur"
+
+msgid "all"
+msgstr "Wszystkie"
+
+msgid "sort_by_date"
+msgstr "Sortuj po Dacie"
+
+msgid "sort_by_invoice_id"
+msgstr "Sortuj po ID Faktury"
+
+msgid "sort_by_vat_no"
+msgstr "Sortuj po NIP"
+
+msgid "sort_by_postal_code"
+msgstr "Sortuj po Kodzie Pocztowym"
+
+msgid "sort_by_phone"
+msgstr "Sortuj po Telefonie" 
+
+msgid "invoice"
+msgstr "Faktura"
+
+msgid "invoice_details"
+msgstr "Szczegóły faktury"
+
+msgid "invoice_no"
+msgstr "Numer faktury"
+
+msgid "issued_date"
+msgstr "Data wystawienia"
+
+msgid "due_date"
+msgstr "Data płatności"
+
+msgid "currency"
+msgstr "Waluta"
+
+msgid "select_currency"
+msgstr "Wybierz walutę"
+
+msgid "products"
+msgstr "Produkty"
+
+msgid "add_product"
+msgstr "Dodaj produkt"
+
+msgid "description"
+msgstr "Opis"
+
+msgid "quantity"
+msgstr "Ilość"
+
+msgid "unit"
+msgstr "Jednostka"
+
+msgid "price"
+msgstr "Cena"
+
+msgid "vat_percent"
+msgstr "VAT %"
+
+msgid "note"
+msgstr "Notatka"
+
+msgid "subtotal"
+msgstr "Suma częściowa"
+
+msgid "vat_value"
+msgstr "Wartość VAT"
+
+msgid "total"
+msgstr "Razem"
+
 msgid "add_invoice"
 msgstr "Dodaj Fakturę"
+
 msgid "invoice_added"
 msgstr "Faktura została pomyślnie dodana"
+
 msgid "generate_invoice"
 msgstr "Generuj Fakturę"
+
 msgid "invoice_generated"
 msgstr "Faktura została pomyślnie wygenerowana"
+
 msgid "invoice_generation_failed"
 msgstr "Nie udało się wygenerować faktury"
+
 msgid "save_changes"
 msgstr "Zapisz Zmiany"
+
 msgid "invoice_updated"
 msgstr "Faktura została pomyślnie zaktualizowana"
+
 msgid "editing_mode"
 msgstr "Obecnie edytujesz istniejącą fakturę"
-msgid "switch_to_generate"
-msgstr "Przełącz do Generowania Nowej Faktury"
 
-# Dialog Translations
-msgid "confirm_delete"
-msgstr "Potwierdź Usunięcie"
-msgid "delete_invoice_confirmation"
-msgstr "Czy na pewno chcesz usunąć tę fakturę?"
-msgid "invoice_to_delete"
-msgstr "Zamierzasz usunąć fakturę {invoice_no} dla klienta {client}"
-msgid "cancel"
-msgstr "Anuluj"
-msgid "generation_options_title"
-msgstr "Opcje Generowania Faktury"
-msgid "invoice_to_generate"
-msgstr "Generowanie faktury {invoice_no} dla klienta {client}"
+msgid "switch_to_generate"
+msgstr "Przełącz do Generowania Nowej Faktury" 
+
+msgid "settings"
+msgstr "Ustawienia"
+
+msgid "language"
+msgstr "Język"
+
+msgid "select_language"
+msgstr "Wybierz język"
+
+msgid "openai_api_key_help"
+msgstr "Wprowadź klucz API OpenAI"
+
+msgid "database_connection_string_help"
+msgstr "Wprowadź ciąg połączenia z bazą danych"
+
+msgid "tavily_api_key_help"
+msgstr "Jeśli chcesz, aby Agent AI miał dostęp do internetu, wprowadź klucz API Tavily"
+
+msgid "langchain_api_key_help"
+msgstr "Jeśli chcesz, aby Agent AI zapisywał odpowiedzi w LangService, wprowadź klucz API Langchain"
+
 msgid "language_en"
 msgstr "Angielski"
+
 msgid "language_pl"
 msgstr "Polski"
+
 msgid "language_nl"
-msgstr "Holenderski"
-msgid "currency_multiplier"
-msgstr "Mnożnik Waluty"
-msgid "original_currency_info"
-msgstr "Oryginalna waluta: {currency}"
-msgid "generate"
-msgstr "Generuj"
-msgid "payment_instructions"
-msgstr "Uprzejmie proszę o przelanie kwoty faktury w ciągu {days} dni od daty wystawienia na numer konta {account_number} z podaniem numeru faktury: {invoice_no}"
+msgstr "Holenderski" 
+
+msgid "shared_details"
+msgstr "Szczegóły"
+
+msgid "name"
+msgstr "Nazwa"
+
+msgid "street"
+msgstr "Ulica"
+
+msgid "city"
+msgstr "Miasto"
+
+msgid "country"
+msgstr "Kraj"
+
+msgid "vat"
+msgstr "VAT" 
+
+msgid "piece"
+msgstr "Sztuka"
+
+msgid "hour"
+msgstr "Godzina"
+
+msgid "day"
+msgstr "Dzień" 
+

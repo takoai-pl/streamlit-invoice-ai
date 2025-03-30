@@ -1,0 +1,87 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "invoice"
+msgstr "Faktura"
+
+msgid "invoice_details"
+msgstr "Szczegóły faktury"
+
+msgid "invoice_no"
+msgstr "Numer faktury"
+
+msgid "issued_date"
+msgstr "Data wystawienia"
+
+msgid "due_date"
+msgstr "Data płatności"
+
+msgid "currency"
+msgstr "Waluta"
+
+msgid "select_currency"
+msgstr "Wybierz walutę"
+
+msgid "products"
+msgstr "Produkty"
+
+msgid "add_product"
+msgstr "Dodaj produkt"
+
+msgid "description"
+msgstr "Opis"
+
+msgid "quantity"
+msgstr "Ilość"
+
+msgid "unit"
+msgstr "Jednostka"
+
+msgid "price"
+msgstr "Cena"
+
+msgid "vat_percent"
+msgstr "VAT %"
+
+msgid "note"
+msgstr "Notatka"
+
+msgid "subtotal"
+msgstr "Suma częściowa"
+
+msgid "vat_value"
+msgstr "Wartość VAT"
+
+msgid "total"
+msgstr "Razem"
+
+msgid "add_invoice"
+msgstr "Dodaj Fakturę"
+
+msgid "invoice_added"
+msgstr "Faktura została pomyślnie dodana"
+
+msgid "generate_invoice"
+msgstr "Generuj Fakturę"
+
+msgid "invoice_generated"
+msgstr "Faktura została pomyślnie wygenerowana"
+
+msgid "invoice_generation_failed"
+msgstr "Nie udało się wygenerować faktury"
+
+msgid "save_changes"
+msgstr "Zapisz Zmiany"
+
+msgid "invoice_updated"
+msgstr "Faktura została pomyślnie zaktualizowana"
+
+msgid "editing_mode"
+msgstr "Obecnie edytujesz istniejącą fakturę"
+
+msgid "switch_to_generate"
+msgstr "Przełącz do Generowania Nowej Faktury" 

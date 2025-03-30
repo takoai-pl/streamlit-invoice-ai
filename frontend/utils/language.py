@@ -6,13 +6,12 @@ import streamlit as st
 
 
 class Language:
-    language_dict = {"English": "en", "Polish": "pl", "Dutch": "nl"}
+    language_dict = {"English": "en", "Polish": "pl"}
 
     def __init__(self) -> None:
         self.translations = {
             "en": gettext.translation("base", "locales", languages=["en"]),
             "pl": gettext.translation("base", "locales", languages=["pl"]),
-            "nl": gettext.translation("base", "locales", languages=["nl"]),
         }
 
         if "language" not in st.session_state:

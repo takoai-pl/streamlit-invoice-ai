@@ -4,249 +4,333 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-# Settings
-msgid "invoice"
-msgstr "Invoice"
-msgid "settings"
-msgstr "Settings"
-msgid "language"
-msgstr "Language"
-msgid "select_language"
-msgstr "Select language"
-msgid "openai_api_key_help"
-msgstr "Enter the OpenAI API Key"
-msgid "database_connection_string_help"
-msgstr "Enter the database connection string"
-msgid "tavily_api_key_help"
-msgstr "If you want the AI Agent to have internet access, enter the Tavily API Key"
-msgid "langchain_api_key_help"
-msgstr "If you want the AI Agent to save responses in LangService, enter the Langchain API Key"
-
-# Product Details
-msgid "invoice_details"
-msgstr "Invoice details"
-msgid "invoice_no"
-msgstr "Invoice No"
-msgid "issued_date"
-msgstr "Issued date"
-msgid "due_date"
-msgstr "Due date"
-msgid "currency"
-msgstr "Currency"
-msgid "select_currency"
-msgstr "Select currency"
-msgid "products"
-msgstr "Products"
-msgid "add_product"
-msgstr "Add product"
-msgid "description"
-msgstr "Description"
-msgid "quantity"
-msgstr "Quantity"
-msgid "unit"
-msgstr "Unit"
-msgid "price"
-msgstr "Price"
-msgid "vat_percent"
-msgstr "VAT %"
-msgid "note"
-msgstr "Note"
-msgid "subtotal"
-msgstr "Subtotal"
-msgid "vat_value"
-msgstr "Vat value"
-msgid "total"
-msgstr "Total"
-
-# History
-msgid "history"
-msgstr "History"
-msgid "filter_by_client"
-msgstr "Filter by Client"
-msgid "sort_by"
-msgstr "Sort by"
-msgid "date"
-msgstr "Date"
-msgid "invoice_id"
-msgstr "Invoice ID"
-msgid "issued_at"
-msgstr "Issued At"
-msgid "client"
-msgstr "Client"
-msgid "business"
-msgstr "Business"
-msgid "edit"
-msgstr "Edit"
-msgid "download"
-msgstr "Download"
-msgid "delete"
-msgstr "Delete"
-msgid "no_invoices_yet"
-msgstr "No invoices yet"
-msgid "all"
-msgstr "All"
-msgid "vat_no"
-msgstr "VAT No"
-msgid "vatNo"
-msgstr "VAT No"
-msgid "postal_code"
-msgstr "Postal Code"
-msgid "phone"
-msgstr "Phone"
-msgid "sort_by_date"
-msgstr "Sort by Date"
-msgid "sort_by_invoice_id"
-msgstr "Sort by Invoice ID"
-msgid "sort_by_vat_no"
-msgstr "Sort by VAT No"
-msgid "sort_by_postal_code"
-msgstr "Sort by Postal Code"
-msgid "sort_by_phone"
-msgstr "Sort by Phone"
-
-# Units
-msgid "piece"
-msgstr "Piece"
-msgid "hour"
-msgstr "Hour"
-msgid "day"
-msgstr "Day"
-
-# Shared Details
-msgid "shared_details"
-msgstr "Details"
-msgid "name"
-msgstr "Name"
-msgid "street"
-msgstr "Street"
-msgid "city"
-msgstr "City"
-msgid "country"
-msgstr "Country"
-msgid "vat"
-msgstr "VAT"
-
-# Client Details
-msgid "select_client"
-msgstr "Select client"
-msgid "client_details"
-msgstr "Client details"
-msgid "add_new_client"
-msgstr "Add new client"
-msgid "update_client"
-msgstr "Update Client"
-msgid "client_updated"
-msgstr "Client updated successfully"
-msgid "client_created"
-msgstr "Client created successfully"
-msgid "client_deleted"
-msgstr "Client deleted successfully"
-msgid "create_client"
-msgstr "Create Client"
-msgid "delete_client"
-msgstr "Delete Client"
-
-# Business Details
 msgid "select_business"
 msgstr "Select business"
+
 msgid "business_details"
 msgstr "Business details"
+
 msgid "iban"
 msgstr "IBAN"
+
 msgid "add_new_business"
 msgstr "Add new business"
+
 msgid "update_business"
 msgstr "Update Business"
+
 msgid "business_updated"
 msgstr "Business updated successfully"
+
 msgid "business_logo"
 msgstr "Business Logo"
+
 msgid "upload_logo"
 msgstr "Upload Logo"
+
 msgid "current_logo"
 msgstr "Current Logo"
+
 msgid "business_created"
 msgstr "Business created successfully"
+
 msgid "business_deleted"
 msgstr "Business deleted successfully"
+
 msgid "create_business"
 msgstr "Create Business"
+
 msgid "delete_business"
 msgstr "Delete Business"
 
-# Agent AI
-msgid "agent_ai"
-msgstr "Agent AI"
+msgid "select_client"
+msgstr "Select client"
 
-# Generated Invoice
+msgid "client_details"
+msgstr "Client details"
+
+msgid "add_new_client"
+msgstr "Add new client"
+
+msgid "update_client"
+msgstr "Update Client"
+
+msgid "client_updated"
+msgstr "Client updated successfully"
+
+msgid "client_created"
+msgstr "Client created successfully"
+
+msgid "client_deleted"
+msgstr "Client deleted successfully"
+
+msgid "create_client"
+msgstr "Create Client"
+
+msgid "delete_client"
+msgstr "Delete Client"
+
+msgid "vat_no"
+msgstr "VAT No"
+
+msgid "postal_code"
+msgstr "Postal Code"
+
+msgid "phone"
+msgstr "Phone"
+
+msgid "confirm_delete"
+msgstr "Confirm Delete"
+
+msgid "delete_invoice_confirmation"
+msgstr "Are you sure you want to delete this invoice?"
+
+msgid "invoice_to_delete"
+msgstr "You are about to delete invoice {invoice_no} for client {client}"
+
+msgid "cancel"
+msgstr "Cancel"
+
+msgid "generation_options_title"
+msgstr "Invoice Generation Options"
+
+msgid "invoice_to_generate"
+msgstr "Generating invoice {invoice_no} for client {client}"
+
+msgid "currency_multiplier"
+msgstr "Currency Multiplier"
+
+msgid "original_currency_info"
+msgstr "Original currency: {currency}"
+
+msgid "generate"
+msgstr "Generate"
+
 msgid "generated_invoice"
 msgstr "Invoice"
+
 msgid "generated_issued_at"
 msgstr "Issued at"
+
 msgid "generated_due_to"
 msgstr "Due to"
+
 msgid "generated_description"
 msgstr "Description"
+
 msgid "generated_quantity"
 msgstr "Quantity"
+
 msgid "generated_unit"
 msgstr "Unit"
+
 msgid "generated_price"
 msgstr "Price"
+
 msgid "generated_vat_percent"
 msgstr "VAT %"
+
 msgid "generated_sum"
 msgstr "Sum"
+
 msgid "generated_footer_first_part"
 msgstr "Please kindly transfer the above invoice amount within 14 days from the invoice date to the account number "
+
 msgid "generated_footer_second_part"
 msgstr " stating the invoice number: "
 
-# Invoice Generation
+msgid "payment_instructions"
+msgstr "I kindly request you to transfer the above invoice amount within {days} days after the invoice date to account number {account_number} quoting the invoice number: {invoice_no}"
+
+msgid "history"
+msgstr "History"
+
+msgid "filter_by_client"
+msgstr "Filter by Client"
+
+msgid "sort_by"
+msgstr "Sort by"
+
+msgid "date"
+msgstr "Date"
+
+msgid "invoice_id"
+msgstr "Invoice ID"
+
+msgid "issued_at"
+msgstr "Issued At"
+
+msgid "client"
+msgstr "Client"
+
+msgid "business"
+msgstr "Business"
+
+msgid "edit"
+msgstr "Edit"
+
+msgid "download"
+msgstr "Download"
+
+msgid "delete"
+msgstr "Delete"
+
+msgid "no_invoices_yet"
+msgstr "No invoices yet"
+
+msgid "all"
+msgstr "All"
+
+msgid "sort_by_date"
+msgstr "Sort by Date"
+
+msgid "sort_by_invoice_id"
+msgstr "Sort by Invoice ID"
+
+msgid "sort_by_vat_no"
+msgstr "Sort by VAT No"
+
+msgid "sort_by_postal_code"
+msgstr "Sort by Postal Code"
+
+msgid "sort_by_phone"
+msgstr "Sort by Phone"
+
+msgid "invoice"
+msgstr "Invoice"
+
+msgid "invoice_details"
+msgstr "Invoice details"
+
+msgid "invoice_no"
+msgstr "Invoice No"
+
+msgid "issued_date"
+msgstr "Issued date"
+
+msgid "due_date"
+msgstr "Due date"
+
+msgid "currency"
+msgstr "Currency"
+
+msgid "select_currency"
+msgstr "Select currency"
+
+msgid "products"
+msgstr "Products"
+
+msgid "add_product"
+msgstr "Add product"
+
+msgid "description"
+msgstr "Description"
+
+msgid "quantity"
+msgstr "Quantity"
+
+msgid "unit"
+msgstr "Unit"
+
+msgid "price"
+msgstr "Price"
+
+msgid "vat_percent"
+msgstr "VAT %"
+
+msgid "note"
+msgstr "Note"
+
+msgid "subtotal"
+msgstr "Subtotal"
+
+msgid "vat_value"
+msgstr "Vat value"
+
+msgid "total"
+msgstr "Total"
+
 msgid "add_invoice"
 msgstr "Add Invoice"
+
 msgid "invoice_added"
 msgstr "Invoice added successfully"
+
 msgid "generate_invoice"
 msgstr "Generate Invoice"
+
 msgid "invoice_generated"
 msgstr "Invoice generated successfully"
+
 msgid "invoice_generation_failed"
 msgstr "Failed to generate invoice"
+
 msgid "save_changes"
 msgstr "Save Changes"
+
 msgid "invoice_updated"
 msgstr "Invoice updated successfully"
+
 msgid "editing_mode"
 msgstr "You are currently editing an existing invoice"
+
 msgid "switch_to_generate"
 msgstr "Switch to Generate New Invoice"
 
-# Dialog Translations
-msgid "confirm_delete"
-msgstr "Confirm Delete"
-msgid "delete_invoice_confirmation"
-msgstr "Are you sure you want to delete this invoice?"
-msgid "invoice_to_delete"
-msgstr "You are about to delete invoice {invoice_no} for client {client}"
-msgid "cancel"
-msgstr "Cancel"
-msgid "generation_options_title"
-msgstr "Invoice Generation Options"
-msgid "invoice_to_generate"
-msgstr "Generating invoice {invoice_no} for client {client}"
+msgid "settings"
+msgstr "Settings"
+
+msgid "language"
+msgstr "Language"
+
+msgid "select_language"
+msgstr "Select language"
+
+msgid "openai_api_key_help"
+msgstr "Enter the OpenAI API Key"
+
+msgid "database_connection_string_help"
+msgstr "Enter the database connection string"
+
+msgid "tavily_api_key_help"
+msgstr "If you want the AI Agent to have internet access, enter the Tavily API Key"
+
+msgid "langchain_api_key_help"
+msgstr "If you want the AI Agent to save responses in LangService, enter the Langchain API Key"
+
 msgid "language_en"
 msgstr "English"
+
 msgid "language_pl"
 msgstr "Polish"
+
 msgid "language_nl"
 msgstr "Dutch"
-msgid "currency_multiplier"
-msgstr "Currency Multiplier"
-msgid "original_currency_info"
-msgstr "Original currency: {currency}"
-msgid "generate"
-msgstr "Generate"
-msgid "payment_instructions"
-msgstr "I kindly request you to transfer the above invoice amount within {days} days after the invoice date to account number {account_number} quoting the invoice number: {invoice_no}"
+
+msgid "shared_details"
+msgstr "Details"
+
+msgid "name"
+msgstr "Name"
+
+msgid "street"
+msgstr "Street"
+
+msgid "city"
+msgstr "City"
+
+msgid "country"
+msgstr "Country"
+
+msgid "vat"
+msgstr "VAT"
+
+msgid "piece"
+msgstr "Piece"
+
+msgid "hour"
+msgstr "Hour"
+
+msgid "day"
+msgstr "Day"
+

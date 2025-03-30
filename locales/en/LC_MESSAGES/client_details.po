@@ -1,0 +1,42 @@
+# Copyright (c) TaKo AI Sp. z o.o.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "select_client"
+msgstr "Select client"
+
+msgid "client_details"
+msgstr "Client details"
+
+msgid "add_new_client"
+msgstr "Add new client"
+
+msgid "update_client"
+msgstr "Update Client"
+
+msgid "client_updated"
+msgstr "Client updated successfully"
+
+msgid "client_created"
+msgstr "Client created successfully"
+
+msgid "client_deleted"
+msgstr "Client deleted successfully"
+
+msgid "create_client"
+msgstr "Create Client"
+
+msgid "delete_client"
+msgstr "Delete Client"
+
+msgid "vat_no"
+msgstr "VAT No"
+
+msgid "postal_code"
+msgstr "Postal Code"
+
+msgid "phone"
+msgstr "Phone"
