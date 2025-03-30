@@ -12,7 +12,8 @@ services:
     depends_on:
       - db
     networks:
-      - invoice_ai_net
+      invoice_ai_net:
+        ipv4_address: 172.21.0.3
 
   streamlit:
     build:
@@ -27,7 +28,8 @@ services:
     depends_on:
       - api
     networks:
-      - invoice_ai_net
+      invoice_ai_net:
+        ipv4_address: 172.21.0.2
 
   db:
     image: postgres
@@ -40,11 +42,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - invoice_ai_net
+      invoice_ai_net:
+        ipv4_address: 172.21.0.4
 
 volumes:
   postgres_data:
 
 networks:
   invoice_ai_net:
-    external: true
+    external: false
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
