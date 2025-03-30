@@ -1,4 +1,6 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+import json
+
 import requests.exceptions
 import streamlit as st
 from streamlit_cookies_controller import CookieController
@@ -23,13 +25,18 @@ def build_history() -> None:
         controller = CookieController()
         st.session_state.user = controller.get("user")
 
-        # Filter invoices based on user's business_ids
-        if st.session_state.user and st.session_state.user.get("business_ids"):
-            invoices = [
-                invoice
-                for invoice in invoices
-                if invoice.business.businessID in st.session_state.user["business_ids"]
-            ]
+        if st.session_state.user:
+            user_data = (
+                json.loads(st.session_state.user)
+                if isinstance(st.session_state.user, str)
+                else st.session_state.user
+            )
+            if user_data.get("business_ids"):
+                invoices = [
+                    invoice
+                    for invoice in invoices
+                    if invoice.business.businessID in user_data["business_ids"]
+                ]
 
     except requests.exceptions.HTTPError as e:
         st.error(str(e))
@@ -44,9 +51,17 @@ def build_history() -> None:
         )
 
     with col2:
-        sort_by = st.radio(
-            _("sort_by"), options=["date", "invoice_id"], horizontal=True
-        )
+        col2_left, col2_right = st.columns(2)
+        with col2_left:
+            sort_by = st.radio(
+                _("sort_by"), options=[_("date"), _("invoice_id")], horizontal=True
+            )
+        with col2_right:
+            sort_direction = st.radio(
+                _("sort_direction"),
+                options=[_("descending"), _("ascending")],
+                horizontal=True,
+            )
 
     filtered_invoices = invoices
     if selected_client != "All":
@@ -54,10 +69,13 @@ def build_history() -> None:
             inv for inv in invoices if inv.client.name == selected_client
         ]
 
-    if sort_by == "date":
-        filtered_invoices.sort(key=lambda x: x.issuedAt, reverse=True)
+    # Determine sort direction
+    reverse_sort = sort_direction == _("descending")
+
+    if sort_by == _("date"):
+        filtered_invoices.sort(key=lambda x: x.issuedAt, reverse=reverse_sort)
     else:  # sort by invoice_id
-        filtered_invoices.sort(key=lambda x: x.invoiceID, reverse=True)
+        filtered_invoices.sort(key=lambda x: x.invoiceID, reverse=reverse_sort)
 
     (
         issueddate,

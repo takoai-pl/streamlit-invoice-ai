@@ -32,9 +32,6 @@ msgstr "Create Client"
 msgid "delete_client"
 msgstr "Delete Client"
 
-msgid "vat_no"
-msgstr "VAT No"
-
 msgid "postal_code"
 msgstr "Postal Code"
 

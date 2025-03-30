@@ -70,9 +70,6 @@ msgstr "Utwórz Klienta"
 msgid "delete_client"
 msgstr "Usuń Klienta"
 
-msgid "vat_no"
-msgstr "NIP"
-
 msgid "postal_code"
 msgstr "Kod Pocztowy"
 
@@ -181,20 +178,14 @@ msgstr "Brak faktur"
 msgid "all"
 msgstr "Wszystkie"
 
-msgid "sort_by_date"
-msgstr "Sortuj po Dacie"
+msgid "descending"
+msgstr "Malejąco"
 
-msgid "sort_by_invoice_id"
-msgstr "Sortuj po ID Faktury"
+msgid "ascending"
+msgstr "Rosnąco"
 
-msgid "sort_by_vat_no"
-msgstr "Sortuj po NIP"
-
-msgid "sort_by_postal_code"
-msgstr "Sortuj po Kodzie Pocztowym"
-
-msgid "sort_by_phone"
-msgstr "Sortuj po Telefonie" 
+msgid "sort_direction"
+msgstr "Kierunek Sortowania"
 
 msgid "invoice"
 msgstr "Faktura"
@@ -277,6 +268,19 @@ msgstr "Obecnie edytujesz istniejącą fakturę"
 msgid "switch_to_generate"
 msgstr "Przełącz do Generowania Nowej Faktury" 
 
+msgid "login"
+msgstr "Zaloguj"
+
+msgid "username"
+msgstr "Nazwa użytkownika"
+
+msgid "password"
+msgstr "Hasło"
+
+msgid "login_button"
+msgstr "Zaloguj"
+
+
 msgid "settings"
 msgstr "Ustawienia"
 
@@ -307,6 +311,11 @@ msgstr "Polski"
 msgid "language_nl"
 msgstr "Holenderski" 
 
+msgid "logout"
+msgstr "Wyloguj"
+
+
+
 msgid "shared_details"
 msgstr "Szczegóły"
 
@@ -316,14 +325,26 @@ msgstr "Nazwa"
 msgid "street"
 msgstr "Ulica"
 
-msgid "city"
+msgid "town"
 msgstr "Miasto"
 
 msgid "country"
 msgstr "Kraj"
 
+msgid "postCode"
+msgstr "Kod pocztowy"
+
+msgid "vat_no"
+msgstr "NIP"
+
+msgid "vatNo"
+msgstr "NIP"
+
 msgid "vat"
 msgstr "VAT" 
+
+msgid "email"
+msgstr "Email"
 
 msgid "piece"
 msgstr "Sztuka"

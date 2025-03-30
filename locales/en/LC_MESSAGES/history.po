@@ -44,17 +44,11 @@ msgstr "No invoices yet"
 msgid "all"
 msgstr "All"
 
-msgid "sort_by_date"
-msgstr "Sort by Date"
+msgid "descending"
+msgstr "Descending"
 
-msgid "sort_by_invoice_id"
-msgstr "Sort by Invoice ID"
+msgid "ascending"
+msgstr "Ascending"
 
-msgid "sort_by_vat_no"
-msgstr "Sort by VAT No"
-
-msgid "sort_by_postal_code"
-msgstr "Sort by Postal Code"
-
-msgid "sort_by_phone"
-msgstr "Sort by Phone"
+msgid "sort_direction"
+msgstr "Sort Direction"

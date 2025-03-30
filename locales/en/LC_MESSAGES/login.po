@@ -1,0 +1,12 @@
+msgid "login"
+msgstr "Login"
+
+msgid "username"
+msgstr "Username"
+
+msgid "password"
+msgstr "Password"
+
+msgid "login_button"
+msgstr "Login"
+

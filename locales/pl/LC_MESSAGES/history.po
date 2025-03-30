@@ -44,17 +44,11 @@ msgstr "Brak faktur"
 msgid "all"
 msgstr "Wszystkie"
 
-msgid "sort_by_date"
-msgstr "Sortuj po Dacie"
+msgid "descending"
+msgstr "Malejąco"
 
-msgid "sort_by_invoice_id"
-msgstr "Sortuj po ID Faktury"
+msgid "ascending"
+msgstr "Rosnąco"
 
-msgid "sort_by_vat_no"
-msgstr "Sortuj po NIP"
-
-msgid "sort_by_postal_code"
-msgstr "Sortuj po Kodzie Pocztowym"
-
-msgid "sort_by_phone"
-msgstr "Sortuj po Telefonie" 
+msgid "sort_direction"
+msgstr "Kierunek Sortowania"

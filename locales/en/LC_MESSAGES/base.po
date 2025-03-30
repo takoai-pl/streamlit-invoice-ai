@@ -70,9 +70,6 @@ msgstr "Create Client"
 msgid "delete_client"
 msgstr "Delete Client"
 
-msgid "vat_no"
-msgstr "VAT No"
-
 msgid "postal_code"
 msgstr "Postal Code"
 
@@ -181,20 +178,14 @@ msgstr "No invoices yet"
 msgid "all"
 msgstr "All"
 
-msgid "sort_by_date"
-msgstr "Sort by Date"
+msgid "descending"
+msgstr "Descending"
 
-msgid "sort_by_invoice_id"
-msgstr "Sort by Invoice ID"
+msgid "ascending"
+msgstr "Ascending"
 
-msgid "sort_by_vat_no"
-msgstr "Sort by VAT No"
-
-msgid "sort_by_postal_code"
-msgstr "Sort by Postal Code"
-
-msgid "sort_by_phone"
-msgstr "Sort by Phone"
+msgid "sort_direction"
+msgstr "Sort Direction"
 
 msgid "invoice"
 msgstr "Invoice"
@@ -277,6 +268,19 @@ msgstr "You are currently editing an existing invoice"
 msgid "switch_to_generate"
 msgstr "Switch to Generate New Invoice"
 
+msgid "login"
+msgstr "Login"
+
+msgid "username"
+msgstr "Username"
+
+msgid "password"
+msgstr "Password"
+
+msgid "login_button"
+msgstr "Login"
+
+
 msgid "settings"
 msgstr "Settings"
 
@@ -307,6 +311,10 @@ msgstr "Polish"
 msgid "language_nl"
 msgstr "Dutch"
 
+msgid "logout"
+msgstr "Logout"
+
+
 msgid "shared_details"
 msgstr "Details"
 
@@ -316,14 +324,26 @@ msgstr "Name"
 msgid "street"
 msgstr "Street"
 
-msgid "city"
+msgid "town"
 msgstr "City"
 
 msgid "country"
 msgstr "Country"
 
+msgid "postCode"
+msgstr "Postcode"
+
+msgid "vat_no"
+msgstr "VAT No."
+
+msgid "vatNo"
+msgstr "VAT No."
+
 msgid "vat"
 msgstr "VAT"
+
+msgid "email"
+msgstr "Email"
 
 msgid "piece"
 msgstr "Piece"

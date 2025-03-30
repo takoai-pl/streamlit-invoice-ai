@@ -2,8 +2,11 @@
 
 # Function to generate .mo files and combine into base.po
 generate_mo_files() {
+    # Store the original directory
+    original_dir=$(pwd)
+    
     # Navigate to the locales directory
-    #cd locales
+    cd locales
 
     # Loop over all language directories
     for lang_dir in */ ; do
@@ -51,10 +54,16 @@ EOL
             echo "Warning: LC_MESSAGES directory not found in $lang_dir"
         fi
     done
+
+    # Return to the original directory
+    cd "$original_dir"
 }
 
 # Function to check for differences between languages
 check_translations() {
+    # Store the original directory
+    original_dir=$(pwd)
+    
     # Navigate to the locales directory
     cd locales
 
@@ -94,6 +103,9 @@ check_translations() {
 
     # Clean up
     rm "$ref_msgids"
+    
+    # Return to the original directory
+    cd "$original_dir"
 }
 
 # Main execution

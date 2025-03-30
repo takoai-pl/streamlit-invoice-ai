@@ -34,3 +34,8 @@ msgstr "Polski"
 
 msgid "language_nl"
 msgstr "Holenderski" 
+
+msgid "logout"
+msgstr "Wyloguj"
+
+

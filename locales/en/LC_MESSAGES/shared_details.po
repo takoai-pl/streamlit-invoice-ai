@@ -20,11 +20,17 @@ msgstr "City"
 msgid "country"
 msgstr "Country"
 
-msgid "postcode"
+msgid "postCode"
 msgstr "Postcode"
 
 msgid "vat_no"
 msgstr "VAT No."
 
+msgid "vatNo"
+msgstr "VAT No."
+
 msgid "vat"
 msgstr "VAT"
+
+msgid "email"
+msgstr "Email"
