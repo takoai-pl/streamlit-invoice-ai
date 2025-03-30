@@ -20,7 +20,7 @@ start_backend: locales
 
 docker_dev:
 	@echo "Building the development Docker image..."
-	docker-compose --env-file .env.dev -f docker-compose.yml -f docker-compose.dev.yml up --build -d
+	docker-compose --env-file .env.dev -f docker-compose.yml up --build -d
 
 TEST_FILE ?= tests/
 

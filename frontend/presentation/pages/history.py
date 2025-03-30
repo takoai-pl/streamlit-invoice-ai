@@ -1,6 +1,7 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 import requests.exceptions
 import streamlit as st
+from streamlit_cookies_controller import CookieController
 
 from frontend.domain.entities import InvoiceEntity
 from frontend.presentation.dialogs import (
@@ -19,6 +20,17 @@ def build_history() -> None:
         if not invoices:
             st.info(_("no_invoices_yet"))
             return
+        controller = CookieController()
+        st.session_state.user = controller.get("user")
+
+        # Filter invoices based on user's business_ids
+        if st.session_state.user and st.session_state.user.get("business_ids"):
+            invoices = [
+                invoice
+                for invoice in invoices
+                if invoice.business.businessID in st.session_state.user["business_ids"]
+            ]
+
     except requests.exceptions.HTTPError as e:
         st.error(str(e))
         return

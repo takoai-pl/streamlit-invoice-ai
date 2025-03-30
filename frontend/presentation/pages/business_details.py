@@ -1,10 +1,12 @@
 # Copyright (c) TaKo AI Sp. z o.o.
 
 import base64
+import json
 import uuid
 
 import requests
 import streamlit as st
+from streamlit_cookies_controller import CookieController
 
 from frontend.domain.entities.business_entity import BusinessEntity
 from frontend.presentation.handler import handler
@@ -21,7 +23,6 @@ def _on_change_business_select(key: str, *args) -> None:
     if current_value == _("add_new_business"):
         st.session_state.invoice.business = BusinessEntity()
         st.session_state.invoice.business.businessID = str(uuid.uuid4())
-        st.session_state.invoice.business.name = ""
         return
 
     try:
@@ -83,6 +84,22 @@ def build_business_fields() -> None:
     st.subheader(_("business_details"))
 
     businesses = handler.get_all_businesses()
+    controller = CookieController()
+    st.session_state.user = controller.get("user")
+
+    if st.session_state.user:
+        user_data = (
+            json.loads(st.session_state.user)
+            if isinstance(st.session_state.user, str)
+            else st.session_state.user
+        )
+        if user_data.get("business_ids"):
+            businesses = [
+                business
+                for business in businesses
+                if business.businessID in user_data["business_ids"]
+            ]
+
     business_names = [business.name for business in businesses]
     st.session_state.business_id_mapping = {
         business.name: business.businessID for business in businesses
@@ -110,15 +127,13 @@ def build_business_fields() -> None:
         args=("business_select",),
     )
 
-    if selected_business == "" or selected_business is None:
+    if selected_business == "":
         st.session_state.invoice.business = BusinessEntity()
         st.session_state.invoice.business.businessID = str(uuid.uuid4())
 
-    # Create two columns for the main content
     main_col, logo_col = st.columns([3, 1])
 
     with main_col:
-        # Business fields
         business_fields = [
             ("name", ""),
             ("street", ""),

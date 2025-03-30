@@ -1,11 +1,13 @@
 # Copyright (c) TaKo AI Sp. z o.o.
+import json
 import logging
+import re
 import uuid
+from datetime import datetime, timedelta
 
 import requests.exceptions
 import streamlit as st
 
-from frontend.domain.entities.business_entity import BusinessEntity
 from frontend.domain.entities.invoice_entity import InvoiceEntity
 from frontend.presentation.handler import handler
 from frontend.utils.const import currencies
@@ -53,10 +55,14 @@ def _on_change_details(key: str) -> None:
         elif key == "issuedAt":
             logger.info(f"Validating issue date: {current_value}")
             InvoiceEntity.validate_dates(current_value)
-            if st.session_state.dueTo:
-                InvoiceEntity.validate_due_date(
-                    st.session_state.dueTo, {"issuedAt": current_value}
-                )
+
+            # Automatically set due date to 2 weeks later
+            due_date = current_value + timedelta(weeks=2)
+            st.session_state.invoice.dueTo = due_date
+            logger.info(
+                f"Automatically set due date to 2 weeks after issue date: {due_date}"
+            )
+
         elif key == "dueTo":
             logger.info(f"Validating due date: {current_value}")
             InvoiceEntity.validate_dates(current_value)
@@ -84,47 +90,79 @@ def _on_change_business_select(key: str, *args) -> None:
     current_value = st.session_state[key]
     if current_value == "" or current_value is None:
         return
+
     try:
-        # Get business by ID from the mapping
         business_id = st.session_state.business_id_mapping.get(current_value)
         if business_id:
             business_entity = handler.get_business_details(business_id)
             if business_entity:
                 st.session_state.invoice.edit_business(**business_entity.__dict__)
+                logger.info(
+                    f"Business selection updated. Current business: {current_value}"
+                )
+
+                try:
+                    all_invoices = handler.get_all_invoices()
+                    business_invoices = [
+                        invoice
+                        for invoice in all_invoices
+                        if invoice.business.businessID == business_id
+                    ]
+
+                    if business_invoices:
+                        latest_invoice = max(
+                            business_invoices, key=lambda x: x.invoiceNo
+                        )
+                        if latest_invoice.invoiceNo:
+                            numeric_parts = re.findall(
+                                r"(\d+)/(\d+)", latest_invoice.invoiceNo
+                            )
+                            if numeric_parts:
+                                year, invoice_num = numeric_parts[0]
+
+                                current_year = datetime.now().year
+
+                                if int(year) < current_year:
+                                    new_invoice_no = f"{current_year}/0001"
+                                else:
+                                    next_num = str(int(invoice_num) + 1).zfill(4)
+                                    new_invoice_no = f"{year}/{next_num}"
+
+                                st.session_state.invoice.edit_field(
+                                    "invoiceNo", new_invoice_no
+                                )
+                                logger.info(
+                                    f"Auto-incremented invoice number to: {new_invoice_no}"
+                                )
+                            else:
+                                current_year = datetime.now().year
+                                new_invoice_no = f"{current_year}/0001"
+                                st.session_state.invoice.edit_field(
+                                    "invoiceNo", new_invoice_no
+                                )
+                                logger.info(
+                                    f"Started new invoice numbering: {new_invoice_no}"
+                                )
+                    else:
+
+                        current_year = datetime.now().year
+                        new_invoice_no = f"{current_year}/0001"
+                        st.session_state.invoice.edit_field("invoiceNo", new_invoice_no)
+                        logger.info(f"Started new invoice numbering: {new_invoice_no}")
+
+                except Exception as e:
+                    logger.warning(f"Could not auto-increment invoice number: {str(e)}")
+
+                    current_year = datetime.now().year
+                    new_invoice_no = f"{current_year}/0001"
+                    st.session_state.invoice.edit_field("invoiceNo", new_invoice_no)
+                    logger.info(f"Set default invoice number: {new_invoice_no}")
+
     except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error while getting business details: {str(e)}")
         st.error(str(e))
     except Exception as e:
-        st.warning(str(e))
-
-
-def _on_change_business_field(key: str, field: str) -> None:
-    current_value = st.session_state[key]
-    try:
-        st.session_state.invoice.edit_business(**{field: current_value})
-    except requests.exceptions.HTTPError as e:
-        st.error(str(e))
-    except Exception as e:
-        st.warning(str(e))
-
-
-def _create_business() -> None:
-    try:
-        handler.create_business(st.session_state.invoice.business)
-        st.success(_("business_created"))
-    except requests.exceptions.HTTPError as e:
-        st.error(str(e))
-    except Exception as e:
-        st.warning(str(e))
-
-
-def _delete_business() -> None:
-    try:
-        handler.delete_business(st.session_state.invoice.business.businessID)
-        st.session_state.invoice.business = BusinessEntity()
-        st.success(_("business_deleted"))
-    except requests.exceptions.HTTPError as e:
-        st.error(str(e))
-    except Exception as e:
+        logger.warning(f"Warning while getting business details: {str(e)}")
         st.warning(str(e))
 
 
@@ -149,21 +187,9 @@ def _on_change_client_select(key: str, *args) -> None:
         st.warning(str(e))
 
 
-def _on_change_client_field(key: str, field: str) -> None:
-    current_value = st.session_state[key]
-    try:
-        st.session_state.invoice.edit_client(**{field: current_value})
-    except requests.exceptions.HTTPError as e:
-        st.error(str(e))
-    except Exception as e:
-        st.warning(str(e))
-
-
 def build_invoice_fields() -> None:
     if "issuedAt" not in st.session_state:
         st.session_state.issuedAt = st.session_state.invoice.issuedAt
-    if "dueTo" not in st.session_state:
-        st.session_state.dueTo = st.session_state.invoice.dueTo
 
     if st.session_state.get("is_editing", False):
         st.warning(_("editing_mode"))
@@ -223,15 +249,31 @@ def build_invoice_fields() -> None:
         st.subheader(_("business_details"))
         try:
             businesses = handler.get_all_businesses()
+
+            if st.session_state.user:
+                user_data = (
+                    json.loads(st.session_state.user)
+                    if isinstance(st.session_state.user, str)
+                    else st.session_state.user
+                )
+                if user_data.get("business_ids"):
+                    businesses = [
+                        business
+                        for business in businesses
+                        if business.businessID in user_data["business_ids"]
+                    ]
+
             business_names = [business.name for business in businesses]
             st.session_state.business_id_mapping = {
                 business.name: business.businessID for business in businesses
             }
+
             current_business = (
                 st.session_state.invoice.business.name
                 if st.session_state.invoice.business.name
                 else None
             )
+
             current_index = (
                 business_names.index(current_business)
                 if current_business in business_names
@@ -316,7 +358,7 @@ def build_invoice_fields() -> None:
 
         st.date_input(
             _("due_date"),
-            value=st.session_state.dueTo,
+            value=st.session_state.invoice.dueTo,
             key=key_due_to,
             format="DD/MM/YYYY",
             on_change=_on_change_details,
@@ -440,13 +482,11 @@ def build_invoice_fields() -> None:
                         logger.info(
                             f"Preserving original invoice ID: {original_invoice_id}"
                         )
-                    # Validate invoice before saving
                     st.session_state.invoice.validate_invoice()
-                    # Update invoice in database
+
                     handler.update_invoice(st.session_state.invoice)
                     logger.info("Invoice updated successfully")
                     st.success(_("invoice_updated"))
-                    # Clear editing state
                     st.session_state.is_editing = False
                     st.rerun()
                 except ValueError as e:
@@ -460,6 +500,7 @@ def build_invoice_fields() -> None:
                 try:
                     logger.info("Attempting to add invoice")
                     st.session_state.invoice.invoiceID = str(uuid.uuid4())
+
                     st.session_state.invoice.validate_invoice()
                     handler.add_invoice(st.session_state.invoice)
                     logger.info("Invoice added successfully")

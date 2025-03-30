@@ -116,3 +116,13 @@ class APIProvider:
             f"{self.base_url}/client/{client_id}/", headers=self.headers
         )
         response.raise_for_status()
+
+    def login(self, username: str, password: str) -> dict:
+        """Login user"""
+        response = requests.post(
+            f"{self.base_url}/user/login",
+            json={"username": username, "password": password},
+            headers={"Authorization": f"Bearer {self.api_key}"},
+        )
+        response.raise_for_status()
+        return response.json()

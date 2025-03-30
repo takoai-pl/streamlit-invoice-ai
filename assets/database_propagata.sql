@@ -43,3 +43,10 @@ CREATE TABLE "product" (
                            "price" FLOAT,
                            "invoice_id" VARCHAR REFERENCES "invoice"("invoiceID")
 );
+
+CREATE TABLE "user" (
+    "userID" VARCHAR PRIMARY KEY,
+    "username" VARCHAR UNIQUE,
+    "password" VARCHAR,
+    "business_ids" VARCHAR[]
+);

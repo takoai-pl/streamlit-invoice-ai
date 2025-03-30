@@ -26,6 +26,7 @@ langserve = { version = ">=0.0.6", extras = ["server"] }
 uvicorn = { extras = ["standard"], version = "^0.27.1" }
 python-dotenv = "^1.0.1"
 psycopg2-binary = "^2.9.9"
+streamlit-cookies-controller = "^0.0.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"

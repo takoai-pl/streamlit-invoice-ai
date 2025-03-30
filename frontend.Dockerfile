@@ -1,6 +1,14 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y make gettext && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    make \
+    gettext \
+    texlive \
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-latex-recommended \
+    texlive-latex-extra \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry
 
