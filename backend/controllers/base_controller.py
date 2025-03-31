@@ -5,6 +5,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import sessionmaker
 
+from backend.utils.logger import setup_logger
+
+logger = setup_logger("base_controller")
+
 
 def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
     @wraps(func)
@@ -16,6 +20,7 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
             return result
         except Exception as e:
             session.rollback()
+            logger.error(f"Error in {func.__name__}: {str(e)}", exc_info=True)
             if isinstance(e, AlreadyExistsException):
                 raise e
             if isinstance(e, NameCannotBeChangedException):
@@ -35,16 +40,19 @@ def session_scope(func: Callable[..., Any]) -> Callable[..., Any]:
 class BaseController:
     def __init__(self, db_path: str | None) -> None:
         if not db_path:
+            logger.error("Database path not provided")
             raise DatabaseConnectionException("Database path not provided.")
         self.db_path = db_path
         try:
             self.engine = create_engine(db_path)
             self.Session = sessionmaker(bind=self.engine, expire_on_commit=False)
         except OperationalError as e:
+            logger.error(f"Database operational error: {str(e)}", exc_info=True)
             raise DatabaseConnectionException(
                 f"Could not connect to the database: {str(e)}"
             )
         except ArgumentError as e:
+            logger.error(f"Database argument error: {str(e)}", exc_info=True)
             raise DatabaseConnectionException(
                 f"Could not connect to the database: {str(e)}"
             )
